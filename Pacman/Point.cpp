@@ -1,9 +1,9 @@
 #include "Point.h"
 
-void Point::move() {
-		int dir = rand() % 4;
-		move(dir);
-	}
+///*void Point::move() {
+//		int dir = rand() % 4;
+//		move(dir, 0);
+//	*/}
 
 void Point::move(int direction)
 	{
@@ -11,7 +11,7 @@ void Point::move(int direction)
 		case 0: // UP
 			--y;
 			if (y < 1) {
-				y = 24;
+				y = 23;
 			}
 			break;
 		case 1: // DOWN

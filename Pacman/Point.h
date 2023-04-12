@@ -24,7 +24,7 @@ public:
 		cout << ch;
 		cout.flush();
 	}
-	void move();
+	//void move();
 	void move(int direction);
 	
 	Point next(int direction) {

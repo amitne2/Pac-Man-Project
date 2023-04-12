@@ -19,6 +19,16 @@ void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 	}
 }
 
+//void ThePacmanGame::drawOnBoard(const Point& p, char c)
+//{
+//	board[p.getY()][p.getX()] = c;
+//}
+
+char ThePacmanGame::getBoardSignInPosition(const Point& p)
+{
+	return board[p.getY()][p.getX()];
+}
+
 void ThePacmanGame::init()
 {
 	for (int i = 0; i < ROWS; i++)
@@ -57,7 +67,7 @@ void ThePacmanGame::run()
 
 bool ThePacmanGame::isWall(const Point & p)
 {
-	if (originalBoard[p.getX()][p.getY()] == '+') // If pacman hit 
+	if (board[p.getY()][p.getX()] == '+') // If pacman hits a wall
 		return true;
 	return false;
 }

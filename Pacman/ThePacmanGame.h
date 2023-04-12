@@ -15,6 +15,8 @@ class ThePacmanGame {
 	void handleObjectCreationFromBoard(int row, int col);
 public:
 	void setBoard(const char* boardToCopy[ROWS]);
+	//void drawOnBoard(const Point& p, char c);
+	char getBoardSignInPosition(const Point& p);
 	void init();
 	bool isWall(const Point& p);
 	void run();
