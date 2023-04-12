@@ -1,34 +1,11 @@
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+#include "Point.h"
 
-#include "io_utils.h" 
-
-using namespace std;
-
-class Point {
-	int x = 1, y = 1;
-public:
-	int getX() const {
-		return x;
-	}
-	int getY() const {
-		return y;
-	}
-	void set(int _x, int _y) {
-		x = _x;
-		y = _y;
-	}
-	void draw(char ch) {
-		gotoxy(x, y);
-		cout << ch;
-		cout.flush();
-	}
-	void move() {
+void Point::move() {
 		int dir = rand() % 4;
 		move(dir);
 	}
-	void move(int direction)
+
+void Point::move(int direction)
 	{
 		switch (direction) {
 		case 0: // UP
@@ -55,11 +32,7 @@ public:
 				x = 1;
 			}
 			break;
+		case 4:
+			break; // DO NOTHING, STAY PUT
 		}
 	}
-	Point next(int direction) {
-		Point next = *this;
-		next.move(direction);
-		return next;
-	}
-};
