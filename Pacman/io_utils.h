@@ -3,7 +3,7 @@
 // you must have a config file, both for windows and for compiling on Linux (MAMA)
 // BUT, you need to change the content of the config!
 
-//#include "config.h"
+#include "config.h"
 //#include "Color.h"
 #include <iostream>
 #include <stdio.h>

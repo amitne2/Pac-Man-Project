@@ -23,9 +23,9 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);
 }
 
-void setTextColor(Color colorToSet) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)colorToSet);
-}
+//void setTextColor(Color colorToSet) {
+//	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (int)colorToSet);
+//}
 
 void hideCursor()
 {
