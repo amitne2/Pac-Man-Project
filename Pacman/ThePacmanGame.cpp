@@ -24,10 +24,10 @@ void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 //	board[p.getY()][p.getX()] = c;
 //}
 
-char ThePacmanGame::getBoardSignInPosition(const Point& p)
-{
-	return board[p.getY()][p.getX()];
-}
+//char ThePacmanGame::getBoardSignInPosition(const Point& p)
+//{
+//	return board[p.getY()][p.getX()];
+//}
 
 void ThePacmanGame::init()
 {

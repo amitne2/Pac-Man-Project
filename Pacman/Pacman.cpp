@@ -25,12 +25,10 @@ void Pacman::setDirection(int dir)
 
 void Pacman::move()
 {
-	char c = theGame->getBoardSignInPosition(position[0]);
+	//char c = theGame->getBoardSignInPosition(position[0]);
 	position[1] = position[0];
 	position[0].move(direction);
 	
-	//Point checkBoarder;
-	//checkBoarder = position[1].next(direction);
 	if (theGame->isWall(position[1].next(direction)))
 	{
 		direction = 4; // pacman stops at wall
