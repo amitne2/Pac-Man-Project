@@ -11,6 +11,7 @@ private:
 	Point position[2];
 	int direction = 3;
 	char arrowKeys[5];
+	int points = 0;
 	ThePacmanGame* theGame;
 
 public:

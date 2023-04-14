@@ -2,9 +2,15 @@
 
 void ThePacmanGame::handleObjectCreationFromBoard(int row, int col)
 {
+	static int countGhosts = 0;
 	char ch = board[row][col];
 	if (ch == '@')
 		pac.setPosition(row, col);
+	if (ch == '$')
+	{
+		ghosts[countGhosts].setPosition(row, col);
+		countGhosts++;
+	}
 }
 
 void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
@@ -29,6 +35,14 @@ void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 //	return board[p.getY()][p.getX()];
 //}
 
+bool ThePacmanGame::isFruit(const Point& p) // This point is the next move
+{
+	char sign = board[p.getY()][p.getX()];
+	if (sign == ' ' || sign == '$' || sign == '+')
+		return false;
+	return true;
+}
+
 void ThePacmanGame::init()
 {
 	for (int i = 0; i < ROWS; i++)
@@ -45,6 +59,8 @@ void ThePacmanGame::init()
 	}
 
 	pac.setGame(this);
+	ghosts[0].setGame(this);
+	ghosts[1].setGame(this);
 	pac.setArrowKeys("wxads");
 }
 
@@ -61,13 +77,34 @@ void ThePacmanGame::run()
 				pac.setDirection(dir);
 		}
 		pac.move();
+		ghosts[0].move();
+		ghosts[1].move();
+		//if pacman moves 2 steps
+		//ghosts move
 		Sleep(400);
 	} while (key != ESC);
 }
 
-bool ThePacmanGame::isWall(const Point & p)
+bool ThePacmanGame::isWall(const Point & p, int object)
 {
-	if (board[p.getY()][p.getX()] == '+') // If pacman hits a wall
+	if (object == PACMAN)
+	{
+		if (board[p.getY()][p.getX()] == '+') // If pacman hits a wall
+			return true;
+		return false;
+	}
+
+	else // object is GHOST
+	{
+		if ((isOnBorder(p)) || (board[p.getY()][p.getX()] == '+'))
+			return true;
+		return false;
+	}
+}
+
+bool ThePacmanGame::isOnBorder(const Point& p)
+{
+	if (p.getY() < 1 || p.getY() > 24 || p.getX() < 1 || p.getX() > 79)
 		return true;
 	return false;
 }

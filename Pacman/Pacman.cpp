@@ -25,23 +25,29 @@ void Pacman::setDirection(int dir)
 
 void Pacman::move()
 {
-	//char c = theGame->getBoardSignInPosition(position[0]);
 	position[1] = position[0];
-	position[0].move(direction);
+	position[0].move(direction, PACMAN);
 	
-	if (theGame->isWall(position[1].next(direction)))
+	if (theGame->isWall(position[1].next(direction, PACMAN), PACMAN))
 	{
 		direction = 4; // pacman stops at wall
-		//theGame->drawOnBoard(position[1], '+');
 		position[0] = position[1];
 		position[1] = position[0];
 	}
+
+	//else if() //ghost
+
 	else
 	{
-		//position[0].move(direction, c);
+		if (theGame->isFruit(position[1].next(direction, PACMAN)))
+			points++;
+
 		//setTextColor(color);
 		if (direction != 4) // STAY POSITION
 			position[1].draw(' ');
 		position[0].draw('@');
 	}
+
+	//if(points == NUM_OF_FRUITS)
+	//check lives & points and update
 }

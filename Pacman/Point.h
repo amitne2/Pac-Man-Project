@@ -25,11 +25,11 @@ public:
 		cout.flush();
 	}
 	//void move();
-	void move(int direction);
+	void move(int direction, int object);
 	
-	Point next(int direction) {
+	Point next(int direction, int object) {
 		Point next = *this;
-		next.move(direction);
+		next.move(direction, object);
 		return next;
 	}
 };

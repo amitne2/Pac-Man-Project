@@ -148,6 +148,7 @@
     <ClInclude Include="_board.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="io_utils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pacman.cpp" />
