@@ -1,6 +1,8 @@
 #include "Pacman.h"
 #include "ThePacmanGame.h"
-//pacmannnnnnnnnn
+
+//de chilly
+
 Pacman::Pacman() {};
 Pacman:: Pacman(int y, int x)
 {
