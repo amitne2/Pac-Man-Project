@@ -146,6 +146,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="ThePacmanGame.h" />
     <ClInclude Include="_board.h" />
+    <ClInclude Include="_game_over_message.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ghost.cpp" />

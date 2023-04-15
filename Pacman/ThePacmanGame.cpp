@@ -1,17 +1,24 @@
 #include "ThePacmanGame.h"
 
-void ThePacmanGame::handleObjectCreationFromBoard(int row, int col)
+
+ThePacmanGame::ThePacmanGame()
 {
-	static int countGhosts = 0;
-	char ch = board[row][col];
-	if (ch == '@')
-		pac.setPosition(row, col);
-	if (ch == '$')
-	{
-		ghosts[countGhosts].setPosition(row, col);
-		countGhosts++;
-	}
+	pac = Pacman(6, 40);
+	ghosts[0] = Ghost(20,3);
+	ghosts[1] = Ghost(2, 44);
 }
+//void ThePacmanGame::handleObjectCreationFromBoard(int row, int col)
+//{
+//	static int countGhosts = 0;
+//	char ch = board[row][col];
+//	if (ch == '@')
+//		pac.setPosition(row, col);
+//	if (ch == '$')
+//	{
+//		ghosts[countGhosts].setPosition(row, col);
+//		countGhosts++;
+//	}
+//}
 
 void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 {
@@ -25,6 +32,11 @@ void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 	}
 }
 
+void ThePacmanGame::updateBoard(const Point& p)
+{
+	board[p.getY()][p.getX()] = ' ';
+}
+
 //void ThePacmanGame::drawOnBoard(const Point& p, char c)
 //{
 //	board[p.getY()][p.getX()] = c;
@@ -35,7 +47,7 @@ void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 //	return board[p.getY()][p.getX()];
 //}
 
-bool ThePacmanGame::isFruit(const Point& p) // This point is the next move
+bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
 {
 	char sign = board[p.getY()][p.getX()];
 	if (sign == ' ' || sign == '$' || sign == '+')
@@ -43,8 +55,16 @@ bool ThePacmanGame::isFruit(const Point& p) // This point is the next move
 	return true;
 }
 
+bool ThePacmanGame::isGhost()
+{
+	if(checkIfTheSamePosition(pac.getPosition(), ghosts[0].getPosition()) || checkIfTheSamePosition(pac.getPosition(), ghosts[1].getPosition()))
+		return true;
+	return false;
+}
+
 void ThePacmanGame::init()
 {
+	
 	for (int i = 0; i < ROWS; i++)
 	{
 		for (int j = 0; j < COLS; j++)
@@ -53,7 +73,7 @@ void ThePacmanGame::init()
 			cout << originalBoard[i][j];
 			cout.flush();
 			board[i][j] = originalBoard[i][j];
-			handleObjectCreationFromBoard(i, j);
+			//handleObjectCreationFromBoard(i, j);
 		}
 		board[i][COLS] = '\0';
 	}
@@ -61,7 +81,7 @@ void ThePacmanGame::init()
 	pac.setGame(this);
 	ghosts[0].setGame(this);
 	ghosts[1].setGame(this);
-	pac.setArrowKeys("wxads");
+	//pac.setArrowKeys("wxads");
 }
 
 void ThePacmanGame::run()
@@ -77,6 +97,7 @@ void ThePacmanGame::run()
 				pac.setDirection(dir);
 		}
 		pac.move();
+		//Sleep(4000);
 		ghosts[0].move();
 		ghosts[1].move();
 		//if pacman moves 2 steps
@@ -105,6 +126,32 @@ bool ThePacmanGame::isWall(const Point & p, int object)
 bool ThePacmanGame::isOnBorder(const Point& p)
 {
 	if (p.getY() < 1 || p.getY() > 24 || p.getX() < 1 || p.getX() > 79)
+		return true;
+	return false;
+}
+
+void ThePacmanGame::ghostAtePacman()
+{
+	pac.setLives(); 
+	if (pac.getLives() != 0)
+	{
+		pac.setOriginalPosition();
+		ghosts[0].setOriginalPosition();
+		ghosts[1].setOriginalPosition();
+	}
+
+	else
+	{
+		clear_screen();
+
+
+	}
+		//end game message
+}
+
+bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2)
+{
+	if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
 		return true;
 	return false;
 }

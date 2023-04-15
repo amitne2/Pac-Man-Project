@@ -1,11 +1,26 @@
 #include "Ghost.h"
 #include "ThePacmanGame.h"
 
-
-void Ghost::setPosition(int y, int x)
+Ghost::Ghost() {};
+Ghost::Ghost(int _y, int _x)
 {
-	position[0].set(x, y);
-	position[1].set(x, y);
+	originalPosition.set(_x, _y);
+	position[0] = position[1] = originalPosition;
+}
+
+void Ghost:: setGame(ThePacmanGame* _theGame)
+{
+	theGame = _theGame;
+}
+
+void Ghost::setOriginalPosition()
+{
+	position[0] = position[1] = originalPosition;
+}
+
+Point Ghost::getPosition()
+{
+	return position[0];
 }
 
 void Ghost::move()
@@ -31,7 +46,9 @@ void Ghost::move()
 			points++;*/
 
 	//setTextColor(color);
-		
-	position[1].draw('.');
+	if (theGame->isBreadCrumbs(position[1]))
+		position[1].draw('.');
+	else
+		position[1].draw(' ');
 	position[0].draw('$');
 }

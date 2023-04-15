@@ -4,6 +4,7 @@ using namespace std;
 
 #include "ThePacmanGame.h"
 #include "_board.h"
+#include "_game_over_message.h"
 
 int main() {
 	ThePacmanGame game;

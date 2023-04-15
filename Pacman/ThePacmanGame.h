@@ -14,19 +14,23 @@ class ThePacmanGame {
 	enum { ESC = 27 };
 	Pacman pac;
 	Ghost ghosts[2];
-
 	char originalBoard[ROWS][COLS + 1];	// this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1];	// this is the actual board we play on, i.e.
-	void handleObjectCreationFromBoard(int row, int col);
+	//void handleObjectCreationFromBoard(int row, int col);
 public:
+	ThePacmanGame();
 	void setBoard(const char* boardToCopy[ROWS]);
+	void updateBoard(const Point& p);
 	//void drawOnBoard(const Point& p, char c);
 	//char getBoardSignInPosition(const Point& p);
 	void init();
 	bool isWall(const Point& p, int object);
-	bool isFruit(const Point& p);
+	bool isBreadCrumbs(const Point& p);
+	bool isGhost();
 	void run();
 	bool isOnBorder(const Point& p);
+	void ghostAtePacman();
+	bool checkIfTheSamePosition(const Point& p1, const Point& p2);
 };
 
 #endif

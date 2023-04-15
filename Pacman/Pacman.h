@@ -9,31 +9,28 @@ class ThePacmanGame;
 class Pacman {
 private:
 	Point position[2];
-	int direction = 3;
+	Point originalPosition;
+	int lives;
+	int direction;
+	int points;
 	char arrowKeys[5];
-	int points = 0;
 	ThePacmanGame* theGame;
+	void setArrowKeys(const char* keys);
 
 public:
-
+	Pacman();
+	Pacman(int y, int x);
 	void setGame(ThePacmanGame* _theGame) {
 		theGame = _theGame;
 	}
-	
-	void setPosition(int y, int x);
-
-	void setArrowKeys(const char* keys)
-	{
-		arrowKeys[0] = keys[0]; // UP
-		arrowKeys[1] = keys[1]; // DOWN
-		arrowKeys[2] = keys[2]; // LEFT
-		arrowKeys[3] = keys[3]; // RIGHT
-		arrowKeys[4] = keys[4]; // STAY
-	}
-
-	int getDirection(char key);
+	void setOriginalPosition();
+	void setLives();
 	void setDirection(int dir);
+	int getLives();
+	int getDirection(char key);
+	Point getPosition();
 	void move();
+	//void ghostAtePacman();
 };
 
 #endif

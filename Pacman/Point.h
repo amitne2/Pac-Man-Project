@@ -32,6 +32,7 @@ public:
 		next.move(direction, object);
 		return next;
 	}
+	//bool checkIfTheSamePosition(const Point& p1, const Point &p2);
 };
 
 #endif
