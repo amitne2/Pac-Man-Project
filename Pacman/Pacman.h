@@ -18,7 +18,6 @@ private:
 	void setArrowKeys(const char* keys);
 
 public:
-	Pacman();
 	Pacman(int y, int x);
 	void setGame(ThePacmanGame* _theGame) {
 		theGame = _theGame;

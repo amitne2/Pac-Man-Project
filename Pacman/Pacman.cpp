@@ -1,9 +1,6 @@
 #include "Pacman.h"
 #include "ThePacmanGame.h"
 
-//de chilly
-
-Pacman::Pacman() {};
 Pacman:: Pacman(int y, int x)
 {
 	originalPosition.set(x, y);

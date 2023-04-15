@@ -16,7 +16,6 @@ private:
 	ThePacmanGame* theGame;
 
 public:
-	Ghost();
 	Ghost(int _x, int _y);
 
 	void setGame(ThePacmanGame* _theGame);

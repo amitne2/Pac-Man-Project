@@ -1,11 +1,9 @@
 #include "ThePacmanGame.h"
 
 
-ThePacmanGame::ThePacmanGame()
+ThePacmanGame::ThePacmanGame() : pac(6, 40), ghosts{ Ghost(20,3), Ghost(2, 44) }
 {
-	pac = Pacman(6, 40);
-	ghosts[0] = Ghost(20,3);
-	ghosts[1] = Ghost(2, 44);
+
 }
 //void ThePacmanGame::handleObjectCreationFromBoard(int row, int col)
 //{

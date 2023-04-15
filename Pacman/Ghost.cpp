@@ -1,7 +1,6 @@
 #include "Ghost.h"
 #include "ThePacmanGame.h"
 
-Ghost::Ghost() {};
 Ghost::Ghost(int _y, int _x)
 {
 	originalPosition.set(_x, _y);
