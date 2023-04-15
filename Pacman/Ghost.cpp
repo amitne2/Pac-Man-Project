@@ -17,9 +17,14 @@ void Ghost::setOriginalPosition()
 	position[0] = position[1] = originalPosition;
 }
 
-Point Ghost::getPosition()
+Point Ghost::getNextPosition()
 {
 	return position[0];
+}
+
+Point Ghost::getCurrentPosition()
+{
+	return position[1];
 }
 
 void Ghost::move()
@@ -40,7 +45,13 @@ void Ghost::move()
 	
 	//else if() //ghost
 
-	
+	//if (theGame->isGhost())
+	//{
+	//	//pac.getCurrentPosition().draw(' ');
+	//	theGame->updateBoard(position[0]);
+	//	Sleep(2000);
+	//	ghostAtePacman();
+	//}
 	/*if (theGame->isFruit(position[1].next(direction)))
 			points++;*/
 

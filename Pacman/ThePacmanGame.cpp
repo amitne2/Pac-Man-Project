@@ -1,10 +1,12 @@
 #include "ThePacmanGame.h"
+#include "_game_over_message.h"
+#include "_board.h"
 
-
-ThePacmanGame::ThePacmanGame() : pac(6, 40), ghosts{ Ghost(20,3), Ghost(2, 44) }
+ThePacmanGame::ThePacmanGame() : pac(4, 43), ghosts{ Ghost(20,42), Ghost(1, 44) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
-
+	gameIsOn = true;
 }
+
 //void ThePacmanGame::handleObjectCreationFromBoard(int row, int col)
 //{
 //	static int countGhosts = 0;
@@ -35,10 +37,10 @@ void ThePacmanGame::updateBoard(const Point& p)
 	board[p.getY()][p.getX()] = ' ';
 }
 
-//void ThePacmanGame::drawOnBoard(const Point& p, char c)
-//{
-//	board[p.getY()][p.getX()] = c;
-//}
+void ThePacmanGame::setBoardBeforeStrike(Point p)
+{
+	p.draw(board[p.getY()][p.getX()]);
+}
 
 //char ThePacmanGame::getBoardSignInPosition(const Point& p)
 //{
@@ -55,9 +57,22 @@ bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
 
 bool ThePacmanGame::isGhost()
 {
-	if(checkIfTheSamePosition(pac.getPosition(), ghosts[0].getPosition()) || checkIfTheSamePosition(pac.getPosition(), ghosts[1].getPosition()))
+	if(checkIfTheSamePosition(pac.getNextPosition(), ghosts[0].getNextPosition()) || checkIfTheSamePosition(pac.getNextPosition(), ghosts[1].getNextPosition()))
 		return true;
 	return false;
+}
+
+void ThePacmanGame::printGameOver()
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			gotoxy(j, i);
+			cout << game_over[i][j];
+			cout.flush();
+		}
+	}
 }
 
 void ThePacmanGame::init()
@@ -79,13 +94,13 @@ void ThePacmanGame::init()
 	pac.setGame(this);
 	ghosts[0].setGame(this);
 	ghosts[1].setGame(this);
-	//pac.setArrowKeys("wxads");
+	drawObjects();
 }
 
 void ThePacmanGame::run()
 {
 	char key = 0;
-	int dir;
+	int dir, countPacMoves = 0;
 	do
 	{
 		if (_kbhit())
@@ -94,14 +109,27 @@ void ThePacmanGame::run()
 			if ((dir = pac.getDirection(key)) != -1)
 				pac.setDirection(dir);
 		}
+		
 		pac.move();
-		//Sleep(4000);
-		ghosts[0].move();
-		ghosts[1].move();
-		//if pacman moves 2 steps
-		//ghosts move
+		pointsAndLives[1].draw(pac.getPoints()); //draw points
+		countPacMoves++;
+		
+		
+		if (countPacMoves == 2 && gameIsOn)
+		{
+			ghosts[0].move();
+			ghosts[1].move();
+			countPacMoves = 0;
+		}
+	
 		Sleep(400);
-	} while (key != ESC);
+	} while (key != ESC && gameIsOn);
+	clear_screen();
+	if (!gameIsOn)
+	{
+		printGameOver();
+		clear_screen();
+	}
 }
 
 bool ThePacmanGame::isWall(const Point & p, int object)
@@ -128,23 +156,30 @@ bool ThePacmanGame::isOnBorder(const Point& p)
 	return false;
 }
 
+void ThePacmanGame::drawObjects()
+{
+	pac.getNextPosition().draw('@');
+	updateBoard(pac.getNextPosition());
+	ghosts[0].getNextPosition().draw('$');
+	ghosts[1].getNextPosition().draw('$');
+}
+
 void ThePacmanGame::ghostAtePacman()
 {
 	pac.setLives(); 
 	if (pac.getLives() != 0)
 	{
+		setBoardBeforeStrike(ghosts[0].getNextPosition());
+		setBoardBeforeStrike(ghosts[1].getNextPosition());
 		pac.setOriginalPosition();
 		ghosts[0].setOriginalPosition();
 		ghosts[1].setOriginalPosition();
+		drawObjects();
+		pointsAndLives[0].draw(pac.getLives());
 	}
 
 	else
-	{
-		clear_screen();
-
-
-	}
-		//end game message
+		gameIsOn = false;
 }
 
 bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2)
@@ -152,4 +187,39 @@ bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2)
 	if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
 		return true;
 	return false;
+}
+
+void ThePacmanGame::menu()
+{
+	int choice;
+	printMenu();
+	cin >> choice;
+	while (choice != 9)
+	{
+		switch (choice)
+		{
+		case 1:
+			setBoard(board_example);
+			init();
+			run();
+			break;
+		case 8:
+			cout << "FINISH";
+			break;
+		default:
+			cout << "WRONG KEY! PLEASE CHOOSE AGAIN.";
+		}
+
+		printMenu();
+		cin >> choice;
+	}
+
+	exit(0);
+}
+
+void ThePacmanGame::printMenu()
+{
+	cout << "*********************** WELCOME TO THE PACMAN GAME! ***********************" << endl;
+	cout << "Please choose an option:" << endl << "(1) Start a new game" << endl;
+	cout << "(8) Present instructions and keys" << endl << "(9) EXIT" << endl;
 }

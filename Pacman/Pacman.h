@@ -24,10 +24,12 @@ public:
 	}
 	void setOriginalPosition();
 	void setLives();
+	int getPoints();
 	void setDirection(int dir);
 	int getLives();
 	int getDirection(char key);
-	Point getPosition();
+	Point getNextPosition();
+	Point getCurrentPosition();
 	void move();
 	//void ghostAtePacman();
 };

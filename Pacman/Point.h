@@ -7,8 +7,10 @@
 using namespace std;
 
 class Point {
-	int x = 1, y = 1;
+	int x, y;
 public:
+	Point(int x = 1, int y = 1);
+
 	int getX() const {
 		return x;
 	}
@@ -24,6 +26,9 @@ public:
 		cout << ch;
 		cout.flush();
 	}
+
+	void draw(int points);
+
 	//void move();
 	void move(int direction, int object);
 	

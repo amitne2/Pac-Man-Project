@@ -5,7 +5,7 @@ Pacman:: Pacman(int y, int x)
 {
 	originalPosition.set(x, y);
 	position[0] = position[1] = originalPosition;
-	lives = 2;
+	lives = 3;
 	direction = 3;
 	points = 0;
 	setArrowKeys("wxads");
@@ -50,9 +50,19 @@ int Pacman::getLives()
 	return lives;
 }
 
-Point Pacman::getPosition()
+int Pacman::getPoints()
+{
+	return points;
+}
+
+Point Pacman::getNextPosition()
 {
 	return position[0];
+}
+
+Point Pacman::getCurrentPosition()
+{
+	return position[1];
 }
 
 void Pacman::move()
@@ -68,21 +78,39 @@ void Pacman::move()
 	}
 
 	else if (theGame->isGhost())
-		theGame->ghostAtePacman();
-
-	else
 	{
-		if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN)))
-		{
-			points++;
-			theGame->updateBoard(position[1]);
-		}
+		position[1].draw(' ');
+		//theGame->updateBoard(position[0]);
+		Sleep(2000);
+		theGame->ghostAtePacman();
+	}
+
+	else //if (!(theGame->isGhost()))
+	{
+		//if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN)))
+		//{
+		//	points++;
+		//	//theGame->updateBoard(position[1]);
+		//}
 
 		//setTextColor(color);
 		if (direction != 4) // STAY POSITION
+		{
 			position[1].draw(' ');
+			if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN)))
+				points++;
+		}
 		position[0].draw('@');
 	}
+
+	theGame->updateBoard(position[1]);
+	/*else if (theGame->isGhost())
+	{
+		position[1].draw(' ');
+		theGame->updateBoard(position[1]);
+		Sleep(2000);
+		theGame->ghostAtePacman();
+	}*/
 
 	//if(points == NUM_OF_FRUITS)
 	//check lives & points and update

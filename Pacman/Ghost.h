@@ -21,7 +21,8 @@ public:
 	void setGame(ThePacmanGame* _theGame);
 
 	void setOriginalPosition();
-	Point getPosition();
+	Point getNextPosition();
+	Point getCurrentPosition();
 	//int getDirection(char key);
 	//void setDirection();
 	//void setDirection(int dir);

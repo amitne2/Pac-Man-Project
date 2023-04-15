@@ -5,6 +5,15 @@
 //		move(dir, 0);
 //	*/}
 
+Point::Point(int _x, int _y) : x{ _x }, y{ _y }{};
+
+void Point::draw(int points)
+{
+	gotoxy(x, y);
+	cout << points;
+	cout.flush();
+}
+
 void Point::move(int direction, int object)
 	{
 		switch (direction) {
