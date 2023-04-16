@@ -35,8 +35,7 @@ public:
 	void ghostAtePacman();
 	bool checkIfTheSamePosition(const Point& p1, const Point& p2);
 	void printGameOver();
-	void menu();
-	void printMenu();
+	void start();
 };
 
 #endif

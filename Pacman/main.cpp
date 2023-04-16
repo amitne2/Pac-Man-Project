@@ -2,11 +2,8 @@
 #include <iostream>
 using namespace std;
 
-#include "ThePacmanGame.h"
-
-//#include "_game_over_message.h"
+#include "Menu.h"
 
 int main() {
-	ThePacmanGame game;
-	game.menu();
+	Menu().print();
 }

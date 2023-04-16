@@ -128,6 +128,7 @@ void ThePacmanGame::run()
 	if (!gameIsOn)
 	{
 		printGameOver();
+		Sleep(3000);
 		clear_screen();
 	}
 }
@@ -189,37 +190,11 @@ bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2)
 	return false;
 }
 
-void ThePacmanGame::menu()
+void ThePacmanGame::start() 
 {
-	int choice;
-	printMenu();
-	cin >> choice;
-	while (choice != 9)
-	{
-		switch (choice)
-		{
-		case 1:
-			setBoard(board_example);
-			init();
-			run();
-			break;
-		case 8:
-			cout << "FINISH";
-			break;
-		default:
-			cout << "WRONG KEY! PLEASE CHOOSE AGAIN.";
-		}
-
-		printMenu();
-		cin >> choice;
-	}
-
-	exit(0);
+	clear_screen();
+	setBoard(board_example);
+	init();
+	run();
 }
 
-void ThePacmanGame::printMenu()
-{
-	cout << "*********************** WELCOME TO THE PACMAN GAME! ***********************" << endl;
-	cout << "Please choose an option:" << endl << "(1) Start a new game" << endl;
-	cout << "(8) Present instructions and keys" << endl << "(9) EXIT" << endl;
-}
