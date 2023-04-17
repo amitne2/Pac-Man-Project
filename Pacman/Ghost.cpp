@@ -27,7 +27,7 @@ Point Ghost::getCurrentPosition()
 	return position[1];
 }
 
-void Ghost::move()
+void Ghost::move(const Point p)
 {
 	int dir;
 	
@@ -41,6 +41,19 @@ void Ghost::move()
 		dir = rand() % 3;
 		position[1] = position[0];
 		position[0].move(dir, GHOST);
+	}
+
+
+	if (theGame->checkIfTheSamePosition(p, position[0]))
+	{
+		position[0].draw(' ');
+		Sleep(2000);
+		if (theGame->isBreadCrumbs(position[1]))
+			position[1].draw('.');
+		else
+			position[1].draw(' ');
+
+		theGame->ghostAtePacman();
 	}
 	
 	//else if() //ghost

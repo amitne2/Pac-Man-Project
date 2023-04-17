@@ -26,7 +26,7 @@ public:
 	//int getDirection(char key);
 	//void setDirection();
 	//void setDirection(int dir);
-	void move();
+	void move(const Point p);
 };
 
 #endif
