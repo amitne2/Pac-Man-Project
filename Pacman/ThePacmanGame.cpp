@@ -86,7 +86,6 @@ void ThePacmanGame::init()
 			cout << originalBoard[i][j];
 			cout.flush();
 			board[i][j] = originalBoard[i][j];
-			//handleObjectCreationFromBoard(i, j);
 		}
 		board[i][COLS] = '\0';
 	}
