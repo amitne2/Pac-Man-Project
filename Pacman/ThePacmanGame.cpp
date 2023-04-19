@@ -2,7 +2,7 @@
 #include "_game_over_message.h"
 #include "_board.h"
 
-ThePacmanGame::ThePacmanGame() : pac(4, 43), ghosts{ Ghost(20,42), Ghost(1, 44) }, pointsAndLives{ Point(16,24), Point(72, 24) }
+ThePacmanGame::ThePacmanGame() : pac(4, 40), ghosts{ Ghost(4,43), Ghost(1, 44) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
 	gameIsOn = true;
 }
@@ -116,8 +116,8 @@ void ThePacmanGame::run()
 		
 		if (countPacMoves == 2 && gameIsOn)
 		{
-			ghosts[0].move();
-			ghosts[1].move();
+			ghosts[0].move(pac.getNextPosition());
+			ghosts[1].move(pac.getNextPosition());
 			countPacMoves = 0;
 		}
 	
@@ -172,6 +172,7 @@ void ThePacmanGame::ghostAtePacman()
 		setBoardBeforeStrike(ghosts[0].getNextPosition());
 		setBoardBeforeStrike(ghosts[1].getNextPosition());
 		pac.setOriginalPosition();
+		pac.setDirection(3);
 		ghosts[0].setOriginalPosition();
 		ghosts[1].setOriginalPosition();
 		drawObjects();
