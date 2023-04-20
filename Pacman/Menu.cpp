@@ -3,7 +3,9 @@
 #include <cstdlib>
 #include <windows.h>
 
-using namespace std;
+using std:: cout;
+using std:: cin;
+using std:: endl;
 
 
 void Menu::print() {
@@ -48,7 +50,7 @@ void Menu::printOptions()
 void Menu::printInstructions()
 {
 	cout << "Welcome to Pacman game!!!" << endl;
-	cout << "Start the game by pressing the '1' key in menu screen. The start board will present on the screen with the pacman and 2 ghosts" << endl;
+	cout << "Start the game by pressing the '1' key in menu screen. The start board will present on the screen with the pacman and 2 ghosts." << endl;
 	cout << "# The Pacman can move around the board by using the arrow keys on your keyboard:" << endl;
 	cout << "w - up" << endl;
 	cout << "x - down" << endl;
@@ -56,12 +58,12 @@ void Menu::printInstructions()
 	cout << "d - right" << endl;
 	cout << "s - stay" << endl;
 	cout << "# Eat all of the small dots 'BreadCrumbs' on the board while avoiding the two ghosts(Blinky and Pinky)" << endl;
-	cout << "  that are chasing you.If a ghost touches Pacman, you lose a life." << endl;
-	cout << "# Clear all the dots from the board to win in this game" << endl;
-	cout << "# You have three lives to start with.You'll lose a life each time a ghost catches you" << endl;
-	cout << "# The game ends when you run out of lives.Try to get the highest score you can!" << endl;
+	cout << "  that are chasing you. If a ghost touches Pacman, you lose a life." << endl;
+	cout << "# Clear all the dots from the board to win in this game." << endl;
+	cout << "# You have three lives to start with. You'll lose a life each time a ghost catches you." << endl;
+	cout << "# The game ends when you run out of lives. Try to get the highest score you can!" << endl;
 	cout << "# You can pause the game by pressing on 'ESC' key on your keyborad at any time," << endl;
-	cout<< "   the board pauses until you pressing 'ESC' again" << endl;
-	cout << "# Press any key on your keyboard to go back to the menu" << endl;
+	cout<< "   the board pauses until you press 'ESC' again." << endl;
+	cout << "# Press any key on your keyboard to go back to the menu." << endl;
 	_getch();
 }

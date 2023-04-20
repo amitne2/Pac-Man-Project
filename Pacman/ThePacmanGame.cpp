@@ -3,23 +3,11 @@
 #include "_board.h"
 #include "_winning_message.h"
 
+//
 ThePacmanGame::ThePacmanGame() : pac(4, 40), ghosts{ Ghost(4,43), Ghost(1, 44) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
 	gameIsOn = true;
 }
-
-//void ThePacmanGame::handleObjectCreationFromBoard(int row, int col)
-//{
-//	static int countGhosts = 0;
-//	char ch = board[row][col];
-//	if (ch == '@')
-//		pac.setPosition(row, col);
-//	if (ch == '$')
-//	{
-//		ghosts[countGhosts].setPosition(row, col);
-//		countGhosts++;
-//	}
-//}
 
 void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 {
@@ -78,7 +66,6 @@ void ThePacmanGame::printGameOver()
 
 void ThePacmanGame::init()
 {
-	
 	for (int i = 0; i < ROWS; i++)
 	{
 		for (int j = 0; j < COLS; j++)
@@ -114,6 +101,7 @@ void ThePacmanGame::run()
 					key = _getch();
 				}
 			}
+			key =tolower(key);
 			if ((dir = pac.getDirection(key)) != -1)
 				pac.setDirection(dir);
 		}

@@ -19,7 +19,7 @@ void Point::move(int direction, int object)
 		switch (direction) {
 		case 0: // UP
 			--y;
-			if (y < 1 && object) { //pacman is 1, if pacman
+			if (y < 0 && object) { //pacman is 1, if pacman
 				y = 23;
 			}
 			break;
@@ -31,7 +31,7 @@ void Point::move(int direction, int object)
 			break;
 		case 2: // LEFT
 			--x;
-			if (x < 1 && object) {
+			if (x < 0 && object) {
 				x = 79;
 			}
 			break;
