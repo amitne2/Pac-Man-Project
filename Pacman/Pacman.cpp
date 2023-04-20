@@ -95,7 +95,7 @@ void Pacman::move()
 			if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN)))
 				points++;
 		}
-		position[0].draw('@');
+		position[0].draw(PACMAN_SYMBOL);
 		position[1] = position[0]; /*NEW!!! CHECK!!!!!!!!!!!!!!!!!!!!!!*/
 	}
 

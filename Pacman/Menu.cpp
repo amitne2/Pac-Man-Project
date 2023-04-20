@@ -52,11 +52,11 @@ void Menu::printInstructions()
 	cout << "Welcome to Pacman game!!!" << endl;
 	cout << "Start the game by pressing the '1' key in menu screen. The start board will present on the screen with the pacman and 2 ghosts." << endl;
 	cout << "# The Pacman can move around the board by using the arrow keys on your keyboard:" << endl;
-	cout << "w - up" << endl;
-	cout << "x - down" << endl;
-	cout << "a - left" << endl;
-	cout << "d - right" << endl;
-	cout << "s - stay" << endl;
+	cout << "w or W - up" << endl;
+	cout << "x or X - down" << endl;
+	cout << "a or A- left" << endl;
+	cout << "d or D- right" << endl;
+	cout << "s or S- stay" << endl;
 	cout << "# Eat all of the small dots 'BreadCrumbs' on the board while avoiding the two ghosts(Blinky and Pinky)" << endl;
 	cout << "  that are chasing you. If a ghost touches Pacman, you lose a life." << endl;
 	cout << "# Clear all the dots from the board to win in this game." << endl;

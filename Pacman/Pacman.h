@@ -4,6 +4,9 @@
 #include <cstring>
 #include "Point.h"
 
+
+#define PACMAN_SYMBOL char(2)
+
 class ThePacmanGame;
 
 class Pacman {

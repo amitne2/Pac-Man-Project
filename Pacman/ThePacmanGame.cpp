@@ -186,10 +186,10 @@ bool ThePacmanGame::isOnBorder(const Point& p)
 
 void ThePacmanGame::drawObjects()
 {
-	pac.getCurrentPosition().draw('@');
+	pac.getCurrentPosition().draw(PACMAN_SYMBOL);
 	updateBoard(pac.getCurrentPosition());
-	ghosts[0].getCurrentPosition().draw('$');
-	ghosts[1].getCurrentPosition().draw('$');
+	ghosts[0].getCurrentPosition().draw(GHOST_SYMBOL);
+	ghosts[1].getCurrentPosition().draw(GHOST_SYMBOL);
 }
 
 void ThePacmanGame::ghostAtePacman()

@@ -43,7 +43,7 @@ void Ghost::move(const Point p)
 	if (theGame->checkIfTheSamePosition(p, position[0]))
 	{
 		theGame->setBoardBeforeStrike(position[1]);
-		position[0].draw('$');
+		position[0].draw(GHOST_SYMBOL);
 		Sleep(2000);
 		//theGame->setBoardBeforeStrike(position[1]);
 		/*if (theGame->isBreadCrumbs(position[1]))
@@ -70,7 +70,7 @@ void Ghost::move(const Point p)
 	else
 	{
 		theGame->setBoardBeforeStrike(position[1]);
-		position[0].draw('$');
+		position[0].draw(GHOST_SYMBOL);
 		position[1] = position[0]; /*NEW!!! CHECK!!!!!!!!!!!!!!!!!!!!!!*/
 	}
 }

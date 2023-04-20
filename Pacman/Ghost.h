@@ -4,6 +4,8 @@
 #include <cstring>
 #include "Point.h"
 
+#define GHOST_SYMBOL char(234)
+
 class ThePacmanGame;
 
 class Ghost {
