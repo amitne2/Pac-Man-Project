@@ -6,6 +6,7 @@ class Menu {
 public:
 	void print();
 	void printOptions();
+	void printInstructions();
 };
 
 
