@@ -17,15 +17,11 @@ void Ghost::setOriginalPosition()
 	position[0] = position[1] = originalPosition;
 }
 
-Point Ghost::getNextPosition()
+Point Ghost::getCurrentPosition()
 {
 	return position[0];
 }
 
-Point Ghost::getCurrentPosition()
-{
-	return position[1];
-}
 
 void Ghost::move(const Point p)
 {
@@ -46,12 +42,14 @@ void Ghost::move(const Point p)
 
 	if (theGame->checkIfTheSamePosition(p, position[0]))
 	{
-		position[0].draw(' ');
+		theGame->setBoardBeforeStrike(position[1]);
+		position[0].draw('$');
 		Sleep(2000);
-		if (theGame->isBreadCrumbs(position[1]))
+		//theGame->setBoardBeforeStrike(position[1]);
+		/*if (theGame->isBreadCrumbs(position[1]))
 			position[1].draw('.');
 		else
-			position[1].draw(' ');
+			position[1].draw(' ');*/
 
 		theGame->ghostAtePacman();
 	}
@@ -69,9 +67,10 @@ void Ghost::move(const Point p)
 			points++;*/
 
 	//setTextColor(color);
-	if (theGame->isBreadCrumbs(position[1]))
-		position[1].draw('.');
 	else
-		position[1].draw(' ');
-	position[0].draw('$');
+	{
+		theGame->setBoardBeforeStrike(position[1]);
+		position[0].draw('$');
+		position[1] = position[0]; /*NEW!!! CHECK!!!!!!!!!!!!!!!!!!!!!!*/
+	}
 }

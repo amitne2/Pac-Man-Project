@@ -6,9 +6,11 @@
 #include "Ghost.h"
 
 enum { ROWS = 26, COLS = 80 };
-#define NUM_OF_FRUITS 7
+#define NUM_OF_BREAD_CRUMBS 100
 #define PACMAN 1
 #define GHOST 0
+#define WIN 1
+#define LOSE 0
 
 class ThePacmanGame {
 	enum { ESC = 27 };
@@ -36,6 +38,8 @@ public:
 	bool checkIfTheSamePosition(const Point& p1, const Point& p2);
 	void printGameOver();
 	void start();
+	void gameResult(char ch);
+	void printWinningMessage();
 };
 
 #endif

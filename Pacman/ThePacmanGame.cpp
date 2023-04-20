@@ -1,6 +1,7 @@
 #include "ThePacmanGame.h"
 #include "_game_over_message.h"
 #include "_board.h"
+#include "_winning_message.h"
 
 ThePacmanGame::ThePacmanGame() : pac(4, 40), ghosts{ Ghost(4,43), Ghost(1, 44) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
@@ -57,7 +58,7 @@ bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
 
 bool ThePacmanGame::isGhost()
 {
-	if(checkIfTheSamePosition(pac.getNextPosition(), ghosts[0].getNextPosition()) || checkIfTheSamePosition(pac.getNextPosition(), ghosts[1].getNextPosition()))
+	if(checkIfTheSamePosition(pac.getCurrentPosition(), ghosts[0].getCurrentPosition()) || checkIfTheSamePosition(pac.getCurrentPosition(), ghosts[1].getCurrentPosition()))
 		return true;
 	return false;
 }
@@ -105,6 +106,14 @@ void ThePacmanGame::run()
 		if (_kbhit())
 		{
 			key = _getch();
+			if (key == ESC)
+			{
+				key = _getch();
+				while (key != ESC)
+				{
+					key = _getch();
+				}
+			}
 			if ((dir = pac.getDirection(key)) != -1)
 				pac.setDirection(dir);
 		}
@@ -116,19 +125,50 @@ void ThePacmanGame::run()
 		
 		if (countPacMoves == 2 && gameIsOn)
 		{
-			ghosts[0].move(pac.getNextPosition());
-			ghosts[1].move(pac.getNextPosition());
+			for (int i = 0; i < 2 && gameIsOn; i++)
+				ghosts[i].move(pac.getCurrentPosition());
 			countPacMoves = 0;
+		}
+
+		if (pac.getPoints() == NUM_OF_BREAD_CRUMBS)
+		{
+			gameResult(WIN);
+			gameIsOn = false;
 		}
 	
 		Sleep(400);
-	} while (key != ESC && gameIsOn);
+	} while (gameIsOn);
+	
+	//clear_screen();
+	
+	if (pac.getLives() == 0)
+		gameResult(LOSE);	
+
+}
+
+void ThePacmanGame::gameResult(char ch)
+{
 	clear_screen();
-	if (!gameIsOn)
-	{
+	if (ch)
+		printWinningMessage();
+	else
 		printGameOver();
-		Sleep(3000);
-		clear_screen();
+
+	Sleep(1000);
+	_getch();
+	clear_screen();
+}
+
+void ThePacmanGame::printWinningMessage()
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			gotoxy(j, i);
+			cout << winning[i][j];
+			cout.flush();
+		}
 	}
 }
 
@@ -158,10 +198,10 @@ bool ThePacmanGame::isOnBorder(const Point& p)
 
 void ThePacmanGame::drawObjects()
 {
-	pac.getNextPosition().draw('@');
-	updateBoard(pac.getNextPosition());
-	ghosts[0].getNextPosition().draw('$');
-	ghosts[1].getNextPosition().draw('$');
+	pac.getCurrentPosition().draw('@');
+	updateBoard(pac.getCurrentPosition());
+	ghosts[0].getCurrentPosition().draw('$');
+	ghosts[1].getCurrentPosition().draw('$');
 }
 
 void ThePacmanGame::ghostAtePacman()
@@ -169,8 +209,8 @@ void ThePacmanGame::ghostAtePacman()
 	pac.setLives(); 
 	if (pac.getLives() != 0)
 	{
-		setBoardBeforeStrike(ghosts[0].getNextPosition());
-		setBoardBeforeStrike(ghosts[1].getNextPosition());
+		setBoardBeforeStrike(ghosts[0].getCurrentPosition());
+		setBoardBeforeStrike(ghosts[1].getCurrentPosition());
 		pac.setOriginalPosition();
 		pac.setDirection(3);
 		ghosts[0].setOriginalPosition();

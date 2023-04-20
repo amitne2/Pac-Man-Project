@@ -28,7 +28,6 @@ public:
 	void setDirection(int dir);
 	int getLives();
 	int getDirection(char key);
-	Point getNextPosition();
 	Point getCurrentPosition();
 	void move();
 	//void ghostAtePacman();

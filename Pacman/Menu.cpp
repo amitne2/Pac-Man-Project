@@ -7,22 +7,24 @@ using namespace std;
 
 
 void Menu::print() {
-	int choice;
+	char choice;
 	printOptions();
 	cin >> choice;
 	hideCursor();
-	while (choice != 9)
+	while (choice != '9')
 	{
 		switch (choice)
 		{
-		case 1:
+		case '1':
 			ThePacmanGame().start();
 			break;
-		case 8:
+		case '8':
 			cout << "FINISH";
 			break;
 		default:
 			cout << "WRONG KEY! PLEASE CHOOSE AGAIN." << endl;
+			Sleep(1000);
+			clear_screen();
 			break;
 		}
 

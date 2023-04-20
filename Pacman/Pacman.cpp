@@ -55,14 +55,9 @@ int Pacman::getPoints()
 	return points;
 }
 
-Point Pacman::getNextPosition()
-{
-	return position[0];
-}
-
 Point Pacman::getCurrentPosition()
 {
-	return position[1];
+	return position[0];
 }
 
 void Pacman::move()
@@ -74,7 +69,7 @@ void Pacman::move()
 	{
 		direction = 4; // pacman stops at wall
 		position[0] = position[1];
-		position[1] = position[0];
+		//position[1] = position[0];
 	}
 
 	else if (theGame->isGhost())
@@ -101,6 +96,7 @@ void Pacman::move()
 				points++;
 		}
 		position[0].draw('@');
+		position[1] = position[0]; /*NEW!!! CHECK!!!!!!!!!!!!!!!!!!!!!!*/
 	}
 
 	theGame->updateBoard(position[1]);
