@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Color.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="io_utils.h" />
@@ -147,8 +148,6 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="ThePacmanGame.h" />
     <ClInclude Include="_board.h" />
-    <ClInclude Include="_game_over_message.h" />
-    <ClInclude Include="_winning_message.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ghost.cpp" />

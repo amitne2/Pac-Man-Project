@@ -43,34 +43,21 @@ void Ghost::move(const Point p)
 	if (theGame->checkIfTheSamePosition(p, position[0]))
 	{
 		theGame->setBoardBeforeStrike(position[1]);
-		position[0].draw(GHOST_SYMBOL);
+		if(theGame->getColored())
+			setTextColor(LIGHTBLUE);
+		position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL);
 		Sleep(2000);
-		//theGame->setBoardBeforeStrike(position[1]);
-		/*if (theGame->isBreadCrumbs(position[1]))
-			position[1].draw('.');
-		else
-			position[1].draw(' ');*/
-
+		setTextColor(WHITE);
 		theGame->ghostAtePacman();
 	}
-	
-	//else if() //ghost
 
-	//if (theGame->isGhost())
-	//{
-	//	//pac.getCurrentPosition().draw(' ');
-	//	theGame->updateBoard(position[0]);
-	//	Sleep(2000);
-	//	ghostAtePacman();
-	//}
-	/*if (theGame->isFruit(position[1].next(direction)))
-			points++;*/
-
-	//setTextColor(color);
 	else
 	{
 		theGame->setBoardBeforeStrike(position[1]);
-		position[0].draw(GHOST_SYMBOL);
-		position[1] = position[0]; /*NEW!!! CHECK!!!!!!!!!!!!!!!!!!!!!!*/
+		if(theGame->getColored())
+			setTextColor(LIGHTBLUE);
+		position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL);
+		position[1] = position[0];
+		setTextColor(WHITE);
 	}
 }

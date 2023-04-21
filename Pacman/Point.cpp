@@ -1,25 +1,28 @@
 #include "Point.h"
 
-///*void Point::move() {
-//		int dir = rand() % 4;
-//		move(dir, 0);
-//	*/}
-
 Point::Point(int _x, int _y) : x{ _x }, y{ _y }{};
 
-void Point::draw(int points)
-{
+void Point::draw(int num, char ch) const {
 	gotoxy(x, y);
-	cout << points;
+	if (num == DRAW_CHARACTER)
+		cout << ch;
+	else
+		cout << num;
 	cout.flush();
 }
+
+//void Point::draw(int points) const {
+//	gotoxy(x, y);
+//	cout << ch;
+//	cout.flush();
+//}
 
 void Point::move(int direction, int object)
 	{
 		switch (direction) {
 		case 0: // UP
 			--y;
-			if (y < 0 && object) { //pacman is 1, if pacman
+			if (y < 0 && object) {
 				y = 23;
 			}
 			break;

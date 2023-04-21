@@ -69,45 +69,29 @@ void Pacman::move()
 	{
 		direction = 4; // pacman stops at wall
 		position[0] = position[1];
-		//position[1] = position[0];
 	}
 
 	else if (theGame->isGhost())
 	{
-		position[1].draw(' ');
-		//theGame->updateBoard(position[0]);
+		position[1].draw(DRAW_CHARACTER, ' ');
 		Sleep(2000);
 		theGame->ghostAtePacman();
 	}
 
-	else //if (!(theGame->isGhost()))
+	else 
 	{
-		//if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN)))
-		//{
-		//	points++;
-		//	//theGame->updateBoard(position[1]);
-		//}
-
-		//setTextColor(color);
 		if (direction != 4) // STAY POSITION
 		{
-			position[1].draw(' ');
+			position[1].draw(DRAW_CHARACTER, ' ');
 			if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN)))
 				points++;
 		}
-		position[0].draw(PACMAN_SYMBOL);
-		position[1] = position[0]; /*NEW!!! CHECK!!!!!!!!!!!!!!!!!!!!!!*/
+		if(theGame->getColored())
+			setTextColor(YELLOW);	
+		position[0].draw(DRAW_CHARACTER, PACMAN_SYMBOL);
+		setTextColor(WHITE);
+		position[1] = position[0]; 
 	}
 
 	theGame->updateBoard(position[1]);
-	/*else if (theGame->isGhost())
-	{
-		position[1].draw(' ');
-		theGame->updateBoard(position[1]);
-		Sleep(2000);
-		theGame->ghostAtePacman();
-	}*/
-
-	//if(points == NUM_OF_FRUITS)
-	//check lives & points and update
 }

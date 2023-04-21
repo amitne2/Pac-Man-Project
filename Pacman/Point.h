@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "io_utils.h" 
+#define DRAW_CHARACTER -1
 
 using namespace std;
 
@@ -21,13 +22,8 @@ public:
 		x = _x;
 		y = _y;
 	}
-	void draw(char ch) {
-		gotoxy(x, y);
-		cout << ch;
-		cout.flush();
-	}
-
-	void draw(int points);
+	void draw(int num, char ch) const;
+	//void draw(int points);
 
 	//void move();
 	void move(int direction, int object);

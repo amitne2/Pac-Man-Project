@@ -1,12 +1,10 @@
 #include "ThePacmanGame.h"
-#include "_game_over_message.h"
 #include "_board.h"
-#include "_winning_message.h"
 
-//
-ThePacmanGame::ThePacmanGame() : pac(4, 40), ghosts{ Ghost(4,43), Ghost(1, 44) }, pointsAndLives{ Point(16,24), Point(72, 24) }
+ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(4, 40), ghosts{ Ghost(4,43), Ghost(1, 44) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
 	gameIsOn = true;
+	colored = coloredGame;
 }
 
 void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
@@ -26,15 +24,16 @@ void ThePacmanGame::updateBoard(const Point& p)
 	board[p.getY()][p.getX()] = ' ';
 }
 
-void ThePacmanGame::setBoardBeforeStrike(Point p)
+void ThePacmanGame:: setBoardBeforeStrike(const Point& p)
 {
-	p.draw(board[p.getY()][p.getX()]);
+	p.draw(DRAW_CHARACTER, board[p.getY()][p.getX()]);
 }
 
-//char ThePacmanGame::getBoardSignInPosition(const Point& p)
-//{
-//	return board[p.getY()][p.getX()];
-//}
+bool ThePacmanGame::getColored()
+{
+	return colored;
+}
+
 
 bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
 {
@@ -53,6 +52,7 @@ bool ThePacmanGame::isGhost()
 
 void ThePacmanGame::printGameOver()
 {
+	setTextColor(LIGHTRED);
 	cout << "######       ###    ##     ## ########     #######  ##     ## ######## ########   ####  ####" << endl;
 	cout << "##    ##    ## ##   ###   ### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
 	cout << "##         ##   ##  #### #### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
@@ -60,15 +60,7 @@ void ThePacmanGame::printGameOver()
 	cout << "##    ##  ######### ##     ## ##          ##     ##  ##   ##  ##       ##   ## "<< endl;
 	cout << "##    ##  ##     ## ##     ## ##          ##     ##   ## ##   ##       ##    ##   ####  ####" << endl;
 	cout << "######    ##     ## ##     ## ########     #######     ###    ######## ##     ##  ####  ####" << endl;
-	/*for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			gotoxy(j, i);
-			cout << game_over[i][j];
-			cout.flush();
-		}
-	}*/
+	setTextColor(WHITE);
 }
 
 void ThePacmanGame::init()
@@ -78,13 +70,16 @@ void ThePacmanGame::init()
 		for (int j = 0; j < COLS; j++)
 		{
 			gotoxy(j, i);
+			if(i==24 && j==16 && colored)
+				setTextColor(RED);
 			cout << originalBoard[i][j];
 			cout.flush();
+			setTextColor(WHITE);
 			board[i][j] = originalBoard[i][j];
 		}
 		board[i][COLS] = '\0';
 	}
-
+	
 	pac.setGame(this);
 	ghosts[0].setGame(this);
 	ghosts[1].setGame(this);
@@ -114,7 +109,7 @@ void ThePacmanGame::run()
 		}
 		
 		pac.move();
-		pointsAndLives[1].draw(pac.getPoints()); //draw points
+		pointsAndLives[1].draw(pac.getPoints(), DRAW_NUMBER); //draw points
 		countPacMoves++;
 		
 		
@@ -133,9 +128,7 @@ void ThePacmanGame::run()
 	
 		Sleep(400);
 	} while (gameIsOn);
-	
-	//clear_screen();
-	
+		
 	if (pac.getLives() == 0)
 		gameResult(LOSE);	
 
@@ -156,6 +149,7 @@ void ThePacmanGame::gameResult(char ch)
 
 void ThePacmanGame::printWinningMessage()
 {
+	setTextColor(CYAN);
 	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
 	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
 	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
@@ -163,15 +157,7 @@ void ThePacmanGame::printWinningMessage()
 	cout << "##  ##  ##  ##  ##  #### ##  #### ##       ##   ##" << endl;
 	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ## #### ####" << endl;
 	cout << "###   ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
-	/*for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			gotoxy(j, i);
-			cout << winning[i][j];
-			cout.flush();
-		}
-	}*/
+	setTextColor(WHITE);
 }
 
 bool ThePacmanGame::isWall(const Point & p, int object)
@@ -200,10 +186,15 @@ bool ThePacmanGame::isOnBorder(const Point& p)
 
 void ThePacmanGame::drawObjects()
 {
-	pac.getCurrentPosition().draw(PACMAN_SYMBOL);
+	if(colored)
+		setTextColor(YELLOW);
+	pac.getCurrentPosition().draw(DRAW_CHARACTER, PACMAN_SYMBOL);
 	updateBoard(pac.getCurrentPosition());
-	ghosts[0].getCurrentPosition().draw(GHOST_SYMBOL);
-	ghosts[1].getCurrentPosition().draw(GHOST_SYMBOL);
+	if(colored)
+		setTextColor(LIGHTBLUE);
+	ghosts[0].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
+	ghosts[1].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
+	setTextColor(WHITE);
 }
 
 void ThePacmanGame::ghostAtePacman()
@@ -218,7 +209,10 @@ void ThePacmanGame::ghostAtePacman()
 		ghosts[0].setOriginalPosition();
 		ghosts[1].setOriginalPosition();
 		drawObjects();
-		pointsAndLives[0].draw(pac.getLives());
+		if(colored)
+			setTextColor(RED);
+		pointsAndLives[0].draw(pac.getLives(), DRAW_CHARACTER);
+		setTextColor(WHITE);
 	}
 
 	else

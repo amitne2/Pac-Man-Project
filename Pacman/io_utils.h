@@ -4,13 +4,13 @@
 // BUT, you need to change the content of the config!
 
 #include "config.h"
-//#include "Color.h"
+#include "Color.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 
 void gotoxy(int x, int y);
-//void setTextColor(Color);
+void setTextColor(Color);
 void hideCursor();
 void clear_screen();
 

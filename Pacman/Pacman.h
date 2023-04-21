@@ -33,7 +33,6 @@ public:
 	int getDirection(char key);
 	Point getCurrentPosition();
 	void move();
-	//void ghostAtePacman();
 };
 
 #endif

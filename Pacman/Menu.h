@@ -7,6 +7,7 @@ public:
 	void print();
 	void printOptions();
 	void printInstructions();
+	bool checkIfColored();
 };
 
 

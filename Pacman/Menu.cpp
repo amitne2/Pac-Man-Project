@@ -10,6 +10,7 @@ using std:: endl;
 
 void Menu::print() {
 	char choice;
+	bool color;
 	srand(time(NULL)); //Added for random
 	printOptions();
 	cin >> choice;
@@ -19,7 +20,8 @@ void Menu::print() {
 		switch (choice)
 		{
 		case '1':
-			ThePacmanGame().start();
+			color = checkIfColored();
+			ThePacmanGame(color).start();
 			break;
 		case '8':
 			clear_screen();
@@ -43,6 +45,7 @@ void Menu::print() {
 
 void Menu::printOptions()
 {
+	setTextColor(CYAN);
 	cout << " ########     ###     ######  ##     ##    ###    ##    ##"<< endl;
 	cout << " ##     ##   ## ##   ##    ## ###   ###   ## ##   ###   ##" << endl;
 	cout << " ##     ##  ##   ##  ##       #### ####  ##   ##  ####  ##" << endl;
@@ -55,6 +58,7 @@ void Menu::printOptions()
 	cout << "************** WELCOME TO THE PACMAN GAME! ***************" << endl;
 	cout << "Please choose an option:" << endl << "(1) Start a new game" << endl;
 	cout << "(8) Present instructions and keys" << endl << "(9) EXIT" << endl;
+	setTextColor(WHITE);
 }
 
 void Menu::printInstructions()
@@ -76,4 +80,35 @@ void Menu::printInstructions()
 	cout<< "   the board pauses until you press 'ESC' again." << endl;
 	cout << "# Press any key on your keyboard to go back to the menu." << endl;
 	_getch();
+}
+
+bool Menu::checkIfColored()
+{
+	char colored;
+	bool validAnswer = false, res;
+	clear_screen();
+	cout << "Would you like the game to be in color? Please enter Y/N" << endl;
+	
+	while (!validAnswer)
+	{
+		cin >> colored;
+		colored = toupper(colored);
+		switch (colored)
+		{
+		case 'Y':
+			res = true;
+			validAnswer = true;
+			break;
+		case 'N':
+			res = false;
+			validAnswer = true;
+			break;
+		default:
+			cout << "WRONG KEY! PLEASE CHOOSE AGAIN - Y/N." << endl;
+			Sleep(1000);
+			break;
+		}
+	}
+
+	return res;
 }

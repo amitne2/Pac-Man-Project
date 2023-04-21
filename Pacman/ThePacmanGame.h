@@ -11,6 +11,8 @@ enum { ROWS = 26, COLS = 80 };
 #define GHOST 0
 #define WIN 1
 #define LOSE 0
+#define DRAW_CHARACTER -1
+#define DRAW_NUMBER 1
 
 class ThePacmanGame {
 	enum { ESC = 27 };
@@ -20,13 +22,14 @@ class ThePacmanGame {
 	char originalBoard[ROWS][COLS + 1];	// this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1];	// this is the actual board we play on, i.e.
 	bool gameIsOn;
-								//void handleObjectCreationFromBoard(int row, int col);
+	bool colored;
+							
 public:
-	ThePacmanGame();
+	ThePacmanGame(bool coloredGame);
+	bool getColored();
 	void setBoard(const char* boardToCopy[ROWS]);
 	void updateBoard(const Point& p);
-	void setBoardBeforeStrike(Point p);
-	//char getBoardSignInPosition(const Point& p);
+	void setBoardBeforeStrike(const Point& p);
 	void init();
 	void drawObjects();
 	bool isWall(const Point& p, int object);
