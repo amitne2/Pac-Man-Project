@@ -53,7 +53,14 @@ bool ThePacmanGame::isGhost()
 
 void ThePacmanGame::printGameOver()
 {
-	for (int i = 0; i < ROWS; i++)
+	cout << "######      ###    ##     ## ########     #######  ##     ## ######## ########  #### ####" << endl;
+	cout << "##    ##    ## ##   ###   ### ##          ##     ## ##     ## ##       ##     ## #### ####" << endl;
+	cout << "##         ##   ##  #### #### ##          ##     ## ##     ## ##       ##     ## #### ####" << endl;
+	cout << "##   #### ##     ## ## ### ## ######      ##     ## ##     ## ######   ########   ##   ##" << endl;
+	cout << "##    ##  ######### ##     ## ##          ##     ##  ##   ##  ##       ##   ##" << endl;
+	cout << "##    ##  ##     ## ##     ## ##          ##     ##   ## ##   ##       ##    ##  #### ####" << endl;
+	cout << "######   ##     ## ##     ## ########     #######     ###    ######## ##     ## #### ####" << endl;
+	/*for (int i = 0; i < ROWS; i++)
 	{
 		for (int j = 0; j < COLS; j++)
 		{
@@ -61,7 +68,7 @@ void ThePacmanGame::printGameOver()
 			cout << game_over[i][j];
 			cout.flush();
 		}
-	}
+	}*/
 }
 
 void ThePacmanGame::init()
@@ -149,7 +156,14 @@ void ThePacmanGame::gameResult(char ch)
 
 void ThePacmanGame::printWinningMessage()
 {
-	for (int i = 0; i < ROWS; i++)
+	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
+	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
+	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
+	cout << "##  ##  ##  ##  ## ## ## ## ## ## ######   ########   ##   ##" << endl;
+	cout << "##  ##  ##  ##  ##  #### ##  #### ##       ##   ##" << endl;
+	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ## #### ####" << endl;
+	cout << "###  ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
+	/*for (int i = 0; i < ROWS; i++)
 	{
 		for (int j = 0; j < COLS; j++)
 		{
@@ -157,7 +171,7 @@ void ThePacmanGame::printWinningMessage()
 			cout << winning[i][j];
 			cout.flush();
 		}
-	}
+	}*/
 }
 
 bool ThePacmanGame::isWall(const Point & p, int object)

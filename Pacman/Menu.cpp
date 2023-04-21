@@ -10,6 +10,7 @@ using std:: endl;
 
 void Menu::print() {
 	char choice;
+	srand(time(NULL)); //Added for random
 	printOptions();
 	cin >> choice;
 	hideCursor();
@@ -42,7 +43,16 @@ void Menu::print() {
 
 void Menu::printOptions()
 {
-	cout << "*********************** WELCOME TO THE PACMAN GAME! ***********************" << endl;
+	cout << ".########.....###.....######..##.....##....###....##....##"<< endl;
+	cout << ".##.....##...##.##...##....##.###...###...##.##...###...##" << endl;
+	cout << ".##.....##..##...##..##.......####.####..##...##..####..##" << endl;
+	cout << ".########..##.....##.##.......##.###.##.##.....##.##.##.##" << endl;
+	cout << ".##........#########.##.......##.....##.#########.##..####" << endl;
+	cout << ".##........##.....##.##....##.##.....##.##.....##.##...###" << endl;
+	cout << ".##........##.....##..######..##.....##.##.....##.##....##" << endl;
+	cout << endl;
+
+	cout << "************** WELCOME TO THE PACMAN GAME! ***************" << endl;
 	cout << "Please choose an option:" << endl << "(1) Start a new game" << endl;
 	cout << "(8) Present instructions and keys" << endl << "(9) EXIT" << endl;
 }
