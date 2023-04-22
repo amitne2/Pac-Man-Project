@@ -4,7 +4,6 @@
 #include <cstring>
 #include "Point.h"
 
-
 #define PACMAN_SYMBOL char(2)
 
 class ThePacmanGame;
@@ -22,9 +21,7 @@ private:
 
 public:
 	Pacman(int y, int x);
-	void setGame(ThePacmanGame* _theGame) {
-		theGame = _theGame;
-	}
+	void setGame(ThePacmanGame* _theGame);
 	void setOriginalPosition();
 	void setLives();
 	int getPoints();
@@ -33,6 +30,7 @@ public:
 	int getDirection(char key);
 	Point getCurrentPosition();
 	void move();
+	~Pacman();
 };
 
 #endif

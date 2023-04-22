@@ -62,6 +62,9 @@ void ThePacmanGame::printGameOver()
 	cout << "##    ##  ##     ## ##     ## ##          ##     ##   ## ##   ##       ##    ##   ####  ####" << endl;
 	cout << "######    ##     ## ##     ## ########     #######     ###    ######## ##     ##  ####  ####" << endl;
 	setTextColor(WHITE);
+
+	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
+
 }
 
 
@@ -203,6 +206,9 @@ void ThePacmanGame::printWinningMessage()
 	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ##  #### ####" << endl;
 	cout << "###   ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
 	setTextColor(WHITE);
+
+	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
+
 }
 
 bool ThePacmanGame::isWall(const Point & p, int object)

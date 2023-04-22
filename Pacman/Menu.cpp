@@ -7,28 +7,32 @@ using std:: cout;
 using std:: cin;
 using std:: endl;
 
-
+//This function print the menu option 
+//1-for start new game
+//8-for instructions and keys
+//9- for exit
+//The function runs until the user enters 9 to exit from the game
 void Menu::print() {
 	char choice;
 	bool color;
 	srand(time(NULL)); //Added for random
-	printOptions();
+	printOptions(); 
 	cin >> choice;
 	hideCursor();
 	while (choice != '9')
 	{
 		switch (choice)
 		{
-		case '1':
+		case '1': //start new game
 			color = checkIfColored();
 			ThePacmanGame(color).start();
 			break;
-		case '8':
+		case '8': //Instructions
 			clear_screen();
 			printInstructions();
 			clear_screen();
 			break;
-		default:
+		default: //wrong key
 			cout << "WRONG KEY! PLEASE CHOOSE AGAIN." << endl;
 			Sleep(1000);
 			clear_screen();
@@ -39,10 +43,10 @@ void Menu::print() {
 		cin >> choice;
 	}
 
-	exit(0);
+	exit(0); //finish the game
 }
 
-
+//This function prints the menu options 
 void Menu::printOptions()
 {
 	setTextColor(CYAN);
@@ -60,7 +64,8 @@ void Menu::printOptions()
 	cout << "(8) Present instructions and keys" << endl << "(9) EXIT" << endl;
 	
 }
-
+//This function print the Instructions of the game
+//The function stays on this screen until the user press on any key
 void Menu::printInstructions()
 {
 	cout << "Welcome to Pacman game!!!" << endl;
@@ -81,7 +86,10 @@ void Menu::printInstructions()
 	cout << "# Press any key on your keyboard to go back to the menu." << endl;
 	_getch();
 }
-
+//This function gets from user if he wants the game will be with/without colors
+//If the user enter YES - update the variables to true 
+//else - false
+//print wrong key if the key invalid
 bool Menu::checkIfColored()
 {
 	char colored;
