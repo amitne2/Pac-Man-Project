@@ -43,6 +43,10 @@ public:
 	void start();
 	void gameResult(char ch);
 	void printWinningMessage();
+	void initAfterPause();
+	void pauseMessage();
+	~ThePacmanGame() {}; //distructor?
+
 };
 
 #endif

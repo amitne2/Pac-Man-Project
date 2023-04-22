@@ -63,6 +63,8 @@ void ThePacmanGame::printGameOver()
 	setTextColor(WHITE);
 }
 
+
+
 void ThePacmanGame::init()
 {
 	for (int i = 0; i < ROWS; i++)
@@ -71,7 +73,9 @@ void ThePacmanGame::init()
 		{
 			gotoxy(j, i);
 			if(i==24 && j==16 && colored)
-				setTextColor(RED);
+				setTextColor(LIGHTRED);
+			if(i==24 && j==72 && colored)
+				setTextColor(LIGHTGREEN);
 			cout << originalBoard[i][j];
 			cout.flush();
 			setTextColor(WHITE);
@@ -86,6 +90,47 @@ void ThePacmanGame::init()
 	drawObjects();
 }
 
+void ThePacmanGame::pauseMessage()
+{
+	cout << " ____ ____ ____ ____ ____ _________ _________ ____ ____ ____ ____" << endl;
+	cout << "||P |||A |||U |||S |||E |||       |||       |||G |||A |||M |||E ||" << endl;
+	cout << "||__|||__|||__|||__|||__|||_______|||_______|||__|||__|||__|||__||" << endl;
+	cout << "|/__\\|/__\\|/__\\|/__\\|/__\\|/_______\\|/_______\\|/__\\|/__\\|/__\\|/__\\|" << endl;
+
+	cout << endl << "Press 'ESC' to return to the game." << endl;
+}
+
+void ThePacmanGame::initAfterPause()
+{
+	char key;
+	clear_screen();
+	pauseMessage();
+	key = _getch();
+	while (key != ESC)
+	{
+		key = _getch();
+	}
+	clear_screen();
+
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			gotoxy(j, i);
+			if (i == 24 && j == 16 && colored)
+				setTextColor(LIGHTRED);
+			if (i == 24 && j == 72 && colored)
+				setTextColor(LIGHTGREEN);
+			cout << board[i][j];
+			cout.flush();
+			setTextColor(WHITE);
+		}
+		board[i][COLS] = '\0';
+	}
+
+	drawObjects();
+}
+
 void ThePacmanGame::run()
 {
 	char key = 0;
@@ -96,20 +141,18 @@ void ThePacmanGame::run()
 		{
 			key = _getch();
 			if (key == ESC)
-			{
-				key = _getch();
-				while (key != ESC)
-				{
-					key = _getch();
-				}
-			}
+				initAfterPause();
+			
 			key =tolower(key);
 			if ((dir = pac.getDirection(key)) != -1)
 				pac.setDirection(dir);
 		}
 		
 		pac.move();
+		if(colored)
+			setTextColor(LIGHTGREEN);
 		pointsAndLives[1].draw(pac.getPoints(), DRAW_NUMBER); //draw points
+		setTextColor(WHITE);
 		countPacMoves++;
 		
 		
@@ -149,13 +192,13 @@ void ThePacmanGame::gameResult(char ch)
 
 void ThePacmanGame::printWinningMessage()
 {
-	setTextColor(CYAN);
+	setTextColor(MAGENTA);
 	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
 	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
 	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
 	cout << "##  ##  ##  ##  ## ## ## ## ## ## ######   ########   ##   ##" << endl;
 	cout << "##  ##  ##  ##  ##  #### ##  #### ##       ##   ##" << endl;
-	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ## #### ####" << endl;
+	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ##  #### ####" << endl;
 	cout << "###   ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
 	setTextColor(WHITE);
 }
@@ -210,7 +253,7 @@ void ThePacmanGame::ghostAtePacman()
 		ghosts[1].setOriginalPosition();
 		drawObjects();
 		if(colored)
-			setTextColor(RED);
+			setTextColor(LIGHTRED);
 		pointsAndLives[0].draw(pac.getLives(), DRAW_CHARACTER);
 		setTextColor(WHITE);
 	}
