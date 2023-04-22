@@ -52,7 +52,8 @@ bool ThePacmanGame::isGhost()
 
 void ThePacmanGame::printGameOver()
 {
-	setTextColor(LIGHTRED);
+	if(colored)
+		setTextColor(LIGHTRED);
 	cout << "######       ###    ##     ## ########     #######  ##     ## ######## ########   ####  ####" << endl;
 	cout << "##    ##    ## ##   ###   ### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
 	cout << "##         ##   ##  #### #### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
@@ -192,7 +193,8 @@ void ThePacmanGame::gameResult(char ch)
 
 void ThePacmanGame::printWinningMessage()
 {
-	setTextColor(MAGENTA);
+	if(colored)
+		setTextColor(MAGENTA);
 	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
 	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
 	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
