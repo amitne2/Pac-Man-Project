@@ -1,7 +1,25 @@
 #include "Point.h"
 
+//Constructor Point
 Point::Point(int _x, int _y) : x{ _x }, y{ _y }{};
 
+//Get x parameter of point
+int Point::getX() const {
+	return x;
+}
+
+//Get yy parameter of point
+int Point::getY() const {
+	return y;
+}
+
+//Set x,y parameters of point
+void Point::set(int _x, int _y) {
+	x = _x;
+	y = _y;
+}
+
+//Draw a character ot a number (according to the parameters that re sent) in point location
 void Point::draw(int num, char ch) const {
 	gotoxy(x, y);
 	if (num == DRAW_CHARACTER)
@@ -11,12 +29,8 @@ void Point::draw(int num, char ch) const {
 	cout.flush();
 }
 
-//void Point::draw(int points) const {
-//	gotoxy(x, y);
-//	cout << ch;
-//	cout.flush();
-//}
-
+//Set x or y parameter according to the direction sent in the function. 
+//The object is sent to identify if it is pacman or ghost.
 void Point::move(int direction, int object)
 	{
 		switch (direction) {
@@ -48,3 +62,10 @@ void Point::move(int direction, int object)
 			break; // DO NOTHING, STAY PUT
 		}
 	}
+
+//Check next move of the object (does not move the object!)
+Point Point::next(int direction, int object) {
+	Point next = *this;
+	next.move(direction, object);
+	return next;
+}

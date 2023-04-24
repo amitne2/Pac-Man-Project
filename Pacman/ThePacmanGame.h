@@ -6,7 +6,7 @@
 #include "Ghost.h"
 
 enum { ROWS = 26, COLS = 80 };
-#define NUM_OF_BREAD_CRUMBS 30 // 1311
+#define NUM_OF_BREAD_CRUMBS 1311
 #define PACMAN 1
 #define GHOST 0
 #define WIN 1
@@ -28,25 +28,24 @@ public:
 	ThePacmanGame(bool coloredGame);
 	bool getColored();
 	void setBoard(const char* boardToCopy[ROWS]);
-	void updateBoard(const Point& p);
 	void setBoardBeforeStrike(const Point& p);
-	void init();
 	void drawObjects();
+	void init();
+	void run();
+	void start();
+	void initAfterPause();
+	void updateBoard(const Point& p);
 	bool isWall(const Point& p, int object);
 	bool isBreadCrumbs(const Point& p);
 	bool isGhost();
-	void run();
 	bool isOnBorder(const Point& p);
-	void ghostAtePacman();
 	bool checkIfTheSamePosition(const Point& p1, const Point& p2);
-	void printGameOver();
-	void start();
+	void ghostAtePacman();
 	void gameResult(char ch);
+	void printGameOver();
 	void printWinningMessage();
-	void initAfterPause();
 	void pauseMessage();
-	~ThePacmanGame() {}; //distructor?
-
+	~ThePacmanGame() {}; //Distructor
 };
 
 #endif

@@ -49,7 +49,6 @@ void Menu::print() {
 //This function prints the menu options 
 void Menu::printOptions()
 {
-	setTextColor(CYAN);
 	cout << " ########     ###     ######  ##     ##    ###    ##    ##"<< endl;
 	cout << " ##     ##   ## ##   ##    ## ###   ###   ## ##   ###   ##" << endl;
 	cout << " ##     ##  ##   ##  ##       #### ####  ##   ##  ####  ##" << endl;
@@ -58,7 +57,6 @@ void Menu::printOptions()
 	cout << " ##        ##     ## ##    ## ##     ## ##     ## ##   ###" << endl;
 	cout << " ##        ##     ##  ######  ##     ## ##     ## ##    ##" << endl;
 	cout << endl;
-	setTextColor(WHITE);
 	cout << "************** WELCOME TO THE PACMAN GAME! ***************" << endl;
 	cout << "Please choose an option:" << endl << "(1) Start a new game" << endl;
 	cout << "(8) Present instructions and keys" << endl << "(9) EXIT" << endl;
