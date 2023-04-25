@@ -42,7 +42,7 @@ void ThePacmanGame::drawObjects()
 	pac.getCurrentPosition().draw(DRAW_CHARACTER, PACMAN_SYMBOL);
 	updateBoard(pac.getCurrentPosition());
 	if (colored)
-		setTextColor(LIGHTBLUE);
+		setTextColor(LIGHTMAGENTA);
 	ghosts[0].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
 	ghosts[1].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
 	setTextColor(WHITE);

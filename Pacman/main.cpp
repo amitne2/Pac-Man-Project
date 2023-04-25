@@ -5,4 +5,5 @@
 
 int main() {
 	Menu().print();
+	return 0;
 }

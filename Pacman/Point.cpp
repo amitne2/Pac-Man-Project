@@ -8,7 +8,7 @@ int Point::getX() const {
 	return x;
 }
 
-//Get yy parameter of point
+//Get y parameter of point
 int Point::getY() const {
 	return y;
 }

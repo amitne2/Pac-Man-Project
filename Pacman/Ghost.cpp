@@ -45,9 +45,8 @@ void Ghost::move(const Point p)
 
 	if (theGame->checkIfTheSamePosition(p, position[0])) //Checks if the next move is on pacman position
 	{
-		//theGame->setBoardBeforeStrike(position[1]); **NEED TO REMOVE**
 		if(theGame->getColored()) //Set color
-			setTextColor(LIGHTBLUE);
+			setTextColor(LIGHTMAGENTA);
 		position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL);
 		Sleep(2000);
 		setTextColor(WHITE); 
@@ -56,9 +55,8 @@ void Ghost::move(const Point p)
 
 	else
 	{
-		//theGame->setBoardBeforeStrike(position[1]); **NEED TO REMOVE**
 		if(theGame->getColored()) //Set color
-			setTextColor(LIGHTBLUE);
+			setTextColor(LIGHTMAGENTA);
 		position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL); //Draw new position
 		position[1] = position[0];
 		setTextColor(WHITE);
