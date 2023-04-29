@@ -61,7 +61,7 @@ void ThePacmanGame::init()
 				setTextColor(LIGHTRED);
 			if (i == 24 && j == 72 && colored) //color points
 				setTextColor(LIGHTGREEN);
-			if(originalBoard[i][j] == '+')
+			if(originalBoard[i][j] == '+' && colored)
 				setTextColor(CYAN);
 			cout << originalBoard[i][j];
 			cout.flush();
@@ -116,7 +116,7 @@ void ThePacmanGame::run()
 			gameIsOn = false;
 		}
 
-		Sleep(400);
+		Sleep(250);
 	} while (gameIsOn);
 
 	if (pac.getLives() == 0)

@@ -55,7 +55,7 @@ void Point::move(int direction, int object)
 		case 3: // RIGHT
 			++x;
 			if (x > 79 && object) {
-				x = 1;
+				x = 0;
 			}
 			break;
 		case 4:

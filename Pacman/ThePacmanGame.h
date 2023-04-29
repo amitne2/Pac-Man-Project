@@ -6,7 +6,7 @@
 #include "Ghost.h"
 
 enum { ROWS = 26, COLS = 80 };
-#define NUM_OF_BREAD_CRUMBS 1311
+#define NUM_OF_BREAD_CRUMBS 1309
 #define PACMAN 1
 #define GHOST 0
 #define WIN 1
