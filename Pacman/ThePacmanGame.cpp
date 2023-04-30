@@ -2,7 +2,7 @@
 #include "_board.h"
 
 //Constructor
-ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(5, 32), ghosts{ Ghost(2,43), Ghost(20, 5) }, pointsAndLives{ Point(16,24), Point(72, 24) }
+ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(8, 40), ghosts{ Ghost(1,57), Ghost(17, 16) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
 	gameIsOn = true;
 	colored = coloredGame;
@@ -211,7 +211,7 @@ bool ThePacmanGame::isGhost()
 //Check if the next move of the ghost is on the game boarders (including tunnels!).
 bool ThePacmanGame::isOnBorder(const Point& p)
 {
-	if (p.getY() < 1 || p.getY() > 24 || p.getX() < 1 || p.getX() > 79)
+	if (p.getY() < 1 || p.getY() > 23 || p.getX() < 1 || p.getX() > 79)
 		return true;
 	return false;
 }

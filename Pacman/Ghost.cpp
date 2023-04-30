@@ -38,7 +38,7 @@ void Ghost::move(const Point p)
 	{
 		position[0] = position[1];
 		dir = rand() % 3;
-		position[1] = position[0];
+		//position[1] = position[0];
 		position[0].move(dir, GHOST);
 	}
 	theGame->setBoardBeforeStrike(position[1]); //Update board before strike
