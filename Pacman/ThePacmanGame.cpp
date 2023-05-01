@@ -152,10 +152,16 @@ void ThePacmanGame::initAfterPause()
 		for (int j = 0; j < COLS; j++)
 		{
 			gotoxy(j, i);
-			if (i == 24 && j == 16 && colored)
+			if (i == 24 && j == 16 && colored) //color lives
+				setTextColor(LIGHTRED);
+			if (i == 24 && j == 72 && colored) //color points
+				setTextColor(LIGHTGREEN);
+			if (originalBoard[i][j] == '+' && colored)
+				setTextColor(CYAN);
+			/*if (i == 24 && j == 16 && colored)
 				setTextColor(LIGHTRED);
 			if (i == 24 && j == 72 && colored)
-				setTextColor(LIGHTGREEN);
+				setTextColor(LIGHTGREEN);*/
 			cout << board[i][j];
 			cout.flush();
 			setTextColor(WHITE);
