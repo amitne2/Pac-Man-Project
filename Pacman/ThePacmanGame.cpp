@@ -158,10 +158,6 @@ void ThePacmanGame::initAfterPause()
 				setTextColor(LIGHTGREEN);
 			if (originalBoard[i][j] == '+' && colored)
 				setTextColor(CYAN);
-			/*if (i == 24 && j == 16 && colored)
-				setTextColor(LIGHTRED);
-			if (i == 24 && j == 72 && colored)
-				setTextColor(LIGHTGREEN);*/
 			cout << board[i][j];
 			cout.flush();
 			setTextColor(WHITE);
