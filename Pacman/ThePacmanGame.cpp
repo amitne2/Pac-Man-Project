@@ -2,7 +2,7 @@
 #include "_board.h"
 
 //Constructor
-ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(8, 40), ghosts{ Ghost(1,57), Ghost(17, 16) }, pointsAndLives{ Point(16,24), Point(72, 24) }
+ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(8, 40), ghosts{ Ghost(1,62), Ghost(17, 16) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
 	gameIsOn = true;
 	colored = coloredGame;
