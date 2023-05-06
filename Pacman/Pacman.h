@@ -2,33 +2,26 @@
 #define _PACMAN_H_
 
 #include <cstring>
-#include "Point.h"
+#include "Game_Object.h"
 
 #define PACMAN_SYMBOL char(2)
 
 class ThePacmanGame;
 
-class Pacman {
+class Pacman : public Game_Object {
 private:
-	Point position[2];
-	Point originalPosition;
 	int lives;
-	int direction;
 	int points;
 	char arrowKeys[5];
-	ThePacmanGame* theGame;
 	void setArrowKeys(const char* keys);
 
 public:
-	Pacman(int y, int x);
-	void setGame(ThePacmanGame* _theGame);
-	void setOriginalPosition();
+	Pacman(int _y, int _x, int _direction = 3);
 	void setLives();
 	int getPoints();
-	void setDirection(int dir);
+	void setPoints(int _points);
 	int getLives();
 	int getDirection(char key);
-	Point getCurrentPosition();
 	void move();
 	~Pacman();
 };

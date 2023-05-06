@@ -1,25 +1,13 @@
 #include "Pacman.h"
-#include "ThePacmanGame.h"
 
 //Constructor pacman
-Pacman:: Pacman(int y, int x)
+Pacman::Pacman(int _y, int _x, int _direction) :Game_Object(_x, _y, _direction)
 {
-	originalPosition.set(x, y);
-	position[0] = position[1] = originalPosition;
 	lives = 3;
-	direction = 3;
 	points = 0;
 	setArrowKeys("wxads");
 }
-//Set the pacmanGame pointer
-void Pacman::setGame(ThePacmanGame* _theGame) {
-	theGame = _theGame;
-}
-//Set pacman original position 
-void Pacman::setOriginalPosition()
-{
-	position[0] = position[1] = originalPosition;
-}
+
 //This function set the arrow keys of the game
 void Pacman::setArrowKeys(const char* keys)
 {
@@ -29,11 +17,7 @@ void Pacman::setArrowKeys(const char* keys)
 	arrowKeys[3] = keys[3]; // RIGHT
 	arrowKeys[4] = keys[4]; // STAY
 }
-//This function gets direction and set it
-void Pacman::setDirection(int dir)
-{
-	direction = dir;
-}
+
 //This function set lives (remove one each time)
 void Pacman::setLives()
 {
@@ -62,10 +46,11 @@ int Pacman::getPoints()
 {
 	return points;
 }
-//This function return Pacman's current position
-Point Pacman::getCurrentPosition()
+
+//This function adds the points the pacman earned
+void Pacman::setPoints(int _points)
 {
-	return position[0];
+	points += _points;
 }
 
 //This function gets according to pacman's direction his next move

@@ -4,11 +4,14 @@
 #include "io_utils.h"
 #include "Pacman.h"
 #include "Ghost.h"
+#include "Fruit.h"
 
 enum { ROWS = 26, COLS = 80 };
 #define NUM_OF_BREAD_CRUMBS 450
+#define NUM_OF_GHOSTS 2
+#define NUM_OF_FRUITS 3
 #define PACMAN 1
-#define GHOST 0
+#define NOT_PACMAN 0
 #define WIN 1
 #define LOSE 0
 #define DRAW_CHARACTER -1
@@ -18,6 +21,7 @@ class ThePacmanGame {
 	enum { ESC = 27 };
 	Pacman pac;
 	Ghost ghosts[2];
+	Fruit fruits[3];
 	Point pointsAndLives[2];
 	char originalBoard[ROWS][COLS + 1];	// this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1];	// this is the actual board we play on, i.e.
@@ -28,7 +32,7 @@ public:
 	ThePacmanGame(bool coloredGame);
 	bool getColored();
 	void setBoard(const char* boardToCopy[ROWS]);
-	void setBoardBeforeStrike(const Point& p);
+	void setBoardBeforeObjectMoves(const Point& p);
 	void drawObjects();
 	void init();
 	void run();
@@ -40,7 +44,9 @@ public:
 	bool isGhost();
 	bool isOnBorder(const Point& p);
 	bool checkIfTheSamePosition(const Point& p1, const Point& p2);
+	void manageFruits();
 	void ghostAtePacman();
+	void pacmanAteFruit(int fruitPoints);
 	void gameResult(char ch);
 	void printGameOver();
 	void printWinningMessage();

@@ -1,7 +1,6 @@
 #include "ThePacmanGame.h"
 #include "_board.h"
 
-// bababababbaba
 //Constructor
 ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(8, 40), ghosts{ Ghost(1,62), Ghost(17, 16) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
@@ -29,7 +28,7 @@ void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 }
 
 //This function sets the breadcrumbs on the board to the way there were before there was a strike.
-void ThePacmanGame::setBoardBeforeStrike(const Point& p)
+void ThePacmanGame::setBoardBeforeObjectMoves(const Point& p)
 {
 	p.draw(DRAW_CHARACTER, board[p.getY()][p.getX()]);
 }
@@ -73,8 +72,11 @@ void ThePacmanGame::init()
 	}
 
 	pac.setGame(this);
-	ghosts[0].setGame(this);
-	ghosts[1].setGame(this);
+	for(int i=0; i<NUM_OF_GHOSTS; i++)
+		ghosts[i].setGame(this);
+	for (int i = 0; i < NUM_OF_FRUITS; i++)
+		fruits[i].setGame(this);
+
 	drawObjects();
 }
 
@@ -96,6 +98,8 @@ void ThePacmanGame::run()
 			if ((dir = pac.getDirection(key)) != -1)
 				pac.setDirection(dir);
 		}
+
+		manageFruits();
 
 		pac.move();
 		if (colored)
@@ -186,7 +190,7 @@ bool ThePacmanGame::isWall(const Point& p, int object)
 		return false;
 	}
 
-	else // object is GHOST
+	else // other object
 	{
 		if ((isOnBorder(p)) || (board[p.getY()][p.getX()] == '+'))
 			return true;
@@ -227,6 +231,21 @@ bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2)
 	return false;
 }
 
+void ThePacmanGame::manageFruits()
+{
+	int numOfWantedFruits = rand() % 3;
+	int currFruits = 0;
+
+	for (int i = 0; i < NUM_OF_FRUITS; i++)
+		if (fruits[i].getFruitOnBoard())
+			currFruits++;
+	
+	if (numOfFruits != 0)
+	{
+		
+	}
+}
+
 //Handle the occasion of ghost eating the pacman.
 //Set the objects to their initial places and keep the board as it was (meaning breadcrumbs).
 //If the pacman has no lives - update gameIsOn to false, so the game will end in the calling funtion.
@@ -235,8 +254,8 @@ void ThePacmanGame::ghostAtePacman()
 	pac.setLives();
 	if (pac.getLives() != 0)
 	{
-		setBoardBeforeStrike(ghosts[0].getCurrentPosition());
-		setBoardBeforeStrike(ghosts[1].getCurrentPosition());
+		setBoardBeforeObjectMoves(ghosts[0].getCurrentPosition());
+		setBoardBeforeObjectMoves(ghosts[1].getCurrentPosition());
 		pac.setOriginalPosition();
 		pac.setDirection(3);
 		ghosts[0].setOriginalPosition();
@@ -250,6 +269,13 @@ void ThePacmanGame::ghostAtePacman()
 
 	else
 		gameIsOn = false;
+}
+
+//This function updates pacman earned points after eating a fruit, then updates the board
+void ThePacmanGame::pacmanAteFruit(int fruitPoints)
+{
+	pac.setPoints(fruitPoints);
+	pointsAndLives[1].draw(pac.getPoints(), DRAW_NUMBER);
 }
 
 //Print the right message according to game result.

@@ -2,25 +2,28 @@
 #define _GHOST_H_
 
 #include <cstring>
-#include "Point.h"
+#include "Game_Object.h"
 
 #define GHOST_SYMBOL char(234)
+#define MAX_MOVES 20
+#define MOVE_UP 0
+#define MOVE_DOWN 1
+#define MOVE_LEFT 2
+#define MOVE_RIGHT 3
+
+
 
 class ThePacmanGame;
 
-class Ghost {
+class Ghost : public Game_Object {
 private:
-	Point position[2];
-	int direction; 
-	Point originalPosition;
-	ThePacmanGame* theGame;
-
+	char gameLevel;
+	int countSteps;
 public:
-	Ghost(int _x, int _y);
-	void setGame(ThePacmanGame* _theGame);
-	void setOriginalPosition();
-	Point getCurrentPosition();
-	void move(const Point p);
+	Ghost(int _x, int _y, int _direction=3, char _gameLevel = 'b', int _countSteps=0);
+	void move(const Point& pac);
+	void setDirection(const Point& pac);
+	void chasePacman(const Point& pac);
 	~Ghost();
 };
 
