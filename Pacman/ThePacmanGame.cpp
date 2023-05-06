@@ -1,6 +1,7 @@
 #include "ThePacmanGame.h"
 #include "_board.h"
 
+// bababababbaba
 //Constructor
 ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(8, 40), ghosts{ Ghost(1,62), Ghost(17, 16) }, pointsAndLives{ Point(16,24), Point(72, 24) }
 {
