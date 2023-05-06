@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include "Game_Object.h"
+#include "ThePacmanGame.h"
 
 #define GHOST_SYMBOL char(234)
 #define MAX_MOVES 20
@@ -10,10 +11,6 @@
 #define MOVE_DOWN 1
 #define MOVE_LEFT 2
 #define MOVE_RIGHT 3
-
-
-
-class ThePacmanGame;
 
 class Ghost : public Game_Object {
 private:

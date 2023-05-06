@@ -3,10 +3,10 @@
 
 #include <cstring>
 #include "Game_Object.h"
-
+#include "ThePacmanGame.h"
 #define PACMAN_SYMBOL char(2)
 
-class ThePacmanGame;
+//class ThePacmanGame;
 
 class Pacman : public Game_Object {
 private:

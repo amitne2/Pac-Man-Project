@@ -6,6 +6,13 @@
 #include "Ghost.h"
 #include "Fruit.h"
 
+//#include "Game_Object.h"
+
+//class Game_Object;
+//class Pacman;
+//class Ghost;
+//class Fruit;
+
 enum { ROWS = 26, COLS = 80 };
 #define NUM_OF_BREAD_CRUMBS 450
 #define NUM_OF_GHOSTS 2

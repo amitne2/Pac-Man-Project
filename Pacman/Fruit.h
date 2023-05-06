@@ -2,7 +2,7 @@
 #define _FRUIT_H_
 
 #include "Game_Object.h"
-
+#include "ThePacmanGame.h"
 class Fruit : public Game_Object {
 private:
 	char creature;

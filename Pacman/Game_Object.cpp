@@ -1,5 +1,5 @@
 #include "Game_Object.h"
-#include "ThePacmanGame.h"
+//#include "ThePacmanGame.h"
 
 Game_Object::Game_Object(int _x, int _y, int _direction) 
 {

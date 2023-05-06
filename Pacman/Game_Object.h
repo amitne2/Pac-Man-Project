@@ -2,7 +2,8 @@
 #define _GAME_OBJECT_H_
 
 #include "Point.h"
-#include "ThePacmanGame.h"
+//#include "ThePacmanGame.h"
+
 class ThePacmanGame;
 
 class Game_Object {

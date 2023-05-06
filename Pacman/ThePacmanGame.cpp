@@ -240,10 +240,10 @@ void ThePacmanGame::manageFruits()
 		if (fruits[i].getFruitOnBoard())
 			currFruits++;
 	
-	if (numOfFruits != 0)
+	/*if (numOfFruits != 0)
 	{
 		
-	}
+	}*/
 }
 
 //Handle the occasion of ghost eating the pacman.
