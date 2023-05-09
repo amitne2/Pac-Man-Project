@@ -1,4 +1,5 @@
 #include "Pacman.h"
+#include "ThePacmanGame.h"
 
 //Constructor pacman
 Pacman::Pacman(int _y, int _x, int _direction) :Game_Object(_x, _y, _direction)

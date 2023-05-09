@@ -1,5 +1,5 @@
 #include "Point.h"
-
+#include <cmath>
 //Constructor Point
 Point::Point(int _x, int _y) : x{ _x }, y{ _y }{};
 
@@ -68,4 +68,10 @@ Point Point::next(int direction, int object) {
 	Point next = *this;
 	next.move(direction, object);
 	return next;
+}
+
+
+int Point::getDistance(Point p)
+{
+	return(sqrt(pow(x - p.x,2) + pow(y - p.y,2)));
 }

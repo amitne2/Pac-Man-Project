@@ -99,8 +99,7 @@ void ThePacmanGame::run()
 				pac.setDirection(dir);
 		}
 
-		manageFruits();
-
+		
 		pac.move();
 		if (colored)
 			setTextColor(LIGHTGREEN);
@@ -110,9 +109,19 @@ void ThePacmanGame::run()
 
 		if (countPacMoves == 2 && gameIsOn)
 		{
-			for (int i = 0; i < 2 && gameIsOn; i++)
-				ghosts[i].move(pac.getCurrentPosition());
-			countPacMoves = 0;
+			if (countPacMoves % 2 == 0)
+			{
+				for (int i = 0; i < 2 && gameIsOn; i++)
+					ghosts[i].move(pac.getCurrentPosition());
+			}
+			if (countPacMoves == 4)
+			{
+				manageFruits();
+				for (int i = 0; i < NUM_OF_FRUITS; i++)
+					for(int j=0;j<NUM_OF_GHOSTS;j++)
+						fruits[i].move(pac.getCurrentPosition(), ghosts[j].getCurrentPosition());
+				countPacMoves = 0;
+			}
 		}
 
 		if (pac.getPoints() == NUM_OF_BREAD_CRUMBS)
@@ -233,17 +242,26 @@ bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2)
 
 void ThePacmanGame::manageFruits()
 {
-	int numOfWantedFruits = rand() % 3;
+	int numOfWantedFruits;
 	int currFruits = 0;
 
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
 		if (fruits[i].getFruitOnBoard())
 			currFruits++;
 	
-	/*if (numOfFruits != 0)
+	if (currFruits == NUM_OF_FRUITS) //
+		return;
+
+	numOfWantedFruits = rand() % (NUM_OF_FRUITS - currFruits);
+	for (int i = 0; i < NUM_OF_FRUITS; i++)
 	{
-		
-	}*/
+		if (!fruits[i].getFruitOnBoard() && numOfWantedFruits>0) //fruit is not on board
+		{
+			fruits[i].setDisplayCounter();
+			fruits[i].setFruitOnBoard(true);
+			numOfWantedFruits--;
+		}
+	}
 }
 
 //Handle the occasion of ghost eating the pacman.

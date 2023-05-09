@@ -19,6 +19,7 @@ public:
 	void draw(int num, char ch) const;
 	void move(int direction, int object);
 	Point next(int direction, int object);
+	int getDistance(Point p);
 	~Point() {} //Distructor
 };
 

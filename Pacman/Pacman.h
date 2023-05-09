@@ -3,7 +3,7 @@
 
 #include <cstring>
 #include "Game_Object.h"
-#include "ThePacmanGame.h"
+//#include "ThePacmanGame.h"
 #define PACMAN_SYMBOL char(2)
 
 //class ThePacmanGame;
