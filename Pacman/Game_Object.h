@@ -12,9 +12,10 @@ protected:
 	int direction;
 	ThePacmanGame* theGame;
 public:
-	Game_Object(int _x, int _y, int _direction); //for now
+	Game_Object(int _x, int _y, int _direction);
 	void setGame(ThePacmanGame* _theGame);
 	void setOriginalPosition();
+	void setOriginalPosition(Point newPosition)
 	Point getCurrentPosition();
 	void setDirection(int _direction);
 	int getDirection();

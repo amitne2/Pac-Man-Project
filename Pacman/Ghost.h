@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include "Game_Object.h"
+#include "Fruit.h"
 //#include "ThePacmanGame.h"
 
 #define GHOST_SYMBOL char(234)
@@ -19,8 +20,9 @@ private:
 	bool levelBIndication;
 public:
 	Ghost(int _x, int _y, int _direction=3, char _gameLevel = 'b', int _countSteps=0);
-	void move(const Point& pac);
+	void move(const Point& pac, Fruit* fruitsArr);
 	void setDirection(const Point& pac);
+	void setGameLevel(char level);
 	void chasePacman(const Point& pac);
 	~Ghost();
 };

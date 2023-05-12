@@ -2,8 +2,9 @@
 #include "ThePacmanGame.h"
 
 //Constructor pacman
-Pacman::Pacman(int _y, int _x, int _direction) :Game_Object(_x, _y, _direction)
+Pacman::Pacman()
 {
+	direction = 3;
 	lives = 3;
 	points = 0;
 	setArrowKeys("wxads");
@@ -79,6 +80,8 @@ void Pacman::move()
 
 	else 
 	{
+		theGame->isFruit();
+
 		if (direction != 4) // NOT STAY POSITION
 		{
 			position[1].draw(DRAW_CHARACTER, ' '); //Set the old position

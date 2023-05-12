@@ -2,10 +2,49 @@
 #include "_board.h"
 
 //Constructor
-ThePacmanGame::ThePacmanGame(bool coloredGame) : pac(8, 40), ghosts{ Ghost(1,62), Ghost(17, 16) }, pointsAndLives{ Point(16,24), Point(72, 24) }
+ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), Point(72, 24) }
 {
+	checkGameLevel();
 	gameIsOn = true;
 	colored = coloredGame;
+}
+
+
+//This function asks the player to choose the game level.
+//Game level affects the ghosts behavior.
+void ThePacmanGame::checkGameLevel()
+{
+	bool validAnswer = false;
+	char game_level;
+	cout << "Plase choose game level:" << endl;
+	cout << "a - Best" << endl;
+	cout << "b - Good" << endl;
+	cout << "c - Novice" << endl;
+
+	while (!validAnswer)
+	{
+		cin >> game_level;
+		game_level = tolower(game_level);
+		switch (game_level)
+		{
+		case 'a':
+			validAnswer = true;
+			break;
+		case 'b':
+			validAnswer = true;
+			break;
+		case 'c':
+			validAnswer = true;
+			break;
+		default:
+			cout << "WRONG KEY! PLEASE CHOOSE AGAIN - A/B/C." << endl;
+			Sleep(1000);
+			break;
+		}
+	}
+
+	for (int i = 0; i < NUM_OF_GHOSTS; i++)
+		ghosts[i].setGameLevel(game_level);
 }
 
 //Get colored data - if true - user chose the colored game, if false - user chose no color game.
@@ -46,6 +85,41 @@ void ThePacmanGame::drawObjects()
 	ghosts[0].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
 	ghosts[1].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
 	setTextColor(WHITE);
+}
+
+void ThePacmanGame::readFile(string file_name)
+{
+	char c;
+	ifstream screenFile(file_name, std::ios_base::in);
+	if (!screenFile.is_open() || !screenFile.good())
+	{
+		cout << "ERROR!";
+		exit(0);
+	}
+
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			screenFile.get(c);
+			if (c == '%')
+				board[i][j] = ' ';
+			else if (c == '@')
+			{
+				board[i][j] = ' ';
+				pac.setOriginalPosition(i, j);
+			}
+			else if (c == '$')
+			{
+				board[i][j] = '.';
+				ghosts.push_back(Ghost(i, j));
+			}
+			else
+				board[i][j] = c;
+		}
+		screenFile.get(c); //get \n
+	}
+	screenFile.close();
 }
 
 //This function draws the board for the first time, in color or without color (depends on user's choice)
@@ -107,19 +181,16 @@ void ThePacmanGame::run()
 		setTextColor(WHITE);
 		countPacMoves++;
 
-		if (countPacMoves == 2 && gameIsOn)
+		if (countPacMoves % 2 == 0 && gameIsOn)
 		{
-			if (countPacMoves % 2 == 0)
-			{
-				for (int i = 0; i < 2 && gameIsOn; i++)
-					ghosts[i].move(pac.getCurrentPosition());
-			}
-			if (countPacMoves == 4)
+			for (int i = 0; i < 2 && gameIsOn; i++)
+				ghosts[i].move(pac.getCurrentPosition(), fruits);
+			
+			if (countPacMoves == 10)
 			{
 				manageFruits();
 				for (int i = 0; i < NUM_OF_FRUITS; i++)
-					for(int j=0;j<NUM_OF_GHOSTS;j++)
-						fruits[i].move(pac.getCurrentPosition(), ghosts[j].getCurrentPosition());
+					fruits[i].move(pac.getCurrentPosition(), ghosts);
 				countPacMoves = 0;
 			}
 		}
@@ -135,7 +206,6 @@ void ThePacmanGame::run()
 
 	if (pac.getLives() == 0)
 		gameResult(LOSE);
-
 }
 
 //This function starts the game - calls all the initializing functions.
@@ -219,9 +289,22 @@ bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
 //Check if the pacman and the ghost are in the same position at the moment.
 bool ThePacmanGame::isGhost()
 {
-	if(checkIfTheSamePosition(pac.getCurrentPosition(), ghosts[0].getCurrentPosition()) || checkIfTheSamePosition(pac.getCurrentPosition(), ghosts[1].getCurrentPosition()))
-		return true;
+	for (int i = 0; i < NUM_OF_GHOSTS; i++)
+		if (checkIfTheSamePosition(pac.getCurrentPosition(), ghosts[i].getCurrentPosition()))
+			return true;
 	return false;
+}
+
+void ThePacmanGame::isFruit()
+{
+	for (int i = 0; i < NUM_OF_FRUITS; i++)
+		if (checkIfTheSamePosition(pac.getCurrentPosition(), fruits[i].getCurrentPosition()))
+		{
+			pacmanAteFruit(fruits[i].getFruitSymbol() - '0');
+			fruits[i].setFruitOnBoard(false);
+			fruits[i].setDisplayCounter(0);
+			updateBoard(pac.getCurrentPosition());
+		}
 }
 
 //Check if the next move of the ghost is on the game boarders (including tunnels!).
@@ -257,6 +340,7 @@ void ThePacmanGame::manageFruits()
 	{
 		if (!fruits[i].getFruitOnBoard() && numOfWantedFruits>0) //fruit is not on board
 		{
+			fruits[i].setFruitSymbol();
 			fruits[i].setDisplayCounter();
 			fruits[i].setFruitOnBoard(true);
 			numOfWantedFruits--;
@@ -274,10 +358,10 @@ void ThePacmanGame::ghostAtePacman()
 	{
 		setBoardBeforeObjectMoves(ghosts[0].getCurrentPosition());
 		setBoardBeforeObjectMoves(ghosts[1].getCurrentPosition());
-		pac.setOriginalPosition();
+		pac.resetOriginalPosition();
 		pac.setDirection(3);
-		ghosts[0].setOriginalPosition();
-		ghosts[1].setOriginalPosition();
+		ghosts[0].resetOriginalPosition();
+		ghosts[1].resetOriginalPosition();
 		drawObjects();
 		if (colored)
 			setTextColor(LIGHTRED);

@@ -1,19 +1,25 @@
 #include "Ghost.h"
 #include "ThePacmanGame.h"
+#include "Fruit.h"
 #include <random>
 
 //Constructor ghost
-Ghost::Ghost(int _y, int _x, int _direction, char _gameLevel, int _countSteps) : Game_Object(_x, _y, _direction) 
+Ghost::Ghost()
 {
-	gameLevel = _gameLevel;
-	countSteps = _countSteps;
+	levelBIndication = false;
+}
+
+Ghost::Ghost(int _x, int _y)
+{
+	originalPosition.set(_x, _y);
+	position[0] = position[1] = originalPosition;
 	levelBIndication = false;
 }
 
 //This function ramdon a number between 1-4 for direction
 //Checks the next move is valid (not wall) - If it's a wall, random number until it doesn't
 //Checks if the ghost is on pacman position (strike in the game) - update the relevant variables
-void Ghost::move(const Point& pac)
+void Ghost::move(const Point& pac, Fruit* fruitsArr)
 {
 	setDirection(pac);
 	position[1] = position[0]; 
@@ -21,6 +27,7 @@ void Ghost::move(const Point& pac)
 
 	if (theGame->checkIfTheSamePosition(pac, position[0])) //Checks if the next move is on pacman position
 	{
+		theGame->setBoardBeforeObjectMoves(position[1]);
 		if(theGame->getColored()) //Set color
 			setTextColor(LIGHTMAGENTA);
 		position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL);
@@ -29,20 +36,37 @@ void Ghost::move(const Point& pac)
 		theGame->ghostAtePacman();
 	}
 
+	else if (theGame->isWall(position[1].next(direction, NOT_PACMAN), NOT_PACMAN))
+		position[0] = position[1];
+	
 	else if(!theGame->isWall(position[1].next(direction, NOT_PACMAN), NOT_PACMAN))
 	{
+		theGame->setBoardBeforeObjectMoves(position[1]);
 		if(theGame->getColored()) //Set color
 			setTextColor(LIGHTMAGENTA);
 		position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL); //Draw new position
 		position[1] = position[0];
 		setTextColor(WHITE);
 	}
-	//theGame->setBoardBeforeObjectMoves(position[1]); 
+
+	else //fruit
+	{
+		for (int i = 0; i < NUM_OF_FRUITS; i++)
+		{
+			if (theGame->checkIfTheSamePosition(position[0], fruitsArr[i].getCurrentPosition()) && fruitsArr[i].getFruitOnBoard())
+			{
+				fruitsArr[i].setFruitOnBoard(false);
+				fruitsArr[i].setDisplayCounter(0);
+				theGame->updateBoard(position[0]);
+			}
+		}
+	}
 }
 
 void Ghost::setDirection(const Point& pac)
 {
 	int randRes;
+	srand(time(NULL));
 	switch (gameLevel)
 	{
 	case 'a': //BEST level
@@ -53,7 +77,7 @@ void Ghost::setDirection(const Point& pac)
 		if (!levelBIndication) // if levelBIndication is true, it means the ghost is in the 5 steps after the rand direction, stays in the same one
 		{
 			randRes = rand() % 20 < 1 ? 1 : 0; //random 1 in probability of 1/20
-			if (!randRes) 
+			if (randRes==1) 
 			{
 				direction = rand() % 3; //random a new direction
 				countSteps = 0; //set counter to count 5 steps of the same direction
@@ -76,6 +100,11 @@ void Ghost::setDirection(const Point& pac)
 		}
 		break;
 	}
+}
+
+void Ghost::setGameLevel(char level)
+{
+	gameLevel = level;
 }
 
 void Ghost::chasePacman(const Point& pac)

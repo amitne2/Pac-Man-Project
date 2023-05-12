@@ -15,6 +15,7 @@ using std:: endl;
 void Menu::print() {
 	char choice;
 	bool color;
+	char game_level;
 	srand(time(NULL)); //Added for random
 	printOptions(); 
 	cin >> choice;
@@ -118,3 +119,40 @@ bool Menu::checkIfColored()
 
 	return res;
 }
+
+////This function asks the player to choose the game level.
+////Game level affects the ghosts behavior.
+//char Menu::checkGameLevel()
+//{
+//	bool validAnswer = false;
+//	char game_level;
+//	cout << "Plase choose game level:" << endl;
+//	cout << "a - Best" << endl;
+//	cout << "b - Good" << endl;
+//	cout << "c - Novice" << endl;
+//	
+//
+//	while (!validAnswer)
+//	{
+//		cin >> game_level;
+//		game_level = toupper(game_level);
+//		switch (game_level)
+//		{
+//		case 'A':
+//			validAnswer = true;
+//			break;
+//		case 'B':
+//			validAnswer = true;
+//			break;
+//		case 'C':
+//			validAnswer = true;
+//			break;
+//		default:
+//			cout << "WRONG KEY! PLEASE CHOOSE AGAIN - A/B/C." << endl;
+//			Sleep(1000);
+//			break;
+//		}
+//	}
+//	
+//	return game_level;
+//}

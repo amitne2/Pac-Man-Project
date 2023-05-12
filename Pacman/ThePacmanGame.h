@@ -1,10 +1,18 @@
 #ifndef _THEPACMANGAME_H_
 #define _THEPACMANGAME_H_
 
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 #include "io_utils.h"
 #include "Pacman.h"
 #include "Ghost.h"
 #include "Fruit.h"
+
+using std::ifstream;
+using std::string;
+using std::vector;
 
 enum { ROWS = 26, COLS = 80 };
 #define NUM_OF_BREAD_CRUMBS 450
@@ -20,20 +28,23 @@ enum { ROWS = 26, COLS = 80 };
 class ThePacmanGame {
 	enum { ESC = 27 };
 	Pacman pac;
-	Ghost ghosts[2];
+	vector<Ghost> ghosts;
+	//Ghost ghosts[2];
 	Fruit fruits[3];
 	Point pointsAndLives[2];
-	char originalBoard[ROWS][COLS + 1];	// this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
+	//char originalBoard[ROWS][COLS + 1];	// this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1];	// this is the actual board we play on, i.e.
 	bool gameIsOn;
 	bool colored;
 							
 public:
 	ThePacmanGame(bool coloredGame);
+	void checkGameLevel();
 	bool getColored();
 	void setBoard(const char* boardToCopy[ROWS]);
 	void setBoardBeforeObjectMoves(const Point& p);
 	void drawObjects();
+	void readFile(string file_name);
 	void init();
 	void run();
 	void start();
@@ -42,6 +53,7 @@ public:
 	bool isWall(const Point& p, int object);
 	bool isBreadCrumbs(const Point& p);
 	bool isGhost();
+	void isFruit();
 	bool isOnBorder(const Point& p);
 	bool checkIfTheSamePosition(const Point& p1, const Point& p2);
 	void manageFruits();

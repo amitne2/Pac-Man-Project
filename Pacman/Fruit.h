@@ -2,19 +2,25 @@
 #define _FRUIT_H_
 
 #include "Game_Object.h"
+//#include "Ghost.h"
 //#include "ThePacmanGame.h"
+
+class Ghost;
 class Fruit : public Game_Object {
 private:
-	char creature;
+	char fruitSymbol;
 	bool fruitOnBoard;
 	int displayCounter;
 public:
-	Fruit(int _x=0, int _y=0, int _direction=3);
+	Fruit(int _x=0, int _y=0, int _direction=3, char _fruitSymbol='5');
 	void setFruitPosition(const Point& pac, const Point& ghost);
 	bool getFruitOnBoard();
 	void setFruitOnBoard(bool set);
 	void setDisplayCounter();
-	void move(const Point& pac, const Point& ghost);
+	void setDisplayCounter(int num);
+	void setFruitSymbol();
+	char getFruitSymbol();
+	void move(const Point& pac, Ghost *ghostsArr);
 	~Fruit() {}
 };
 
