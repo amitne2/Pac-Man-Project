@@ -5,12 +5,23 @@
 //Constructor
 ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), Point(72, 24) }
 {
-	checkGameLevel();
 	numOfBreadcrumbs = 0;
 	gameIsOn = true;
 	colored = coloredGame;
+	default_mode = true; //load screens as long as user is winning
+	screen_num = 1;
 }
 
+
+//Constructor
+ThePacmanGame::ThePacmanGame(bool coloredGame, int _lives) : pac(_lives), pointsAndLives{ Point(16,24), Point(72, 24) }
+{
+	numOfBreadcrumbs = 0;
+	gameIsOn = true;
+	colored = coloredGame;
+	default_mode = true; //load screens as long as user is winning
+	screen_num = 1;
+}
 
 //This function asks the player to choose the game level.
 //Game level affects the ghosts behavior.
@@ -44,8 +55,8 @@ void ThePacmanGame::checkGameLevel()
 			break;
 		}
 	}
-
-	for (int i = 0; i < NUM_OF_GHOSTS; i++)
+	clear_screen();
+	for (int i = 0; i < ghosts.size(); i++)
 		ghosts[i].setGameLevel(game_level);
 }
 
@@ -72,6 +83,11 @@ bool ThePacmanGame::getColored()
 void ThePacmanGame::setBoardBeforeObjectMoves(const Point& p)
 {
 	p.draw(DRAW_CHARACTER, board[p.getY()][p.getX()]);
+}
+
+void ThePacmanGame::setBreadcrumbs()
+{
+	numOfBreadcrumbs--;
 }
 
 //Draw pacman and ghosts according to their places. If user chose a colorful game - function will 
@@ -111,13 +127,13 @@ void ThePacmanGame::initBoardFromFile(const string file_name)
 			else if (c == '@')
 			{
 				board[i][j] = ' ';
-				pac.setOriginalPosition(i, j);
+				pac.setOriginalPosition(j, i);
 			}
 			else if (c == '$')
 			{
 				board[i][j] = '.';
 				numOfBreadcrumbs++;
-				ghosts.push_back(Ghost(i, j));
+				ghosts.push_back(Ghost(j, i));
 			}
 			else
 			{
@@ -128,6 +144,7 @@ void ThePacmanGame::initBoardFromFile(const string file_name)
 		screenFile.get(c); //get \n
 	}
 	screenFile.close();
+	checkGameLevel();
 }
 
 //This function draws the board for the first time, in color or without color (depends on user's choice)
@@ -156,8 +173,10 @@ void ThePacmanGame::init()
 	for(int i=0; i<ghosts.size(); i++)
 		ghosts[i].setGame(this);
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
+	{
 		fruits[i].setGame(this);
-
+		fruits[i].setFruitPosition(pac.getCurrentPosition(), ghosts);
+	}
 	drawObjects();
 }
 
@@ -179,7 +198,6 @@ void ThePacmanGame::run()
 			if ((dir = pac.getDirection(key)) != -1)
 				pac.setDirection(dir);
 		}
-
 		
 		pac.move();
 		if (colored)
@@ -197,12 +215,15 @@ void ThePacmanGame::run()
 			{
 				manageFruits();
 				for (int i = 0; i < NUM_OF_FRUITS; i++)
-					fruits[i].move(pac.getCurrentPosition(), ghosts);
+				{
+					if (fruits[i].getFruitOnBoard())
+						fruits[i].move(pac.getCurrentPosition(), ghosts);
+				}
 				countPacMoves = 0;
 			}
 		}
 
-		if (pac.getPoints() == NUM_OF_BREAD_CRUMBS)
+		if (numOfBreadcrumbs == 0)
 		{
 			gameResult(WIN);
 			gameIsOn = false;
@@ -216,7 +237,16 @@ void ThePacmanGame::run()
 }
 
 //This function starts the game - calls all the initializing functions.
-void ThePacmanGame::start(const string file_name)
+void ThePacmanGame::startUsersScreen(const string file_name)
+{
+	clear_screen();
+	//setBoard(board_example);
+	initBoardFromFile(file_name);
+	init();
+	run();
+}
+
+int ThePacmanGame::startDefault()
 {
 	clear_screen();
 	//setBoard(board_example);
@@ -272,14 +302,14 @@ bool ThePacmanGame::isWall(const Point& p, int object)
 {
 	if (object == PACMAN)
 	{
-		if (board[p.getY()][p.getX()] == '+') // If pacman hits a wall
+		if (board[p.getY()][p.getX()] == '#') // If pacman hits a wall
 			return true;
 		return false;
 	}
 
 	else // other object
 	{
-		if ((isOnBorder(p)) || (board[p.getY()][p.getX()] == '+'))
+		if ((isOnBorder(p)) || (board[p.getY()][p.getX()] == '#'))
 			return true;
 		return false;
 	}
@@ -289,7 +319,7 @@ bool ThePacmanGame::isWall(const Point& p, int object)
 bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
 {
 	char sign = board[p.getY()][p.getX()];
-	if (sign == ' ' || sign == '$' || sign == '+')
+	if (sign == ' ' || sign == GHOST_SYMBOL || sign == '#')
 		return false;
 	return true;
 }
@@ -309,8 +339,7 @@ void ThePacmanGame::isFruit()
 		if (checkIfTheSamePosition(pac.getCurrentPosition(), fruits[i].getCurrentPosition()))
 		{
 			pacmanAteFruit(fruits[i].getFruitSymbol() - '0');
-			fruits[i].setFruitOnBoard(false);
-			fruits[i].setDisplayCounter(0);
+			fruits[i].turnOffFruit();
 			updateBoard(pac.getCurrentPosition());
 		}
 }
@@ -318,7 +347,7 @@ void ThePacmanGame::isFruit()
 //Check if the next move of the ghost is on the game boarders (including tunnels!).
 bool ThePacmanGame::isOnBorder(const Point& p)
 {
-	if (p.getY() < 1 || p.getY() > 23 || p.getX() < 1 || p.getX() > 79)
+	if (p.getY() < 0 || p.getY() > 24 || p.getX() < 0 || p.getX() > 80)
 		return true;
 	return false;
 }
@@ -340,7 +369,7 @@ void ThePacmanGame::manageFruits()
 		if (fruits[i].getFruitOnBoard())
 			currFruits++;
 	
-	if (currFruits == NUM_OF_FRUITS) //
+	if (currFruits == NUM_OF_FRUITS) 
 		return;
 
 	numOfWantedFruits = rand() % (NUM_OF_FRUITS - currFruits);
@@ -348,6 +377,7 @@ void ThePacmanGame::manageFruits()
 	{
 		if (!fruits[i].getFruitOnBoard() && numOfWantedFruits>0) //fruit is not on board
 		{
+			fruits[i].setFruitPosition(pac.getCurrentPosition(), ghosts);
 			fruits[i].setFruitSymbol();
 			fruits[i].setDisplayCounter();
 			fruits[i].setFruitOnBoard(true);

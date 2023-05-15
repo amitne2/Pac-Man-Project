@@ -7,8 +7,8 @@ class ThePacmanGame;
 
 class Game_Object {
 protected:
-	Point position[2];
 	Point originalPosition;
+	Point position[2];
 	int direction;
 	ThePacmanGame* theGame;
 public:

@@ -14,14 +14,15 @@ private:
 	int displayCounter;
 public:
 	Fruit(int _x=0, int _y=0, int _direction=3, char _fruitSymbol='5');
-	void setFruitPosition(const Point& pac, const Point& ghost);
+	void setFruitPosition(const Point& pac, std::vector<Ghost>& ghosts);
 	bool getFruitOnBoard();
 	void setFruitOnBoard(bool set);
 	void setDisplayCounter();
-	void setDisplayCounter(int num);
+	//void setDisplayCounter(int num);
 	void setFruitSymbol();
 	char getFruitSymbol();
 	void move(const Point& pac, std::vector<Ghost>& ghosts);
+	void turnOffFruit();
 	~Fruit() {}
 };
 

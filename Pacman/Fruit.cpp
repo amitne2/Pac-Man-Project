@@ -1,22 +1,29 @@
 #include "Fruit.h"
 #include "ThePacmanGame.h"
 
+
 Fruit::Fruit(int _y, int _x, int _direction, char _fruitSymbol)
 {
 	fruitSymbol = _fruitSymbol;
-	displayCounter = 0;
-	fruitOnBoard = false;
+	turnOffFruit();
 }
 
-void Fruit::setFruitPosition(const Point& pac, const Point& ghost)
+void Fruit::setFruitPosition(const Point& pac, vector<Ghost>& ghosts)
 {
+	int ghostCounter = 0;
 	Point temp;
 	bool valid = false;
-	while (!valid)
+	while (valid == false)
 	{
-		temp.set(rand() % 24, rand() % 80);
-		if (!theGame->isWall(position[1], NOT_PACMAN) && !theGame->checkIfTheSamePosition(temp, pac) && !theGame->checkIfTheSamePosition(temp, ghost))
+		temp.set(rand() % 79, rand() % 23);
+		for(int i=0; i<ghosts.size(); i++)
+		{
+			if(theGame->checkIfTheSamePosition(temp, ghosts[i].getCurrentPosition()) == false)
+				ghostCounter++;
+		}
+		if (theGame->isWall(temp, NOT_PACMAN) == false && theGame->checkIfTheSamePosition(temp, pac) == false && ghostCounter == ghosts.size())
 			valid = true;
+		ghostCounter = 0;
 	}
 	fruitOnBoard = true;
 	this->position[0] = this->position[1] = temp;
@@ -34,13 +41,13 @@ void Fruit::setFruitOnBoard(bool set)
 
 void Fruit::setDisplayCounter()
 {
-	displayCounter = 5 + rand() % 26;
+	displayCounter = 5 + rand() % 20;
 }
 
-void Fruit::setDisplayCounter(int num)
-{
-	displayCounter = num;
-}
+//void Fruit::setDisplayCounter(int num)
+//{
+//	displayCounter = num;
+//}
 
 void Fruit::setFruitSymbol()
 {
@@ -79,9 +86,8 @@ void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 			{
 				if (theGame->getColored()) //Set color
 					setTextColor(LIGHTMAGENTA);
-				//position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL);
-				fruitOnBoard = false;
-				displayCounter = 0;
+				position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL);
+				turnOffFruit();
 				setTextColor(WHITE);
 			}
 		}
@@ -90,8 +96,7 @@ void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 		{
 			if (theGame->getColored()) //Set color
 				setTextColor(LIGHTYELLOW);
-			fruitOnBoard = false;
-			displayCounter = 0;
+			turnOffFruit();
 			setTextColor(WHITE);
 			theGame->pacmanAteFruit(fruitSymbol - '0');
 			theGame->updateBoard(position[0]);
@@ -99,12 +104,26 @@ void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 
 		else if(fruitOnBoard)
 		{
-			if (theGame->getColored()) //Set color
-				setTextColor(LIGHTMAGENTA);
-			position[0].draw(DRAW_CHARACTER, fruitSymbol); //Draw new position
-			position[1] = position[0];
-			setTextColor(WHITE);
+			if (displayCounter == 0)
+			{
+				turnOffFruit();
+				theGame->updateBoard(position[0]);
+			}
+			else
+			{
+				if (theGame->getColored()) //Set color
+					setTextColor(LIGHTMAGENTA);
+				position[0].draw(DRAW_CHARACTER, fruitSymbol); //Draw new position
+				position[1] = position[0];
+				setTextColor(WHITE);
+				displayCounter--;
+			}
 		}
 	}
 }
 
+void Fruit::turnOffFruit()
+{
+	fruitOnBoard = false;
+	displayCounter = 0;
+}

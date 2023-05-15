@@ -17,6 +17,7 @@ private:
 
 public:
 	Pacman();
+	Pacman(int _lives);
 	void setLives();
 	int getPoints();
 	void setPoints(int _points);

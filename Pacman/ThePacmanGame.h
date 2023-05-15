@@ -37,18 +37,23 @@ class ThePacmanGame {
 	int numOfBreadcrumbs;
 	bool gameIsOn;
 	bool colored;
+	bool default_mode;
+	int screen_num;
 							
 public:
 	ThePacmanGame(bool coloredGame);
+	ThePacmanGame(bool coloredGame, int _lives);
 	void checkGameLevel();
 	bool getColored();
 	//void setBoard(const char* boardToCopy[ROWS]);
 	void setBoardBeforeObjectMoves(const Point& p);
+	void setBreadcrumbs();
 	void drawObjects();
 	void initBoardFromFile(const string file_name);
 	void init();
 	void run();
-	void start(const string file_name);
+	void startUsersScreen(const string file_name);
+	int startDefault();
 	void initAfterPause();
 	void updateBoard(const Point& p);
 	bool isWall(const Point& p, int object);

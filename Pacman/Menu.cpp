@@ -11,9 +11,9 @@ using std::endl;
 //9- for exit
 //The function runs until the user enters 9 to exit from the game
 void Menu::print() {
-	string file_name;
+	
 	char choice;
-	bool color;
+	bool default_mode;
 	char game_level;
 	srand(time(NULL)); //Added for random
 	printOptions(); 
@@ -24,12 +24,8 @@ void Menu::print() {
 		switch (choice)
 		{
 		case '1': //start new game
-			file_name = readFile();
-			if(file_name != "NULL")
-			{
-				color = checkIfColored();
-				ThePacmanGame(color).start(file_name);
-			}
+			
+
 			break;
 		case '8': //Instructions
 			clear_screen();
@@ -50,6 +46,59 @@ void Menu::print() {
 	exit(0); //finish the game
 }
 
+void Menu::manageGame()
+{
+	bool color = checkIfColored();
+	string file_name;
+	int howManyLives=3;
+
+	if (isDefaultMode())
+	{
+		while (howManyLives > 0)
+		{
+
+		}
+	}
+	else
+	{
+		file_name = readFile();
+		if (file_name != "NULL")
+		{
+			ThePacmanGame(color).startUsersScreen(file_name);
+		}
+	}
+}
+
+bool Menu::isDefaultMode()
+{
+	char c;
+	bool validAnswer = false,res;
+	cout << "Would you like to select a screen? Please choose Y/N" << endl;
+	cout << "Note that chosing 'N' means playing the default screens." << endl;
+	cin >> c;
+	while (!validAnswer)
+	{
+		cin >> c;
+		c = toupper(c);
+		switch (c)
+		{
+		case 'Y':
+			res = false;
+			validAnswer = true;
+			break;
+		case 'N':
+			res = true;
+			validAnswer = true;
+			break;
+		default:
+			cout << "WRONG KEY! PLEASE CHOOSE AGAIN - Y/N." << endl;
+			Sleep(1000);
+			break;
+		}
+	}
+	return res;
+}
+
 string Menu::readFile()
 {
 	int num;
@@ -58,7 +107,7 @@ string Menu::readFile()
 	cout << "Please choose a number between 1-3 to upload a relevant screen:" << endl;
 	cin >> num;
 	//new_name = "C:\\Users\\amitn\\source\\CPP\\Pacman\\Pacman\\";
-	new_name = "pacman_" + std::to_string(num) + ".screen";
+	new_name = "pacman_" + std::to_string(num) + ".screen.txt";
 
 	//std::ifstream screenFile(new_name, std::ios_base::in);
 	std::ifstream screenFile(new_name);

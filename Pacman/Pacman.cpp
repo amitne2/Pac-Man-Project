@@ -86,7 +86,10 @@ void Pacman::move()
 		{
 			position[1].draw(DRAW_CHARACTER, ' '); //Set the old position
 			if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN))) //Checks if next move is on breadCrumb
+			{
 				points++;
+				theGame->setBreadcrumbs();
+			}
 		}
 		if(theGame->getColored()) //Set color
 			setTextColor(YELLOW);	

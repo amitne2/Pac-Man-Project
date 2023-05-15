@@ -6,6 +6,8 @@
 //Constructor ghost
 Ghost::Ghost()
 {
+	direction = rand() %3;
+	countSteps = 0;
 	levelBIndication = false;
 }
 
@@ -13,6 +15,8 @@ Ghost::Ghost(int _x, int _y)
 {
 	originalPosition.set(_x, _y);
 	position[0] = position[1] = originalPosition;
+	direction = rand() % 3;
+	countSteps = 0;
 	levelBIndication = false;
 }
 
@@ -39,8 +43,17 @@ void Ghost::move(const Point& pac, Fruit* fruitsArr)
 	else if (theGame->isWall(position[1].next(direction, NOT_PACMAN), NOT_PACMAN))
 		position[0] = position[1];
 	
-	else if(!theGame->isWall(position[1].next(direction, NOT_PACMAN), NOT_PACMAN))
+	else
 	{
+		for (int i = 0; i < NUM_OF_FRUITS; i++)
+		{
+			if (theGame->checkIfTheSamePosition(position[0], fruitsArr[i].getCurrentPosition()) && fruitsArr[i].getFruitOnBoard())
+			{
+				fruitsArr[i].turnOffFruit();
+				theGame->updateBoard(position[0]);
+			}
+		}
+		
 		theGame->setBoardBeforeObjectMoves(position[1]);
 		if(theGame->getColored()) //Set color
 			setTextColor(LIGHTMAGENTA);
@@ -49,18 +62,7 @@ void Ghost::move(const Point& pac, Fruit* fruitsArr)
 		setTextColor(WHITE);
 	}
 
-	else //fruit
-	{
-		for (int i = 0; i < NUM_OF_FRUITS; i++)
-		{
-			if (theGame->checkIfTheSamePosition(position[0], fruitsArr[i].getCurrentPosition()) && fruitsArr[i].getFruitOnBoard())
-			{
-				fruitsArr[i].setFruitOnBoard(false);
-				fruitsArr[i].setDisplayCounter(0);
-				theGame->updateBoard(position[0]);
-			}
-		}
-	}
+	countSteps++;
 }
 
 void Ghost::setDirection(const Point& pac)
@@ -93,9 +95,12 @@ void Ghost::setDirection(const Point& pac)
 		}	
 		break;
 	case 'c': //NOVICE level
-		if (countSteps == MAX_MOVES)
+		if (countSteps == MAX_MOVES || countSteps == 0)
 		{
+			srand(time(NULL));
 			direction = rand() % 3;
+			while(theGame->isWall(position[1].next(direction, NOT_PACMAN), NOT_PACMAN))
+				direction = rand() % 3;
 			countSteps = 0;
 		}
 		break;
