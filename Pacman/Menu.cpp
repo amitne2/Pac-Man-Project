@@ -57,13 +57,13 @@ string Menu::readFile()
 	clear_screen();
 	cout << "Please choose a number between 1-3 to upload a relevant screen:" << endl;
 	cin >> num;
-	new_name = "C:\\Users\\dgord\\OneDrive\\Desktop\\College\\c++\\Pacman\\Pacman\\";
-	new_name += "pacman_" + std::to_string(num) + ".screen";
+	//new_name = "C:\\Users\\amitn\\source\\CPP\\Pacman\\Pacman\\";
+	new_name = "pacman_" + std::to_string(num) + ".screen";
 
 	//std::ifstream screenFile(new_name, std::ios_base::in);
 	std::ifstream screenFile(new_name);
 	//screenFile.open(new_name, std::ios_base::in);
-	if (!screenFile.is_open())
+	if (!screenFile.is_open() || !screenFile.good())
 	{
 		cout << "There is no such file!" << endl;
 		clear_screen();
