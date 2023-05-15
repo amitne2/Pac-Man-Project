@@ -1,11 +1,9 @@
 #include "Menu.h"
 #include "ThePacmanGame.h"
-#include <cstdlib>
-#include <windows.h>
 
-using std:: cout;
-using std:: cin;
-using std:: endl;
+using std::cout;
+using std::cin;
+using std::endl;
 
 //This function print the menu option 
 //1-for start new game
@@ -13,6 +11,7 @@ using std:: endl;
 //9- for exit
 //The function runs until the user enters 9 to exit from the game
 void Menu::print() {
+	string file_name;
 	char choice;
 	bool color;
 	char game_level;
@@ -25,8 +24,12 @@ void Menu::print() {
 		switch (choice)
 		{
 		case '1': //start new game
-			color = checkIfColored();
-			ThePacmanGame(color).start();
+			file_name = readFile();
+			if(file_name != "NULL")
+			{
+				color = checkIfColored();
+				ThePacmanGame(color).start(file_name);
+			}
 			break;
 		case '8': //Instructions
 			clear_screen();
@@ -45,6 +48,31 @@ void Menu::print() {
 	}
 
 	exit(0); //finish the game
+}
+
+string Menu::readFile()
+{
+	int num;
+	string new_name;
+	clear_screen();
+	cout << "Please choose a number between 1-3 to upload a relevant screen:" << endl;
+	cin >> num;
+	new_name = "C:\\Users\\dgord\\OneDrive\\Desktop\\College\\c++\\Pacman\\Pacman\\";
+	new_name += "pacman_" + std::to_string(num) + ".screen";
+
+	//std::ifstream screenFile(new_name, std::ios_base::in);
+	std::ifstream screenFile(new_name);
+	//screenFile.open(new_name, std::ios_base::in);
+	if (!screenFile.is_open())
+	{
+		cout << "There is no such file!" << endl;
+		clear_screen();
+		screenFile.close();
+		return "NULL";
+	}
+	
+	screenFile.close();
+	return new_name;
 }
 
 //This function prints the menu options 

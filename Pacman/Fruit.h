@@ -2,6 +2,7 @@
 #define _FRUIT_H_
 
 #include "Game_Object.h"
+#include <vector>
 //#include "Ghost.h"
 //#include "ThePacmanGame.h"
 
@@ -20,7 +21,7 @@ public:
 	void setDisplayCounter(int num);
 	void setFruitSymbol();
 	char getFruitSymbol();
-	void move(const Point& pac, Ghost *ghostsArr);
+	void move(const Point& pac, std::vector<Ghost>& ghosts);
 	~Fruit() {}
 };
 

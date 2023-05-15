@@ -1,10 +1,12 @@
 #include "ThePacmanGame.h"
 #include "_board.h"
+#include <string>
 
 //Constructor
 ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), Point(72, 24) }
 {
 	checkGameLevel();
+	numOfBreadcrumbs = 0;
 	gameIsOn = true;
 	colored = coloredGame;
 }
@@ -53,18 +55,18 @@ bool ThePacmanGame::getColored()
 	return colored;
 }
 
-//This function sets the game board - copies from const board to original.
-void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			originalBoard[i][j] = boardToCopy[i][j];
-		}
-		originalBoard[i][COLS] = '\0';
-	}
-}
+////This function sets the game board - copies from const board to original.
+//void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
+//{
+//	for (int i = 0; i < ROWS; i++)
+//	{
+//		for (int j = 0; j < COLS; j++)
+//		{
+//			originalBoard[i][j] = boardToCopy[i][j];
+//		}
+//		originalBoard[i][COLS] = '\0';
+//	}
+//}
 
 //This function sets the breadcrumbs on the board to the way there were before there was a strike.
 void ThePacmanGame::setBoardBeforeObjectMoves(const Point& p)
@@ -82,21 +84,23 @@ void ThePacmanGame::drawObjects()
 	updateBoard(pac.getCurrentPosition());
 	if (colored)
 		setTextColor(LIGHTMAGENTA);
-	ghosts[0].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
-	ghosts[1].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
+	for(int i=0; i<ghosts.size(); i++)
+		ghosts[i].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
+	if(colored)
+		setTextColor(LIGHTMAGENTA);
+	for (int i = 0; i < NUM_OF_FRUITS; i++)
+	{
+		if (fruits[i].getFruitOnBoard())
+			fruits[i].getCurrentPosition().draw(DRAW_CHARACTER, fruits[i].getFruitSymbol());
+	}
 	setTextColor(WHITE);
 }
 
-void ThePacmanGame::readFile(string file_name)
+void ThePacmanGame::initBoardFromFile(const string file_name)
 {
 	char c;
 	ifstream screenFile(file_name, std::ios_base::in);
-	if (!screenFile.is_open() || !screenFile.good())
-	{
-		cout << "ERROR!";
-		exit(0);
-	}
-
+	
 	for (int i = 0; i < ROWS; i++)
 	{
 		for (int j = 0; j < COLS; j++)
@@ -112,10 +116,14 @@ void ThePacmanGame::readFile(string file_name)
 			else if (c == '$')
 			{
 				board[i][j] = '.';
+				numOfBreadcrumbs++;
 				ghosts.push_back(Ghost(i, j));
 			}
 			else
+			{
 				board[i][j] = c;
+				numOfBreadcrumbs++;
+			}
 		}
 		screenFile.get(c); //get \n
 	}
@@ -135,18 +143,17 @@ void ThePacmanGame::init()
 				setTextColor(LIGHTRED);
 			if (i == 24 && j == 72 && colored) //color points
 				setTextColor(LIGHTGREEN);
-			if(originalBoard[i][j] == '+' && colored)
+			if(board[i][j] == '#' && colored)
 				setTextColor(CYAN);
-			cout << originalBoard[i][j];
+			cout << board[i][j];
 			cout.flush();
 			setTextColor(WHITE);
-			board[i][j] = originalBoard[i][j];
 		}
 		board[i][COLS] = '\0';
 	}
 
 	pac.setGame(this);
-	for(int i=0; i<NUM_OF_GHOSTS; i++)
+	for(int i=0; i<ghosts.size(); i++)
 		ghosts[i].setGame(this);
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
 		fruits[i].setGame(this);
@@ -183,7 +190,7 @@ void ThePacmanGame::run()
 
 		if (countPacMoves % 2 == 0 && gameIsOn)
 		{
-			for (int i = 0; i < 2 && gameIsOn; i++)
+			for (int i = 0; i < ghosts.size() && gameIsOn; i++)
 				ghosts[i].move(pac.getCurrentPosition(), fruits);
 			
 			if (countPacMoves == 10)
@@ -209,10 +216,11 @@ void ThePacmanGame::run()
 }
 
 //This function starts the game - calls all the initializing functions.
-void ThePacmanGame::start()
+void ThePacmanGame::start(const string file_name)
 {
 	clear_screen();
-	setBoard(board_example);
+	//setBoard(board_example);
+	initBoardFromFile(file_name);
 	init();
 	run();
 }
@@ -240,7 +248,7 @@ void ThePacmanGame::initAfterPause()
 				setTextColor(LIGHTRED);
 			if (i == 24 && j == 72 && colored) //color points
 				setTextColor(LIGHTGREEN);
-			if (originalBoard[i][j] == '+' && colored)
+			if (board[i][j] == '#' && colored)
 				setTextColor(CYAN);
 			cout << board[i][j];
 			cout.flush();
@@ -289,7 +297,7 @@ bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
 //Check if the pacman and the ghost are in the same position at the moment.
 bool ThePacmanGame::isGhost()
 {
-	for (int i = 0; i < NUM_OF_GHOSTS; i++)
+	for (int i = 0; i < ghosts.size(); i++)
 		if (checkIfTheSamePosition(pac.getCurrentPosition(), ghosts[i].getCurrentPosition()))
 			return true;
 	return false;
@@ -356,12 +364,12 @@ void ThePacmanGame::ghostAtePacman()
 	pac.setLives();
 	if (pac.getLives() != 0)
 	{
-		setBoardBeforeObjectMoves(ghosts[0].getCurrentPosition());
-		setBoardBeforeObjectMoves(ghosts[1].getCurrentPosition());
+		for (int i = 0; i < ghosts.size(); i++)
+			setBoardBeforeObjectMoves(ghosts[i].getCurrentPosition());
 		pac.resetOriginalPosition();
 		pac.setDirection(3);
-		ghosts[0].resetOriginalPosition();
-		ghosts[1].resetOriginalPosition();
+		for(int i=0; i<ghosts.size(); i++)
+			ghosts[i].resetOriginalPosition();
 		drawObjects();
 		if (colored)
 			setTextColor(LIGHTRED);

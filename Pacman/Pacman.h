@@ -16,7 +16,7 @@ private:
 	void setArrowKeys(const char* keys);
 
 public:
-	Pacman(int _y, int _x, int _direction = 3);
+	Pacman();
 	void setLives();
 	int getPoints();
 	void setPoints(int _points);

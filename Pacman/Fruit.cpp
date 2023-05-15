@@ -1,7 +1,7 @@
 #include "Fruit.h"
 #include "ThePacmanGame.h"
 
-Fruit::Fruit(int _y, int _x, int _direction, char _fruitSymbol) : Game_Object(_x, _y, _direction)
+Fruit::Fruit(int _y, int _x, int _direction, char _fruitSymbol)
 {
 	fruitSymbol = _fruitSymbol;
 	displayCounter = 0;
@@ -55,7 +55,7 @@ char Fruit::getFruitSymbol()
 //This function random a number between 1-4 for direction
 //Checks the next move is valid (not wall) - If it's a wall, random number until it doesn't
 //Checks if the fruit is on pacman or ghost position, if pacman - update the relevant variables
-void Fruit::move(const Point& pac, Ghost *ghostsArr)
+void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 {
 	srand(time(NULL));
 	direction = rand() % 3; //random a number 
@@ -73,9 +73,9 @@ void Fruit::move(const Point& pac, Ghost *ghostsArr)
 	{
 		theGame->setBoardBeforeObjectMoves(position[1]); //Update board before move
 
-		for (int i = 0; i < NUM_OF_GHOSTS && fruitOnBoard; i++)
+		for (int i = 0; i < ghosts.size() && fruitOnBoard; i++)
 		{
-			if (theGame->checkIfTheSamePosition(ghostsArr[i].getCurrentPosition(), position[0])) //Checks if the next move is on ghost position
+			if (theGame->checkIfTheSamePosition(ghosts[i].getCurrentPosition(), position[0])) //Checks if the next move is on ghost position
 			{
 				if (theGame->getColored()) //Set color
 					setTextColor(LIGHTMAGENTA);

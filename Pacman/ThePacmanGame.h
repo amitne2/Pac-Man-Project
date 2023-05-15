@@ -34,6 +34,7 @@ class ThePacmanGame {
 	Point pointsAndLives[2];
 	//char originalBoard[ROWS][COLS + 1];	// this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1];	// this is the actual board we play on, i.e.
+	int numOfBreadcrumbs;
 	bool gameIsOn;
 	bool colored;
 							
@@ -41,13 +42,13 @@ public:
 	ThePacmanGame(bool coloredGame);
 	void checkGameLevel();
 	bool getColored();
-	void setBoard(const char* boardToCopy[ROWS]);
+	//void setBoard(const char* boardToCopy[ROWS]);
 	void setBoardBeforeObjectMoves(const Point& p);
 	void drawObjects();
-	void readFile(string file_name);
+	void initBoardFromFile(const string file_name);
 	void init();
 	void run();
-	void start();
+	void start(const string file_name);
 	void initAfterPause();
 	void updateBoard(const Point& p);
 	bool isWall(const Point& p, int object);

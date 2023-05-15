@@ -19,7 +19,8 @@ private:
 	int countSteps;
 	bool levelBIndication;
 public:
-	Ghost(int _x, int _y, int _direction=3, char _gameLevel = 'b', int _countSteps=0);
+	Ghost();
+	Ghost(int _x, int _y);
 	void move(const Point& pac, Fruit* fruitsArr);
 	void setDirection(const Point& pac);
 	void setGameLevel(char level);
