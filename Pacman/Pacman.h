@@ -8,6 +8,7 @@
 
 //class ThePacmanGame;
 
+
 class Pacman : public Game_Object {
 private:
 	int lives;

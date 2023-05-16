@@ -24,6 +24,7 @@ enum { ROWS = 26, COLS = 80 };
 #define LOSE 0
 #define DRAW_CHARACTER -1
 #define DRAW_NUMBER 1
+#define DEFAULT_DIRECTION 3
 
 class ThePacmanGame {
 	enum { ESC = 27 };
@@ -37,23 +38,24 @@ class ThePacmanGame {
 	int numOfBreadcrumbs;
 	bool gameIsOn;
 	bool colored;
-	bool default_mode;
-	int screen_num;
+	//bool screen_is_default;
 							
 public:
 	ThePacmanGame(bool coloredGame);
-	ThePacmanGame(bool coloredGame, int _lives);
+	//ThePacmanGame(bool coloredGame, int _lives);
 	void checkGameLevel();
 	bool getColored();
+	int getPacmanLives();
+	int getPacmanPoints();
 	//void setBoard(const char* boardToCopy[ROWS]);
 	void setBoardBeforeObjectMoves(const Point& p);
 	void setBreadcrumbs();
+	void setScreenMode(bool _mode);
 	void drawObjects();
 	void initBoardFromFile(const string file_name);
 	void init();
 	void run();
-	void startUsersScreen(const string file_name);
-	int startDefault();
+	void start(const string file_name);
 	void initAfterPause();
 	void updateBoard(const Point& p);
 	bool isWall(const Point& p, int object);
@@ -65,6 +67,7 @@ public:
 	void manageFruits();
 	void ghostAtePacman();
 	void pacmanAteFruit(int fruitPoints);
+	void prepareGameForNextScreen();
 	void gameResult(char ch);
 	void printGameOver();
 	void printWinningMessage();

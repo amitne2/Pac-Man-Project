@@ -24,7 +24,7 @@ void Menu::print() {
 		switch (choice)
 		{
 		case '1': //start new game
-			
+			manageGame();
 
 			break;
 		case '8': //Instructions
@@ -49,24 +49,11 @@ void Menu::print() {
 void Menu::manageGame()
 {
 	bool color = checkIfColored();
-	string file_name;
-	int howManyLives=3;
-
+	
 	if (isDefaultMode())
-	{
-		while (howManyLives > 0)
-		{
-
-		}
-	}
+		userChoseDefaultMode(color);
 	else
-	{
-		file_name = readFile();
-		if (file_name != "NULL")
-		{
-			ThePacmanGame(color).startUsersScreen(file_name);
-		}
-	}
+		userChoseScreen(color);
 }
 
 bool Menu::isDefaultMode()
@@ -75,7 +62,7 @@ bool Menu::isDefaultMode()
 	bool validAnswer = false,res;
 	cout << "Would you like to select a screen? Please choose Y/N" << endl;
 	cout << "Note that chosing 'N' means playing the default screens." << endl;
-	cin >> c;
+
 	while (!validAnswer)
 	{
 		cin >> c;
@@ -99,29 +86,100 @@ bool Menu::isDefaultMode()
 	return res;
 }
 
-string Menu::readFile()
+void Menu::userChoseDefaultMode(bool color)
 {
-	int num;
+	ThePacmanGame game(color);
+	bool gameIsOn = true;
+	string file_name;
+	
+	//game.setScreenMode(true);
+
+	for (int i = 1; i <= NUM_OF_SCREENS && gameIsOn; i++)
+	{
+		file_name = getFileName(i);
+		game.start(file_name);
+		if (game.getPacmanLives() == 0)
+			gameIsOn = false;
+		else if (i != NUM_OF_SCREENS) //if i=NUM_OF_SCREENS, you're on the last screen, no need to prepare for another game
+		{
+			game.prepareGameForNextScreen();
+			printChangingScreenMessage();
+		}
+	}
+
+	gameResult(game.getPacmanLives(), color);
+}
+
+void Menu::gameResult(int lives, bool color)
+{
+	if (lives == 0)
+		printGameOver(color);
+	else
+		printWinningMessage(color);
+
+	Sleep(1000);
+	_getch();
+	clear_screen();
+}
+
+string Menu::getFileName(int ind)
+{
+	string fileName;
+	switch (ind)
+	{
+	case 1:
+		fileName = SCREEN_1;
+		break;
+	case 2:
+		fileName = SCREEN_2;
+		break;
+	case 3:
+		fileName = SCREEN_3;
+		break;
+	}
+
+	return fileName;
+}
+
+void Menu::userChoseScreen(bool color)
+{
+	ThePacmanGame game(color);
 	string new_name;
 	clear_screen();
-	cout << "Please choose a number between 1-3 to upload a relevant screen:" << endl;
-	cin >> num;
-	//new_name = "C:\\Users\\amitn\\source\\CPP\\Pacman\\Pacman\\";
-	new_name = "pacman_" + std::to_string(num) + ".screen.txt";
-
-	//std::ifstream screenFile(new_name, std::ios_base::in);
+	cout << "Please enter the name of the screen you would like to upload:" << endl;
+	cin >> new_name;
+	
 	std::ifstream screenFile(new_name);
-	//screenFile.open(new_name, std::ios_base::in);
+
 	if (!screenFile.is_open() || !screenFile.good())
 	{
 		cout << "There is no such file!" << endl;
 		clear_screen();
-		screenFile.close();
-		return "NULL";
 	}
+	else
+	{
+		//game.setScreenMode(false);
+		game.start(new_name);
+		gameResult(game.getPacmanLives(), color);
+		screenFile.close();
+	}
+}
+
+void Menu::printChangingScreenMessage()
+{
+	clear_screen();
+	cout << "	    	                       _         _       _   _                 " << endl;
+    cout << "                                 | |       | |     | | (_)" << endl;
+    cout << "   ___ ___  _ __   __ _ _ __ __ _| |_ _   _| | __ _| |_ _  ___  _ __  ___" << endl;
+    cout << "  / __ / _ \\ | '_ \\ / _` | '__ / _` | __| | | | |/ _` | __| |/ _ \\ | '_ \\/ __|" << endl;
+    cout << " | (_ | (_) | | | | (_| | | | (_| | |_| |_| | | (_| | |_| | (_) | | | \__ \\" << endl;
+    cout << "  \\___\\___/|_| |_|\\__, |_|  \\__,_|\\__|\\__,_|_|\\__,_|\\__|_|\\___/|_| |_|___/" << endl;
+    cout << "                    __/ |" << endl;
+    cout << "                 | ___ /" << endl;
+	cout << "You are about to move to the next screen of the game." << endl;
 	
-	screenFile.close();
-	return new_name;
+	Sleep(1000);
+	clear_screen();
 }
 
 //This function prints the menu options 
@@ -196,6 +254,43 @@ bool Menu::checkIfColored()
 
 	return res;
 }
+
+
+//This function prints the GAME OVER message.
+void Menu::printGameOver(bool color)
+{
+	clear_screen();
+	if (color)
+		setTextColor(LIGHTRED);
+	cout << "######       ###    ##     ## ########     #######  ##     ## ######## ########   ####  ####" << endl;
+	cout << "##    ##    ## ##   ###   ### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
+	cout << "##         ##   ##  #### #### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
+	cout << "##   #### ##     ## ## ### ## ######      ##     ## ##     ## ######   ########    ##    ##" << endl;
+	cout << "##    ##  ######### ##     ## ##          ##     ##  ##   ##  ##       ##   ## " << endl;
+	cout << "##    ##  ##     ## ##     ## ##          ##     ##   ## ##   ##       ##    ##   ####  ####" << endl;
+	cout << "######    ##     ## ##     ## ########     #######     ###    ######## ##     ##  ####  ####" << endl;
+	setTextColor(WHITE);
+
+	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
+}
+
+//This function prints the WINNER message.
+void Menu::printWinningMessage(bool color)
+{
+	clear_screen();
+	if (color)
+		setTextColor(MAGENTA);
+	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
+	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
+	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
+	cout << "##  ##  ##  ##  ## ## ## ## ## ## ######   ########   ##   ##" << endl;
+	cout << "##  ##  ##  ##  ##  #### ##  #### ##       ##   ##" << endl;
+	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ##  #### ####" << endl;
+	cout << "###   ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
+	setTextColor(WHITE);
+	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
+}
+
 
 ////This function asks the player to choose the game level.
 ////Game level affects the ghosts behavior.

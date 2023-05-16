@@ -10,6 +10,14 @@ Pacman::Pacman()
 	setArrowKeys("wxads");
 }
 
+Pacman::Pacman(int _lives)
+{
+	direction = 3;
+	lives = _lives;
+	points = 0;
+	setArrowKeys("wxads");
+}
+
 //This function set the arrow keys of the game
 void Pacman::setArrowKeys(const char* keys)
 {

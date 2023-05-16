@@ -8,20 +8,19 @@ ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), P
 	numOfBreadcrumbs = 0;
 	gameIsOn = true;
 	colored = coloredGame;
-	default_mode = true; //load screens as long as user is winning
-	screen_num = 1;
+	//screen_is_default = true; //load screens as long as user is winning
 }
 
 
-//Constructor
-ThePacmanGame::ThePacmanGame(bool coloredGame, int _lives) : pac(_lives), pointsAndLives{ Point(16,24), Point(72, 24) }
-{
-	numOfBreadcrumbs = 0;
-	gameIsOn = true;
-	colored = coloredGame;
-	default_mode = true; //load screens as long as user is winning
-	screen_num = 1;
-}
+////Constructor
+//ThePacmanGame::ThePacmanGame(bool coloredGame, int _lives) : pac(_lives), pointsAndLives{ Point(16,24), Point(72, 24) }
+//{
+//	numOfBreadcrumbs = 0;
+//	gameIsOn = true;
+//	colored = coloredGame;
+//	default_mode = true; //load screens as long as user is winning
+//	screen_num = 1;
+//}
 
 //This function asks the player to choose the game level.
 //Game level affects the ghosts behavior.
@@ -66,6 +65,16 @@ bool ThePacmanGame::getColored()
 	return colored;
 }
 
+int ThePacmanGame::getPacmanLives()
+{
+	return pac.getLives();
+}
+
+int ThePacmanGame::getPacmanPoints()
+{
+	return pac.getPoints();
+}
+
 ////This function sets the game board - copies from const board to original.
 //void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
 //{
@@ -89,6 +98,11 @@ void ThePacmanGame::setBreadcrumbs()
 {
 	numOfBreadcrumbs--;
 }
+
+//void ThePacmanGame::setScreenMode(bool _mode)
+//{
+//	screen_is_default = _mode;
+//}
 
 //Draw pacman and ghosts according to their places. If user chose a colorful game - function will 
 //draww in color. Otherwise - it will draw in white.
@@ -224,20 +238,14 @@ void ThePacmanGame::run()
 		}
 
 		if (numOfBreadcrumbs == 0)
-		{
-			gameResult(WIN);
 			gameIsOn = false;
-		}
 
 		Sleep(250);
 	} while (gameIsOn);
-
-	if (pac.getLives() == 0)
-		gameResult(LOSE);
 }
 
 //This function starts the game - calls all the initializing functions.
-void ThePacmanGame::startUsersScreen(const string file_name)
+void ThePacmanGame::start(const string file_name)
 {
 	clear_screen();
 	//setBoard(board_example);
@@ -246,14 +254,6 @@ void ThePacmanGame::startUsersScreen(const string file_name)
 	run();
 }
 
-int ThePacmanGame::startDefault()
-{
-	clear_screen();
-	//setBoard(board_example);
-	initBoardFromFile(file_name);
-	init();
-	run();
-}
 
 //Initialize the game after pressing ESC for pause - return all the objects to their places before the ESC
 //button was pressed.
@@ -418,54 +418,67 @@ void ThePacmanGame::pacmanAteFruit(int fruitPoints)
 	pointsAndLives[1].draw(pac.getPoints(), DRAW_NUMBER);
 }
 
-//Print the right message according to game result.
-void ThePacmanGame::gameResult(char ch)
-{
-	clear_screen();
-	if (ch)
-		printWinningMessage();
-	else
-		printGameOver();
+//This function prepares the ThePacmanGame parameters for the next screen.
+//Positions will not be changes here, because they are set in initBoardFromFile function.
 
-	Sleep(1000);
-	_getch();
-	clear_screen();
+void ThePacmanGame::prepareGameForNextScreen()
+{
+	pac.setDirection(DEFAULT_DIRECTION);
+	for (int i = 0; i < ghosts.size(); i++)
+		ghosts.pop_back();
+	for (int i = 0; i < NUM_OF_FRUITS; i++)
+		fruits[i].turnOffFruit();
+	numOfBreadcrumbs = 0;
 }
 
+////Print the right message according to game result.
+//void ThePacmanGame::gameResult(char ch)
+//{
+//	clear_screen();
+//	if (ch)
+//		printWinningMessage();
+//	else
+//		printGameOver();
+//
+//	Sleep(1000);
+//	_getch();
+//	clear_screen();
+//}
 
-//This function prints the GAME OVER message.
-void ThePacmanGame::printGameOver()
-{
-	if(colored)
-		setTextColor(LIGHTRED);
-	cout << "######       ###    ##     ## ########     #######  ##     ## ######## ########   ####  ####" << endl;
-	cout << "##    ##    ## ##   ###   ### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
-	cout << "##         ##   ##  #### #### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
-	cout << "##   #### ##     ## ## ### ## ######      ##     ## ##     ## ######   ########    ##    ##" << endl;
-	cout << "##    ##  ######### ##     ## ##          ##     ##  ##   ##  ##       ##   ## "<< endl;
-	cout << "##    ##  ##     ## ##     ## ##          ##     ##   ## ##   ##       ##    ##   ####  ####" << endl;
-	cout << "######    ##     ## ##     ## ########     #######     ###    ######## ##     ##  ####  ####" << endl;
-	setTextColor(WHITE);
 
-	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
-
-}
-
-//This function prints the WINNER message.
-void ThePacmanGame::printWinningMessage()
-{
-	if (colored)
-		setTextColor(MAGENTA);
-	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
-	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
-	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
-	cout << "##  ##  ##  ##  ## ## ## ## ## ## ######   ########   ##   ##" << endl;
-	cout << "##  ##  ##  ##  ##  #### ##  #### ##       ##   ##" << endl;
-	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ##  #### ####" << endl;
-	cout << "###   ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
-	setTextColor(WHITE);
-	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
-}
+////This function prints the GAME OVER message.
+//void ThePacmanGame::printGameOver()
+//{
+//	if(colored)
+//		setTextColor(LIGHTRED);
+//	cout << "######       ###    ##     ## ########     #######  ##     ## ######## ########   ####  ####" << endl;
+//	cout << "##    ##    ## ##   ###   ### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
+//	cout << "##         ##   ##  #### #### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
+//	cout << "##   #### ##     ## ## ### ## ######      ##     ## ##     ## ######   ########    ##    ##" << endl;
+//	cout << "##    ##  ######### ##     ## ##          ##     ##  ##   ##  ##       ##   ## "<< endl;
+//	cout << "##    ##  ##     ## ##     ## ##          ##     ##   ## ##   ##       ##    ##   ####  ####" << endl;
+//	cout << "######    ##     ## ##     ## ########     #######     ###    ######## ##     ##  ####  ####" << endl;
+//	setTextColor(WHITE);
+//
+//	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
+//
+//}
+//
+////This function prints the WINNER message.
+//void ThePacmanGame::printWinningMessage()
+//{
+//	if (colored)
+//		setTextColor(MAGENTA);
+//	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
+//	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
+//	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
+//	cout << "##  ##  ##  ##  ## ## ## ## ## ## ######   ########   ##   ##" << endl;
+//	cout << "##  ##  ##  ##  ##  #### ##  #### ##       ##   ##" << endl;
+//	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ##  #### ####" << endl;
+//	cout << "###   ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
+//	setTextColor(WHITE);
+//	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
+//}
 
 //This function prints the PAUSE message.
 void ThePacmanGame::pauseMessage()
