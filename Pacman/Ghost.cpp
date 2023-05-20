@@ -114,45 +114,35 @@ void Ghost::setGameLevel(char level)
 
 void Ghost::chasePacman(const Point& pac)
 {
-	int xGap, yGap;
+	int dir, best, curr;
+	Point temp = position[0];
+	bool firstRound = true;
 
-	if (pac.getY() == position[0].getY()) //same y
+	for (int i = 0; i < 4; i++) // 4 directions 
 	{
-		if (pac.getX() > position[0].getX())
-			direction = MOVE_UP;
-		else if (pac.getX() < position[0].getX())
-			direction = MOVE_DOWN;
-	}
-
-	else if (pac.getX() == position[0].getX()) //same x
-	{
-		if (pac.getY() > position[0].getY())
-			direction = MOVE_RIGHT;
-		else if (pac.getY() < position[0].getY())
-			direction = MOVE_LEFT;
-	}
-
-	else
-	{
-		xGap = pac.getX() - position[0].getX();
-		yGap = pac.getY() - position[0].getY();
-
-		if (abs(xGap) > abs(yGap))
+		if (!(theGame->isWall(position[1].next(i, NOT_PACMAN), NOT_PACMAN)))
 		{
-			if (xGap > 0)
-				direction = MOVE_DOWN;
-			else
-				direction = MOVE_UP;
-		}
+			temp.move(i, NOT_PACMAN);
+			if (firstRound)
+			{
+				dir = i;
+				best = temp.getDistance(pac);
+				firstRound = false;
+			}
 
-		else
-		{
-			if (yGap > 0)
-				direction = MOVE_RIGHT;
 			else
-				direction = MOVE_LEFT;
+			{
+				curr = temp.getDistance(pac);
+				if (curr < best)
+				{
+					best = curr;
+					dir = i;
+				}
+			}
+			temp = position[0];
 		}
 	}
+	direction = dir;
 }
 
 //Empty destructor 
