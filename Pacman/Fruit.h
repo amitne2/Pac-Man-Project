@@ -3,10 +3,9 @@
 
 #include "Game_Object.h"
 #include <vector>
-//#include "Ghost.h"
-//#include "ThePacmanGame.h"
 
 class Ghost;
+
 class Fruit : public Game_Object {
 private:
 	char fruitSymbol;

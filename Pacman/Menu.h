@@ -5,11 +5,10 @@
 #include <string>
 #include <vector>
 
-#define NUM_OF_SCREENS 3
-
-
+constexpr int NUM_OF_SCREENS = 3;
 enum {START_GAME = 1, INSTRUCTIONS = 8, EXIT = 9};
 enum {YES = 'Y', NO = 'N' };
+
 class Menu {
 	bool default_mode;
 public:

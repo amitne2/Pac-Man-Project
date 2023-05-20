@@ -18,17 +18,6 @@ ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), P
 	//screen_is_default = true; //load screens as long as user is winning
 }
 
-
-////Constructor
-//ThePacmanGame::ThePacmanGame(bool coloredGame, int _lives) : pac(_lives), pointsAndLives{ Point(16,24), Point(72, 24) }
-//{
-//	numOfBreadcrumbs = 0;
-//	gameIsOn = true;
-//	colored = coloredGame;
-//	default_mode = true; //load screens as long as user is winning
-//	screen_num = 1;
-//}
-
 //This function asks the player to choose the game level.
 //Game level affects the ghosts behavior.
 void ThePacmanGame::checkGameLevel()
@@ -107,11 +96,6 @@ void ThePacmanGame::setBreadcrumbs()
 	numOfBreadcrumbs--;
 }
 
-//void ThePacmanGame::setScreenMode(bool _mode)
-//{
-//	screen_is_default = _mode;
-//}
-
 //Draw pacman and ghosts according to their places. If user chose a colorful game - function will 
 //draww in color. Otherwise - it will draw in white.
 void ThePacmanGame::drawObjects()
@@ -160,7 +144,8 @@ void ThePacmanGame::initBoardFromFile(const string file_name)
 			else
 			{
 				board[i][j] = c;
-				numOfBreadcrumbs++;
+				if(board[i][j] == '.')
+					numOfBreadcrumbs++;
 			}
 		}
 		screenFile.get(c); //get \n
@@ -405,7 +390,7 @@ void ThePacmanGame::ghostAtePacman()
 		for (int i = 0; i < ghosts.size(); i++)
 			setBoardBeforeObjectMoves(ghosts[i].getCurrentPosition());
 		pac.resetOriginalPosition();
-		pac.setDirection(3);
+		pac.setDirection(STAY);
 		for(int i=0; i<ghosts.size(); i++)
 			ghosts[i].resetOriginalPosition();
 		drawObjects();
@@ -424,6 +409,8 @@ void ThePacmanGame::pacmanAteFruit(int fruitPoints)
 {
 	pac.setPoints(fruitPoints);
 	pointsAndLives[1].draw(pac.getPoints(), DRAW_NUMBER);
+	if (isBreadCrumbs(pac.getCurrentPosition()))
+		setBreadcrumbs();
 }
 
 //This function prepares the ThePacmanGame parameters for the next screen.

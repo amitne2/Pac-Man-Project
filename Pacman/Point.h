@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "io_utils.h" 
-#define DRAW_CHARACTER -1
 
 class Point {
 	int x, y;

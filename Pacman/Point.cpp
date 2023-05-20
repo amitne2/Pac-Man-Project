@@ -1,4 +1,5 @@
 #include "Point.h"
+#include "ThePacmanGame.h"
 #include <cmath>
 
 using std::cout;

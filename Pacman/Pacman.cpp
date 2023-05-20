@@ -83,6 +83,8 @@ void Pacman::move()
 	{
 		position[1].draw(DRAW_CHARACTER, ' '); //The ghost eats the pacman
 		Sleep(2000);
+		if (theGame->isBreadCrumbs(position[0]))
+			theGame->setBreadcrumbs();
 		theGame->ghostAtePacman();
 	}
 
@@ -91,16 +93,13 @@ void Pacman::move()
 		theGame->isFruit();
 
 		if (direction != STAY) // NOT STAY POSITION
-		{
 			position[1].draw(DRAW_CHARACTER, ' '); //Set the old position
-			if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN))) //Checks if next move is on breadCrumb
-			{
-				points++;
-				theGame->setBreadcrumbs();
-			}
-		}
+		//if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN))) //Checks if next move is on breadCrumb
+		if (theGame->isBreadCrumbs(position[0])) //Checks if move is on breadCrumb
+			points++;
+
 		if(theGame->getColored()) //Set color
-			setTextColor(YELLOW);	
+				setTextColor(YELLOW);	
 		position[0].draw(DRAW_CHARACTER, PACMAN_SYMBOL); //Draw new pacman's position
 		setTextColor(WHITE);
 		position[1] = position[0]; 

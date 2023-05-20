@@ -4,7 +4,6 @@
 #include <random>
 #include <queue>
 
-
 using std::queue;
 using std::vector;
 

@@ -3,11 +3,8 @@
 
 #include <cstring>
 #include "Game_Object.h"
-//#include "ThePacmanGame.h"
-#define PACMAN_SYMBOL char(2)
 
-//class ThePacmanGame;
-
+constexpr char PACMAN_SYMBOL = char(2);
 
 class Pacman : public Game_Object {
 private:

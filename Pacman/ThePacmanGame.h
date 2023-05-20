@@ -12,18 +12,13 @@
 
 enum { ROWS = 26, COLS = 80 };
 enum {UP, DOWN, LEFT, RIGHT, STAY};
-
-#define NUM_OF_FRUITS 3
-
 enum {NOT_PACMAN, PACMAN};
 enum {BEST = 'a', GOOD = 'b', NOVICE = 'c' };
-//#define PACMAN 1
-//#define NOT_PACMAN 0
-//#define WIN 1
-//#define LOSE 0
-#define DRAW_CHARACTER -1
-#define DRAW_NUMBER 1
-#define DEFAULT_DIRECTION 3
+
+constexpr int NUM_OF_FRUITS = 3;
+constexpr int DRAW_CHARACTER = -1;
+constexpr int DRAW_NUMBER = 1;
+constexpr int DEFAULT_DIRECTION = 3;
 
 class ThePacmanGame {
 	enum { ESC = 27 };
@@ -32,16 +27,13 @@ class ThePacmanGame {
 	//Ghost ghosts[2];
 	Fruit fruits[NUM_OF_FRUITS];
 	Point pointsAndLives[2];
-	//char originalBoard[ROWS][COLS + 1];	// this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
-	char board[ROWS][COLS + 1];	// this is the actual board we play on, i.e.
+	char board[ROWS][COLS + 1];	
 	int numOfBreadcrumbs;
 	bool gameIsOn;
 	bool colored;
-	//bool screen_is_default;
 							
 public:
 	ThePacmanGame(bool coloredGame);
-	//ThePacmanGame(bool coloredGame, int _lives);
 	void checkGameLevel();
 	bool getColored();
 	int getPacmanLives();
@@ -49,7 +41,6 @@ public:
 	void copyPointsAndLivesRow(const char* points_lives_row[ROWS]);
 	void setBoardBeforeObjectMoves(const Point& p);
 	void setBreadcrumbs();
-	//void setScreenMode(bool _mode);
 	void drawObjects();
 	void initBoardFromFile(const std::string file_name);
 	void init();
@@ -67,9 +58,6 @@ public:
 	void ghostAtePacman();
 	void pacmanAteFruit(int fruitPoints);
 	void prepareGameForNextScreen();
-	//void gameResult(char ch);
-	//void printGameOver();
-	//void printWinningMessage();
 	void pauseMessage();
 	~ThePacmanGame() {}; //Distructor
 };

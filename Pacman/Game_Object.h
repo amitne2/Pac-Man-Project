@@ -19,7 +19,6 @@ public:
 	Point getCurrentPosition();
 	void setDirection(int _direction);
 	int getDirection();
-	//void move(const Point p);
 	~Game_Object() {}
 };
 

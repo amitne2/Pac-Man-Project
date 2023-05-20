@@ -5,8 +5,8 @@
 #include "Game_Object.h"
 #include "Fruit.h"
 
-#define GHOST_SYMBOL char(234)
-#define MAX_MOVES 20
+constexpr char GHOST_SYMBOL = char(234);
+constexpr int MAX_MOVES = 20;
 
 class Ghost : public Game_Object {
 private:
@@ -19,7 +19,6 @@ public:
 	void move(const Point& pac, Fruit* fruitsArr);
 	void setDirection(const Point& pac);
 	void setGameLevel(char level);
-	//void chasePacman(const Point& pac);
 	void findShortestPath(const Point& destination);
 	~Ghost();
 };
