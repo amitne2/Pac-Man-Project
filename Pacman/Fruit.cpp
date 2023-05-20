@@ -95,10 +95,7 @@ void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 
 		if (theGame->checkIfTheSamePosition(pac, position[0])) //Checks if the next move is on pacman position
 		{
-			if (theGame->getColored()) //Set color
-				setTextColor(LIGHTYELLOW);
 			turnOffFruit();
-			setTextColor(WHITE);
 			theGame->pacmanAteFruit(fruitSymbol - '0');
 			theGame->updateBoard(position[0]);
 		}
@@ -113,7 +110,7 @@ void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 			else
 			{
 				if (theGame->getColored()) //Set color
-					setTextColor(LIGHTMAGENTA);
+					setTextColor(LIGHTGREEN);
 				position[0].draw(DRAW_CHARACTER, fruitSymbol); //Draw new position
 				position[1] = position[0];
 				setTextColor(WHITE);

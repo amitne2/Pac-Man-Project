@@ -138,7 +138,6 @@ void ThePacmanGame::initBoardFromFile(const string file_name)
 			else if (c == '$')
 			{
 				board[i][j] = '.';
-				numOfBreadcrumbs++;
 				ghosts.push_back(Ghost(j, i));
 			}
 			else
