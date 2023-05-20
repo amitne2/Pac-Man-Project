@@ -1,6 +1,7 @@
 #include "Fruit.h"
 #include "ThePacmanGame.h"
 
+using std::vector;
 
 Fruit::Fruit(int _y, int _x, int _direction, char _fruitSymbol)
 {

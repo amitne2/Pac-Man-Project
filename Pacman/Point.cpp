@@ -1,5 +1,10 @@
 #include "Point.h"
 #include <cmath>
+
+using std::cout;
+using std::cin;
+using std::endl;
+
 //Constructor Point
 Point::Point(int _x, int _y) : x{ _x }, y{ _y }{};
 

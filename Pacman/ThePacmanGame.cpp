@@ -2,6 +2,13 @@
 #include "_board.h"
 #include <string>
 
+using std::ifstream;
+using std::string;
+using std::vector;
+using std::cout;
+using std::cin;
+using std::endl;
+
 //Constructor
 ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), Point(72, 24) }
 {
@@ -39,13 +46,13 @@ void ThePacmanGame::checkGameLevel()
 		game_level = tolower(game_level);
 		switch (game_level)
 		{
-		case 'a':
+		case BEST:
 			validAnswer = true;
 			break;
-		case 'b':
+		case GOOD:
 			validAnswer = true;
 			break;
-		case 'c':
+		case NOVICE:
 			validAnswer = true;
 			break;
 		default:
@@ -75,18 +82,19 @@ int ThePacmanGame::getPacmanPoints()
 	return pac.getPoints();
 }
 
-////This function sets the game board - copies from const board to original.
-//void ThePacmanGame::setBoard(const char* boardToCopy[ROWS])
-//{
-//	for (int i = 0; i < ROWS; i++)
-//	{
-//		for (int j = 0; j < COLS; j++)
-//		{
-//			originalBoard[i][j] = boardToCopy[i][j];
-//		}
-//		originalBoard[i][COLS] = '\0';
-//	}
-//}
+
+void ThePacmanGame::copyPointsAndLivesRow(const char* boardToCopy[ROWS])
+{
+	int k = ROWS - 2;
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			board[k+i][j] = boardToCopy[i][j];
+		}
+		board[i][COLS] = '\0';
+	}
+}
 
 //This function sets the breadcrumbs on the board to the way there were before there was a strike.
 void ThePacmanGame::setBoardBeforeObjectMoves(const Point& p)
@@ -248,8 +256,8 @@ void ThePacmanGame::run()
 void ThePacmanGame::start(const string file_name)
 {
 	clear_screen();
-	//setBoard(board_example);
 	initBoardFromFile(file_name);
+	copyPointsAndLivesRow(points_lives_row);
 	init();
 	run();
 }
@@ -347,7 +355,7 @@ void ThePacmanGame::isFruit()
 //Check if the next move of the ghost is on the game boarders (including tunnels!).
 bool ThePacmanGame::isOnBorder(const Point& p)
 {
-	if (p.getY() < 0 || p.getY() > 24 || p.getX() < 0 || p.getX() > 80)
+	if (p.getY() < 0 || p.getY() > 23 || p.getX() < 0 || p.getX() > 79)
 		return true;
 	return false;
 }

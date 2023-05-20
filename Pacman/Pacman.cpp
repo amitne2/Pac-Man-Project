@@ -4,7 +4,7 @@
 //Constructor pacman
 Pacman::Pacman()
 {
-	direction = 3;
+	direction = STAY;
 	lives = 3;
 	points = 0;
 	setArrowKeys("wxads");
@@ -21,11 +21,11 @@ Pacman::Pacman(int _lives)
 //This function set the arrow keys of the game
 void Pacman::setArrowKeys(const char* keys)
 {
-	arrowKeys[0] = keys[0]; // UP
-	arrowKeys[1] = keys[1]; // DOWN
-	arrowKeys[2] = keys[2]; // LEFT
-	arrowKeys[3] = keys[3]; // RIGHT
-	arrowKeys[4] = keys[4]; // STAY
+	arrowKeys[UP] = keys[UP]; 
+	arrowKeys[DOWN] = keys[DOWN];
+	arrowKeys[LEFT] = keys[LEFT]; 
+	arrowKeys[RIGHT] = keys[RIGHT]; 
+	arrowKeys[STAY] = keys[STAY];
 }
 
 //This function set lives (remove one each time)
@@ -75,7 +75,7 @@ void Pacman::move()
 	
 	if (theGame->isWall(position[1].next(direction, PACMAN), PACMAN)) //Checks if the next move is wall
 	{
-		direction = 4; // Pacman stops at wall
+		direction = STAY; // Pacman stops at wall
 		position[0] = position[1]; //Update new position
 	}
 
@@ -90,7 +90,7 @@ void Pacman::move()
 	{
 		theGame->isFruit();
 
-		if (direction != 4) // NOT STAY POSITION
+		if (direction != STAY) // NOT STAY POSITION
 		{
 			position[1].draw(DRAW_CHARACTER, ' '); //Set the old position
 			if (theGame->isBreadCrumbs(position[1].next(direction, PACMAN))) //Checks if next move is on breadCrumb

@@ -1,9 +1,16 @@
 #include "Menu.h"
 #include "ThePacmanGame.h"
 
+#include <filesystem>
+#include <algorithm>
+
+namespace fs = std::filesystem;
+
 using std::cout;
 using std::cin;
 using std::endl;
+using std::string;
+using std::vector;
 
 //This function print the menu option 
 //1-for start new game
@@ -12,22 +19,22 @@ using std::endl;
 //The function runs until the user enters 9 to exit from the game
 void Menu::print() {
 	
-	char choice;
+	int choice;
 	bool default_mode;
 	char game_level;
 	srand(time(NULL)); //Added for random
 	printOptions(); 
 	cin >> choice;
 	hideCursor();
-	while (choice != '9')
+	while (choice != EXIT)
 	{
 		switch (choice)
 		{
-		case '1': //start new game
+		case START_GAME: 
 			manageGame();
 
 			break;
-		case '8': //Instructions
+		case INSTRUCTIONS: 
 			clear_screen();
 			printInstructions();
 			clear_screen();
@@ -42,8 +49,6 @@ void Menu::print() {
 		printOptions();
 		cin >> choice;
 	}
-
-	exit(0); //finish the game
 }
 
 void Menu::manageGame()
@@ -69,11 +74,11 @@ bool Menu::isDefaultMode()
 		c = toupper(c);
 		switch (c)
 		{
-		case 'Y':
+		case YES:
 			res = false;
 			validAnswer = true;
 			break;
-		case 'N':
+		case NO:
 			res = true;
 			validAnswer = true;
 			break;
@@ -86,27 +91,51 @@ bool Menu::isDefaultMode()
 	return res;
 }
 
+bool Menu::has_ending(string const& fullString, string const& ending) 
+{
+	if (fullString.length() >= ending.length()) {
+		return (0 == fullString.compare(fullString.length() - ending.length(), ending.length(), ending));
+	}
+	else {
+		return false;
+	}
+}
+
+void Menu::listdir(const string& path, vector<string>& files, const string& suffix)
+{
+	for (const auto& entry : fs::directory_iterator(path)) {
+		string entryStr = entry.path().string();
+
+		if (has_ending(entryStr, suffix)) {
+			files.push_back(entryStr);
+		}
+	}
+}
+
 void Menu::userChoseDefaultMode(bool color)
 {
 	ThePacmanGame game(color);
 	bool gameIsOn = true;
-	string file_name;
+	int countScreens = 0;
+	vector<string> files;
+	listdir(".", files, "screen");
+	sort(files.begin(), files.end());
 	
-	//game.setScreenMode(true);
-
-	for (int i = 1; i <= NUM_OF_SCREENS && gameIsOn; i++)
+	for (const auto& path: files) 
 	{
-		file_name = getFileName(i);
-		game.start(file_name);
+		game.start(path);
 		if (game.getPacmanLives() == 0)
 			gameIsOn = false;
-		else if (i != NUM_OF_SCREENS) //if i=NUM_OF_SCREENS, you're on the last screen, no need to prepare for another game
+		else if (countScreens != NUM_OF_SCREENS) //if countScreens=NUM_OF_SCREENS, you're on the last screen, no need to prepare for another game
 		{
 			game.prepareGameForNextScreen();
 			printChangingScreenMessage();
 		}
+		
+		countScreens++;
+		if (!gameIsOn)
+			break;
 	}
-
 	gameResult(game.getPacmanLives(), color);
 }
 
@@ -122,25 +151,6 @@ void Menu::gameResult(int lives, bool color)
 	clear_screen();
 }
 
-string Menu::getFileName(int ind)
-{
-	string fileName;
-	switch (ind)
-	{
-	case 1:
-		fileName = SCREEN_1;
-		break;
-	case 2:
-		fileName = SCREEN_2;
-		break;
-	case 3:
-		fileName = SCREEN_3;
-		break;
-	}
-
-	return fileName;
-}
-
 void Menu::userChoseScreen(bool color)
 {
 	ThePacmanGame game(color);
@@ -148,7 +158,8 @@ void Menu::userChoseScreen(bool color)
 	clear_screen();
 	cout << "Please enter the name of the screen you would like to upload:" << endl;
 	cin >> new_name;
-	
+
+
 	std::ifstream screenFile(new_name);
 
 	if (!screenFile.is_open() || !screenFile.good())
@@ -237,11 +248,11 @@ bool Menu::checkIfColored()
 		colored = toupper(colored);
 		switch (colored)
 		{
-		case 'Y':
+		case YES:
 			res = true;
 			validAnswer = true;
 			break;
-		case 'N':
+		case NO:
 			res = false;
 			validAnswer = true;
 			break;

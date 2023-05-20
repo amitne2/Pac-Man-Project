@@ -2,6 +2,11 @@
 #include "ThePacmanGame.h"
 #include "Fruit.h"
 #include <random>
+#include <queue>
+
+
+using std::queue;
+using std::vector;
 
 //Constructor ghost
 Ghost::Ghost()
@@ -72,7 +77,7 @@ void Ghost::setDirection(const Point& pac)
 	switch (gameLevel)
 	{
 	case 'a': //BEST level
-		chasePacman(pac);
+		findShortestPath(pac);
 		break;
 	case 'b': //GOOD level
 		
@@ -86,11 +91,11 @@ void Ghost::setDirection(const Point& pac)
 				levelBIndication = true; //set true to prevent ghost from changing its direction for 5 steps
 			}
 			else
-				chasePacman(pac); //smart ghost
+				findShortestPath(pac); //smart ghost
 		}
 		else if(countSteps == 5) //ghost was on the same direction for 5 steps until now, now becomes a smart ghost
 		{
-				chasePacman(pac); //smart ghost
+				findShortestPath(pac); //smart ghost
 				levelBIndication = false; //get out of the 5-same-direction-steps state 
 		}	
 		break;
@@ -112,39 +117,105 @@ void Ghost::setGameLevel(char level)
 	gameLevel = level;
 }
 
-void Ghost::chasePacman(const Point& pac)
-{
-	int dir, best, curr;
-	Point temp = position[0];
-	bool firstRound = true;
-
-	for (int i = 0; i < 4; i++) // 4 directions 
-	{
-		if (!(theGame->isWall(position[1].next(i, NOT_PACMAN), NOT_PACMAN)))
-		{
-			temp.move(i, NOT_PACMAN);
-			if (firstRound)
-			{
-				dir = i;
-				best = temp.getDistance(pac);
-				firstRound = false;
-			}
-
-			else
-			{
-				curr = temp.getDistance(pac);
-				if (curr < best)
-				{
-					best = curr;
-					dir = i;
-				}
-			}
-			temp = position[0];
-		}
-	}
-	direction = dir;
-}
+//void Ghost::chasePacman(const Point& pac)
+//{
+//	int dir, best, curr;
+//	Point temp = position[0];
+//	bool firstRound = true;
+//
+//	for (int i = 0; i < 4; i++) // 4 directions 
+//	{
+//		if (!(theGame->isWall(position[1].next(i, NOT_PACMAN), NOT_PACMAN)))
+//		{
+//			temp.move(i, NOT_PACMAN);
+//			if (firstRound)
+//			{
+//				dir = i;
+//				best = temp.getDistance(pac);
+//				firstRound = false;
+//			}
+//
+//			else
+//			{
+//				curr = temp.getDistance(pac);
+//				if (curr < best)
+//				{
+//					best = curr;
+//					dir = i;
+//				}
+//			}
+//			temp = position[0];
+//		}
+//	}
+//	direction = dir;
+//}
 
 //Empty destructor 
 Ghost::~Ghost() {}
 
+//////////////////////////////////////////////////////
+
+// Perform BFS to find the shortest path
+void Ghost::findShortestPath(const Point& destination) {
+	Point temp, current, source;
+	source = position[0];
+	vector<int> path;
+	bool notFound = true;
+	// Arrays to keep track of visited points and their parent points
+	vector<vector<bool>> visited(ROWS-2, vector<bool>(COLS, false));
+	vector<vector<Point>> parent(ROWS - 2, vector<Point>(COLS, { -1, -1 }));
+
+	// Create a queue for BFS traversal
+	queue<Point> q;
+
+	// Enqueue the source point
+	q.push(source);
+	visited[source.getY()][source.getX()] = true;
+
+	// Perform BFS
+	while (!q.empty() && notFound) {
+		current = q.front();
+		q.pop();
+
+		// If the destination is reached, reconstruct the path and stop the loop
+		if (current.getX() == destination.getX() && current.getY() == destination.getY()) {
+			
+			while (current.getX() != -1 && current.getY() != -1) {
+				Point parentPoint = parent[current.getY()][current.getX()];
+				
+				if (parentPoint.getX() != -1 && parentPoint.getY() != -1)
+				{
+					if (current.getX() < parentPoint.getX())
+						path.push_back(LEFT);
+					else if (current.getX() > parentPoint.getX())
+						path.push_back(RIGHT);
+					else if (current.getY() < parentPoint.getY())
+						path.push_back(UP);
+					else
+						path.push_back(DOWN);
+				}
+				current = parentPoint;
+			}
+			reverse(path.begin(), path.end());
+			notFound = false;
+		}
+
+		// Explore neighbors
+		for (int i = 0; i < 4 && notFound; i++) {
+			temp.set(current.getX(), current.getY());
+			temp.move(i, NOT_PACMAN);
+			
+			if(!(theGame->isWall(temp, NOT_PACMAN)))
+			{
+				if (!visited[temp.getY()][temp.getX()])
+				{
+					q.push(temp);
+					visited[temp.getY()][temp.getX()] = true;
+					parent[temp.getY()][temp.getX()] = current;
+				}
+			}
+		}
+	}
+
+	direction = path.front();
+}

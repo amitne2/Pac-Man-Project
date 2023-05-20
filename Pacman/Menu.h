@@ -3,20 +3,21 @@
 #include <cstdlib>
 #include <windows.h>
 #include <string>
+#include <vector>
 
 #define NUM_OF_SCREENS 3
-using std::string;
-const string SCREEN_1 = "pacman_1.screen.txt";
-const string SCREEN_2 = "pacman_2.screen.txt";
-const string SCREEN_3 = "pacman_3.screen.txt";
 
+
+enum {START_GAME = 1, INSTRUCTIONS = 8, EXIT = 9};
+enum {YES = 'Y', NO = 'N' };
 class Menu {
 	bool default_mode;
 public:
 	void print();
 	void userChoseDefaultMode(bool color);
+	bool has_ending(std::string const& fullString, std::string const& ending);
+	void listdir(const std::string& path, std::vector<std::string>& files, const std::string& suffix);
 	void userChoseScreen(bool color);
-	string getFileName(int ind);
 	void manageGame();
 	bool isDefaultMode();
 	void printOptions();

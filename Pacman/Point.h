@@ -5,10 +5,6 @@
 #include "io_utils.h" 
 #define DRAW_CHARACTER -1
 
-using std::cout;
-using std::cin;
-using std::endl;
-
 class Point {
 	int x, y;
 public:
