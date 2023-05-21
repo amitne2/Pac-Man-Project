@@ -29,7 +29,7 @@ Ghost::Ghost(int _x, int _y)
 //Checks the next move is valid (not wall) - If it's a wall, random number until it doesn't
 //Checks if the ghost is on pacman position (strike in the game) - update the relevant variables
 //Checks if the ghost is on fruit position - if it is - remove the fruit from the board
-void Ghost::move(const Point& pac, Fruit* fruitsArr)
+void Ghost::move(const Point& pac, Fruit (&fruitsArr)[NUM_OF_FRUITS])
 {
 	setDirection(pac);
 	position[1] = position[0]; 
