@@ -50,7 +50,7 @@ void Menu::print() {
 		cin >> choice;
 	}
 }
-
+//This function calls the function that start the game considering the user's choice
 void Menu::manageGame()
 {
 	bool color = checkIfColored();
@@ -60,7 +60,10 @@ void Menu::manageGame()
 	else
 		userChoseScreen(color);
 }
-
+//This function asks the user if he wants to play with specific screen or in default mode
+//checks the answer is valid
+//return the true if the user wants dafult mode
+//return false if wants specific screen
 bool Menu::isDefaultMode() const
 {
 	char c;
@@ -90,7 +93,8 @@ bool Menu::isDefaultMode() const
 	}
 	return res;
 }
-
+//The function return true of the fullstring ending with the string endting we got
+//ekse return false
 bool Menu::has_ending(string const& fullString, string const& ending) const
 {
 	if (fullString.length() >= ending.length()) {
@@ -100,7 +104,8 @@ bool Menu::has_ending(string const& fullString, string const& ending) const
 		return false;
 	}
 }
-
+//This function gets vector with all files names in the directory 
+//and remove all files except for the game screens (pacman_*.screen).
 void Menu::listdir(const string& path, vector<string>& files, const string& suffix) const
 {
 	for (const auto& entry : fs::directory_iterator(path)) {
@@ -111,7 +116,8 @@ void Menu::listdir(const string& path, vector<string>& files, const string& suff
 		}
 	}
 }
-
+//This function handles when the user selects default mode (without specific screen)
+//run on the 3 screen (stop after 3 screen or if the user lost the game before)
 void Menu::userChoseDefaultMode(bool color)
 {
 	ThePacmanGame game(color);
@@ -128,7 +134,7 @@ void Menu::userChoseDefaultMode(bool color)
 			gameIsOn = false;
 		else if (countScreens != NUM_OF_SCREENS) //if countScreens=NUM_OF_SCREENS, you're on the last screen, no need to prepare for another game
 		{
-			game.prepareGameForNextScreen();
+			game.prepareGameForNextScreen(); 
 			printChangingScreenMessage();
 		}
 		
@@ -138,7 +144,9 @@ void Menu::userChoseDefaultMode(bool color)
 	}
 	gameResult(game.getPacmanLives(), color);
 }
-
+//This function prints the message according to user result's 
+//prints game over when lives is 0
+//else prints winning message
 void Menu::gameResult(int lives, bool color) const
 {
 	if (lives == 0)
@@ -151,6 +159,7 @@ void Menu::gameResult(int lives, bool color) const
 	clear_screen();
 }
 
+//This function handles the mode that the user selects specific screen
 void Menu::userChoseScreen(bool color)
 {
 	ThePacmanGame game(color);
@@ -175,7 +184,7 @@ void Menu::userChoseScreen(bool color)
 		screenFile.close();
 	}
 }
-
+//This function print changing Screen Message.
 void Menu::printChangingScreenMessage() const
 {
 	clear_screen();
