@@ -15,6 +15,7 @@ Ghost::Ghost()
 	levelBIndication = false;
 }
 
+//Contructor
 Ghost::Ghost(int _x, int _y)
 {
 	originalPosition.set(_x, _y);
@@ -24,9 +25,10 @@ Ghost::Ghost(int _x, int _y)
 	levelBIndication = false;
 }
 
-//This function ramdon a number between 1-4 for direction
+//This function randoms a number between 1-4 for direction
 //Checks the next move is valid (not wall) - If it's a wall, random number until it doesn't
 //Checks if the ghost is on pacman position (strike in the game) - update the relevant variables
+//Checks if the ghost is on fruit position - if it is - remove the fruit from the board
 void Ghost::move(const Point& pac, Fruit* fruitsArr)
 {
 	setDirection(pac);
@@ -46,12 +48,12 @@ void Ghost::move(const Point& pac, Fruit* fruitsArr)
 		theGame->ghostAtePacman();
 	}
 
-	else if (theGame->isWall(position[1].next(direction, NOT_PACMAN), NOT_PACMAN))
+	else if (theGame->isWall(position[1].next(direction, NOT_PACMAN), NOT_PACMAN)) //checks if next move is a wall
 		position[0] = position[1];
 	
 	else
 	{
-		for (int i = 0; i < NUM_OF_FRUITS; i++)
+		for (int i = 0; i < NUM_OF_FRUITS; i++) //checks if ghost hit fruit
 		{
 			if (theGame->checkIfTheSamePosition(position[0], fruitsArr[i].getCurrentPosition()) && fruitsArr[i].getFruitOnBoard())
 			{
@@ -68,9 +70,14 @@ void Ghost::move(const Point& pac, Fruit* fruitsArr)
 		setTextColor(WHITE);
 	}
 
-	countSteps++;
+	countSteps++; //count steps for the set direction funtion
 }
 
+//This function sets the ghost direction according to the user's choice of game level
+//Case a will make the ghost a smart ghost
+//Case b will make the ghost smart in a 1/20 probability
+//Case c will random a direction for the ghost for 20 next moves
+//Then the function will update the direction parameter
 void Ghost::setDirection(const Point& pac)
 {
 	int randRes;
@@ -113,57 +120,20 @@ void Ghost::setDirection(const Point& pac)
 	}
 }
 
+//This function setes the game level
 void Ghost::setGameLevel(char level)
 {
 	gameLevel = level;
 }
 
-//void Ghost::chasePacman(const Point& pac)
-//{
-//	int dir, best, curr;
-//	Point temp = position[0];
-//	bool firstRound = true;
-//
-//	for (int i = 0; i < 4; i++) // 4 directions 
-//	{
-//		if (!(theGame->isWall(position[1].next(i, NOT_PACMAN), NOT_PACMAN)))
-//		{
-//			temp.move(i, NOT_PACMAN);
-//			if (firstRound)
-//			{
-//				dir = i;
-//				best = temp.getDistance(pac);
-//				firstRound = false;
-//			}
-//
-//			else
-//			{
-//				curr = temp.getDistance(pac);
-//				if (curr < best)
-//				{
-//					best = curr;
-//					dir = i;
-//				}
-//			}
-//			temp = position[0];
-//		}
-//	}
-//	direction = dir;
-//}
-
-//Empty destructor 
-Ghost::~Ghost() {}
-
-//////////////////////////////////////////////////////
-
-// Perform BFS to find the shortest path
+// Perform BFS to find the shortest path of ghost to pacman, while considering obstacles
 void Ghost::findShortestPath(const Point& destination) {
 	Point temp, current, source;
 	source = position[0];
 	vector<int> path;
 	bool notFound = true;
 	// Arrays to keep track of visited points and their parent points
-	vector<vector<bool>> visited(ROWS-2, vector<bool>(COLS, false));
+	vector<vector<bool>> visited(ROWS - 2, vector<bool>(COLS, false));
 	vector<vector<Point>> parent(ROWS - 2, vector<Point>(COLS, { -1, -1 }));
 
 	// Create a queue for BFS traversal
@@ -180,10 +150,10 @@ void Ghost::findShortestPath(const Point& destination) {
 
 		// If the destination is reached, reconstruct the path and stop the loop
 		if (current.getX() == destination.getX() && current.getY() == destination.getY()) {
-			
+
 			while (current.getX() != -1 && current.getY() != -1) {
 				Point parentPoint = parent[current.getY()][current.getX()];
-				
+
 				if (parentPoint.getX() != -1 && parentPoint.getY() != -1)
 				{
 					if (current.getX() < parentPoint.getX())
@@ -205,8 +175,8 @@ void Ghost::findShortestPath(const Point& destination) {
 		for (int i = 0; i < 4 && notFound; i++) {
 			temp.set(current.getX(), current.getY());
 			temp.move(i, NOT_PACMAN);
-			
-			if(!(theGame->isWall(temp, NOT_PACMAN)))
+
+			if (!(theGame->isWall(temp, NOT_PACMAN)))
 			{
 				if (!visited[temp.getY()][temp.getX()])
 				{
@@ -220,3 +190,9 @@ void Ghost::findShortestPath(const Point& destination) {
 
 	direction = path.front();
 }
+
+//Empty destructor 
+Ghost::~Ghost() {}
+
+
+

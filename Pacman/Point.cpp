@@ -75,9 +75,3 @@ Point Point::next(int direction, int object) {
 	next.move(direction, object);
 	return next;
 }
-
-
-int Point::getDistance(Point p)
-{
-	return(sqrt(pow(x - p.x,2) + pow(y - p.y,2)));
-}
