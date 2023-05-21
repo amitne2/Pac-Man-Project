@@ -16,10 +16,10 @@ public:
 	void setGame(ThePacmanGame* _theGame);
 	void resetOriginalPosition();
 	void setOriginalPosition(int _x, int _y);
-	Point getCurrentPosition();
+	Point getCurrentPosition() const;
 	void setDirection(int _direction);
-	int getDirection();
-	~Game_Object() {}
+	int getDirection() const;
+	~Game_Object() {} //Distructor
 };
 
 
