@@ -15,11 +15,11 @@ ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), P
 	numOfBreadcrumbs = 0;
 	gameIsOn = true;
 	colored = coloredGame;
-	//screen_is_default = true; //load screens as long as user is winning
 }
 
 //This function asks the player to choose the game level.
 //Game level affects the ghosts behavior.
+//Game level set to all game levels (in default mode)
 void ThePacmanGame::checkGameLevel()
 {
 	bool validAnswer = false;
@@ -35,13 +35,13 @@ void ThePacmanGame::checkGameLevel()
 		game_level = tolower(game_level);
 		switch (game_level)
 		{
-		case BEST:
+		case BEST: //a
 			validAnswer = true;
 			break;
-		case GOOD:
+		case GOOD: //b
 			validAnswer = true;
 			break;
-		case NOVICE:
+		case NOVICE: //c
 			validAnswer = true;
 			break;
 		default:
@@ -56,22 +56,22 @@ void ThePacmanGame::checkGameLevel()
 }
 
 //Get colored data - if true - user chose the colored game, if false - user chose no color game.
-bool ThePacmanGame::getColored()
+bool ThePacmanGame::getColored() const
 {
 	return colored;
 }
-
-int ThePacmanGame::getPacmanLives()
+//Return the left lives in the game
+int ThePacmanGame::getPacmanLives() const
 {
 	return pac.getLives();
 }
-
-int ThePacmanGame::getPacmanPoints()
+//Return the points the player earned
+int ThePacmanGame::getPacmanPoints() const
 {
 	return pac.getPoints();
 }
 
-
+//This function copy the points and lives row and add it to board
 void ThePacmanGame::copyPointsAndLivesRow(const char* boardToCopy[ROWS])
 {
 	int k = ROWS - 2;
@@ -86,7 +86,7 @@ void ThePacmanGame::copyPointsAndLivesRow(const char* boardToCopy[ROWS])
 }
 
 //This function sets the breadcrumbs on the board to the way there were before there was a strike.
-void ThePacmanGame::setBoardBeforeObjectMoves(const Point& p)
+void ThePacmanGame::setBoardBeforeObjectMoves(const Point& p) const
 {
 	p.draw(DRAW_CHARACTER, board[p.getY()][p.getX()]);
 }
@@ -117,7 +117,9 @@ void ThePacmanGame::drawObjects()
 	}
 	setTextColor(WHITE);
 }
-
+//This fucntion reads a board from file 
+//Update the num of Breadcrumbs on this board
+//Update objects locations
 void ThePacmanGame::initBoardFromFile(const string file_name)
 {
 	char c;
@@ -138,6 +140,7 @@ void ThePacmanGame::initBoardFromFile(const string file_name)
 			else if (c == '$')
 			{
 				board[i][j] = '.';
+				//numOfBreadcrumbs++;
 				ghosts.push_back(Ghost(j, i));
 			}
 			else
@@ -172,7 +175,7 @@ void ThePacmanGame::init()
 			cout.flush();
 			setTextColor(WHITE);
 		}
-		board[i][COLS] = '\0';
+		//board[i][COLS] = '\0'; ######need to check if we still need it!!!!!!
 	}
 
 	pac.setGame(this);
@@ -276,7 +279,7 @@ void ThePacmanGame::initAfterPause()
 			cout.flush();
 			setTextColor(WHITE);
 		}
-		board[i][COLS] = '\0';
+		//board[i][COLS] = '\0';
 	}
 
 	drawObjects();
@@ -290,7 +293,7 @@ void ThePacmanGame::updateBoard(const Point& p)
 
 //Check if the next move of the current object is a wall.
 //Pacman can go through tunnels - ghost can not, so the check is different.
-bool ThePacmanGame::isWall(const Point& p, int object)
+bool ThePacmanGame::isWall(const Point& p, int object) const
 {
 	if (object == PACMAN)
 	{
@@ -308,7 +311,7 @@ bool ThePacmanGame::isWall(const Point& p, int object)
 }
 
 //Check if the next move is a breadcrumb, return true if it is, false if it is not.
-bool ThePacmanGame::isBreadCrumbs(const Point& p) // This point is the next move
+bool ThePacmanGame::isBreadCrumbs(const Point& p) const // This point is the next move
 {
 	char sign = board[p.getY()][p.getX()];
 	if (sign == ' ' || sign == GHOST_SYMBOL || sign == '#')
@@ -324,7 +327,8 @@ bool ThePacmanGame::isGhost()
 			return true;
 	return false;
 }
-
+//This function checks if pacman eats fruit and 
+//updates the points and turn off the fruit from the board
 void ThePacmanGame::isFruit()
 {
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
@@ -337,21 +341,23 @@ void ThePacmanGame::isFruit()
 }
 
 //Check if the next move of the ghost is on the game boarders (including tunnels!).
-bool ThePacmanGame::isOnBorder(const Point& p)
+bool ThePacmanGame::isOnBorder(const Point& p) const
 {
 	if (p.getY() < 0 || p.getY() > 23 || p.getX() < 0 || p.getX() > 79)
 		return true;
 	return false;
 }
 
-//Check if the points are the same.
-bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2)
+//The function Gets 2 points and checks if the points are the same.
+bool ThePacmanGame::checkIfTheSamePosition(const Point& p1, const Point& p2) const
 {
 	if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
 		return true;
 	return false;
 }
-
+//This function manage fruits on board 
+// random numOfWantedFruits between the fruits not on board and turn on fruits
+//and random their locations
 void ThePacmanGame::manageFruits()
 {
 	int numOfWantedFruits;
@@ -369,7 +375,7 @@ void ThePacmanGame::manageFruits()
 	{
 		if (!fruits[i].getFruitOnBoard() && numOfWantedFruits>0) //fruit is not on board
 		{
-			fruits[i].setFruitPosition(pac.getCurrentPosition(), ghosts);
+			fruits[i].setFruitPosition(pac.getCurrentPosition(), ghosts); //set fruit on board
 			fruits[i].setFruitSymbol();
 			fruits[i].setDisplayCounter();
 			fruits[i].setFruitOnBoard(true);
@@ -414,68 +420,19 @@ void ThePacmanGame::pacmanAteFruit(int fruitPoints)
 
 //This function prepares the ThePacmanGame parameters for the next screen.
 //Positions will not be changes here, because they are set in initBoardFromFile function.
-
 void ThePacmanGame::prepareGameForNextScreen()
 {
-	pac.setDirection(DEFAULT_DIRECTION);
+	pac.setDirection(STAY);
 	for (int i = 0; i < ghosts.size(); i++)
 		ghosts.pop_back();
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
 		fruits[i].turnOffFruit();
 	numOfBreadcrumbs = 0;
+	gameIsOn = true;
 }
 
-////Print the right message according to game result.
-//void ThePacmanGame::gameResult(char ch)
-//{
-//	clear_screen();
-//	if (ch)
-//		printWinningMessage();
-//	else
-//		printGameOver();
-//
-//	Sleep(1000);
-//	_getch();
-//	clear_screen();
-//}
-
-
-////This function prints the GAME OVER message.
-//void ThePacmanGame::printGameOver()
-//{
-//	if(colored)
-//		setTextColor(LIGHTRED);
-//	cout << "######       ###    ##     ## ########     #######  ##     ## ######## ########   ####  ####" << endl;
-//	cout << "##    ##    ## ##   ###   ### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
-//	cout << "##         ##   ##  #### #### ##          ##     ## ##     ## ##       ##     ##  ####  ####" << endl;
-//	cout << "##   #### ##     ## ## ### ## ######      ##     ## ##     ## ######   ########    ##    ##" << endl;
-//	cout << "##    ##  ######### ##     ## ##          ##     ##  ##   ##  ##       ##   ## "<< endl;
-//	cout << "##    ##  ##     ## ##     ## ##          ##     ##   ## ##   ##       ##    ##   ####  ####" << endl;
-//	cout << "######    ##     ## ##     ## ########     #######     ###    ######## ##     ##  ####  ####" << endl;
-//	setTextColor(WHITE);
-//
-//	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
-//
-//}
-//
-////This function prints the WINNER message.
-//void ThePacmanGame::printWinningMessage()
-//{
-//	if (colored)
-//		setTextColor(MAGENTA);
-//	cout << "##      ## #### ##    ## ##    ## ######## ########  #### ####" << endl;
-//	cout << "##  ##  ##  ##  ###   ## ###   ## ##       ##     ## #### ####" << endl;
-//	cout << "##  ##  ##  ##  ####  ## ####  ## ##       ##     ## #### ####" << endl;
-//	cout << "##  ##  ##  ##  ## ## ## ## ## ## ######   ########   ##   ##" << endl;
-//	cout << "##  ##  ##  ##  ##  #### ##  #### ##       ##   ##" << endl;
-//	cout << "##  ##  ##  ##  ##   ### ##   ### ##       ##    ##  #### ####" << endl;
-//	cout << "###   ###  #### ##    ## ##    ## ######## ##     ## #### ####" << endl;
-//	setTextColor(WHITE);
-//	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
-//}
-
 //This function prints the PAUSE message.
-void ThePacmanGame::pauseMessage()
+void ThePacmanGame::pauseMessage() const
 {
 	cout << " ____ ____ ____ ____ ____ _________ _________ ____ ____ ____ ____" << endl;
 	cout << "||P |||A |||U |||S |||E |||       |||       |||G |||A |||M |||E ||" << endl;

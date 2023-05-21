@@ -14,18 +14,18 @@ class Menu {
 public:
 	void print();
 	void userChoseDefaultMode(bool color);
-	bool has_ending(std::string const& fullString, std::string const& ending);
-	void listdir(const std::string& path, std::vector<std::string>& files, const std::string& suffix);
+	bool has_ending(std::string const& fullString, std::string const& ending) const;
+	void listdir(const std::string& path, std::vector<std::string>& files, const std::string& suffix) const;
 	void userChoseScreen(bool color);
 	void manageGame();
-	bool isDefaultMode();
-	void printOptions();
-	void printInstructions();
-	bool checkIfColored();
-	void printGameOver(bool color);
-	void printWinningMessage(bool color);
-	void printChangingScreenMessage();
-	void gameResult(int lives, bool color); 
+	bool isDefaultMode() const;
+	void printOptions() const;
+	void printInstructions() const;
+	bool checkIfColored() const;
+	void printGameOver(bool color) const;
+	void printWinningMessage(bool color) const;
+	void printChangingScreenMessage() const;
+	void gameResult(int lives, bool color) const; 
 	~Menu() {}
 };
 

@@ -61,7 +61,7 @@ void Menu::manageGame()
 		userChoseScreen(color);
 }
 
-bool Menu::isDefaultMode()
+bool Menu::isDefaultMode() const
 {
 	char c;
 	bool validAnswer = false,res;
@@ -91,7 +91,7 @@ bool Menu::isDefaultMode()
 	return res;
 }
 
-bool Menu::has_ending(string const& fullString, string const& ending) 
+bool Menu::has_ending(string const& fullString, string const& ending) const
 {
 	if (fullString.length() >= ending.length()) {
 		return (0 == fullString.compare(fullString.length() - ending.length(), ending.length(), ending));
@@ -101,7 +101,7 @@ bool Menu::has_ending(string const& fullString, string const& ending)
 	}
 }
 
-void Menu::listdir(const string& path, vector<string>& files, const string& suffix)
+void Menu::listdir(const string& path, vector<string>& files, const string& suffix) const
 {
 	for (const auto& entry : fs::directory_iterator(path)) {
 		string entryStr = entry.path().string();
@@ -139,7 +139,7 @@ void Menu::userChoseDefaultMode(bool color)
 	gameResult(game.getPacmanLives(), color);
 }
 
-void Menu::gameResult(int lives, bool color)
+void Menu::gameResult(int lives, bool color) const
 {
 	if (lives == 0)
 		printGameOver(color);
@@ -176,7 +176,7 @@ void Menu::userChoseScreen(bool color)
 	}
 }
 
-void Menu::printChangingScreenMessage()
+void Menu::printChangingScreenMessage() const
 {
 	clear_screen();
 	cout << "	    	                  _         _       _   _                 " << endl;
@@ -187,14 +187,14 @@ void Menu::printChangingScreenMessage()
 	cout << "  \\___\\___/|_| |_|\\__, |_|  \\__,_|\\__|\\__,_|_|\\__,_|\\__|_|\\___/|_| |_|___/" << endl;
 	cout << "                   __/ |" << endl;
 	cout << "                 |___ /" << endl;
-	cout << "You are about to move to the next screen of the game." << endl;
-	
-	Sleep(3000);
+	cout << "#Press any key on your keyboard to move to the next screen in the game." << endl;
+	Sleep(1000);
+	_getch();
 	clear_screen();
 }
 
 //This function prints the menu options 
-void Menu::printOptions()
+void Menu::printOptions() const
 {
 	cout << " ########     ###     ######  ##     ##    ###    ##    ##"<< endl;
 	cout << " ##     ##   ## ##   ##    ## ###   ###   ## ##   ###   ##" << endl;
@@ -211,7 +211,7 @@ void Menu::printOptions()
 }
 //This function print the Instructions of the game
 //The function stays on this screen until the user press on any key
-void Menu::printInstructions()
+void Menu::printInstructions() const
 {
 	cout << "Welcome to Pacman game!!!" << endl;
 	cout << "Start the game by pressing the '1' key in menu screen. The start board will present on the screen with the pacman and 2 ghosts." << endl;
@@ -235,7 +235,7 @@ void Menu::printInstructions()
 //If the user enter YES - update the variables to true 
 //else - false
 //print wrong key if the key invalid
-bool Menu::checkIfColored()
+bool Menu::checkIfColored() const
 {
 	char colored;
 	bool validAnswer = false, res;
@@ -268,7 +268,7 @@ bool Menu::checkIfColored()
 
 
 //This function prints the GAME OVER message.
-void Menu::printGameOver(bool color)
+void Menu::printGameOver(bool color) const
 {
 	clear_screen();
 	if (color)
@@ -286,7 +286,7 @@ void Menu::printGameOver(bool color)
 }
 
 //This function prints the WINNER message.
-void Menu::printWinningMessage(bool color)
+void Menu::printWinningMessage(bool color) const
 {
 	clear_screen();
 	if (color)
@@ -302,40 +302,3 @@ void Menu::printWinningMessage(bool color)
 	cout << endl << "# Press any key on your keyboard to go back to the menu." << endl;
 }
 
-
-////This function asks the player to choose the game level.
-////Game level affects the ghosts behavior.
-//char Menu::checkGameLevel()
-//{
-//	bool validAnswer = false;
-//	char game_level;
-//	cout << "Plase choose game level:" << endl;
-//	cout << "a - Best" << endl;
-//	cout << "b - Good" << endl;
-//	cout << "c - Novice" << endl;
-//	
-//
-//	while (!validAnswer)
-//	{
-//		cin >> game_level;
-//		game_level = toupper(game_level);
-//		switch (game_level)
-//		{
-//		case 'A':
-//			validAnswer = true;
-//			break;
-//		case 'B':
-//			validAnswer = true;
-//			break;
-//		case 'C':
-//			validAnswer = true;
-//			break;
-//		default:
-//			cout << "WRONG KEY! PLEASE CHOOSE AGAIN - A/B/C." << endl;
-//			Sleep(1000);
-//			break;
-//		}
-//	}
-//	
-//	return game_level;
-//}

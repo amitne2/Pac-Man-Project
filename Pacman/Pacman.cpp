@@ -37,7 +37,7 @@ void Pacman::setLives()
 //This function gets key and return the number of this direction
 //return a number between 0-4
 //return -1 if the key is wrong
-int Pacman::getDirection(char key)
+int Pacman::getDirection(char key) const
 {
 	for (int i = 0; i < 5; i++)
 	{
@@ -47,12 +47,12 @@ int Pacman::getDirection(char key)
 	return -1;
 }
 //This function return the lives left in the game
-int Pacman::getLives()
+int Pacman::getLives() const
 {
 	return lives;
 }
 //This function return the points the pacman earned
-int Pacman::getPoints()
+int Pacman::getPoints() const
 {
 	return points;
 }

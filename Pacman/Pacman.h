@@ -17,10 +17,10 @@ public:
 	Pacman();
 	Pacman(int _lives);
 	void setLives();
-	int getPoints();
+	int getPoints() const;
 	void setPoints(int _points);
-	int getLives();
-	int getDirection(char key);
+	int getLives() const;
+	int getDirection(char key) const;
 	void move();
 	~Pacman();
 };

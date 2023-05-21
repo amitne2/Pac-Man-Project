@@ -24,7 +24,6 @@ class ThePacmanGame {
 	enum { ESC = 27 };
 	Pacman pac;
 	std::vector<Ghost> ghosts;
-	//Ghost ghosts[2];
 	Fruit fruits[NUM_OF_FRUITS];
 	Point pointsAndLives[2];
 	char board[ROWS][COLS + 1];	
@@ -35,11 +34,11 @@ class ThePacmanGame {
 public:
 	ThePacmanGame(bool coloredGame);
 	void checkGameLevel();
-	bool getColored();
-	int getPacmanLives();
-	int getPacmanPoints();
+	bool getColored() const;
+	int getPacmanLives() const;
+	int getPacmanPoints() const;
 	void copyPointsAndLivesRow(const char* points_lives_row[ROWS]);
-	void setBoardBeforeObjectMoves(const Point& p);
+	void setBoardBeforeObjectMoves(const Point& p) const;
 	void setBreadcrumbs();
 	void drawObjects();
 	void initBoardFromFile(const std::string file_name);
@@ -48,17 +47,17 @@ public:
 	void start(const std::string file_name);
 	void initAfterPause();
 	void updateBoard(const Point& p);
-	bool isWall(const Point& p, int object);
-	bool isBreadCrumbs(const Point& p);
-	bool isGhost();
-	void isFruit();
-	bool isOnBorder(const Point& p);
-	bool checkIfTheSamePosition(const Point& p1, const Point& p2);
+	bool isWall(const Point& p, int object) const;
+	bool isBreadCrumbs(const Point& p) const;
+	bool isGhost(); //const
+	void isFruit(); //const
+	bool isOnBorder(const Point& p) const;
+	bool checkIfTheSamePosition(const Point& p1, const Point& p2) const;
 	void manageFruits();
 	void ghostAtePacman();
 	void pacmanAteFruit(int fruitPoints);
 	void prepareGameForNextScreen();
-	void pauseMessage();
+	void pauseMessage() const;
 	~ThePacmanGame() {}; //Distructor
 };
 
