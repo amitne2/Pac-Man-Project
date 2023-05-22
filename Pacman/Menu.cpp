@@ -32,7 +32,6 @@ void Menu::print() {
 		{
 		case START_GAME: 
 			manageGame();
-
 			break;
 		case INSTRUCTIONS: 
 			clear_screen();
@@ -179,7 +178,7 @@ void Menu::userChoseScreen(bool color)
 	else
 	{
 		//game.setScreenMode(false);
-		game.start(new_name);
+		game.start(new_name); //only one screen in this game
 		gameResult(game.getPacmanLives(), color);
 		screenFile.close();
 	}
