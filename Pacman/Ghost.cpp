@@ -43,8 +43,8 @@ void Ghost::move(const Point& pac, Fruit *fruitsArr)
 		position[0].draw(DRAW_CHARACTER, GHOST_SYMBOL);
 		Sleep(2000);
 		setTextColor(WHITE); 
-		if (theGame->isBreadCrumbs(position[0]))
-			theGame->setBreadcrumbs();
+		/*if (theGame->isBreadCrumbs(position[0]))
+			theGame->setBreadcrumbs();*/
 		theGame->ghostAtePacman();
 	}
 
