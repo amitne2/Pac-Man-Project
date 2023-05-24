@@ -20,8 +20,6 @@ using std::vector;
 void Menu::print() {
 	
 	int choice;
-	bool default_mode;
-	char game_level;
 	srand(time(NULL)); //Added for random
 	printOptions(); 
 	cin >> choice;

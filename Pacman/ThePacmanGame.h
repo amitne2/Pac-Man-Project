@@ -30,6 +30,7 @@ class ThePacmanGame {
 	int numOfBreadcrumbs;
 	bool gameIsOn;
 	bool colored;
+	char gameLevel;
 							
 public:
 	ThePacmanGame(bool coloredGame);
@@ -37,6 +38,8 @@ public:
 	bool getColored() const;
 	int getPacmanLives() const;
 	int getPacmanPoints() const;
+	char getGameLevel();
+	void setGameLevel(char level);
 	void copyPointsAndLivesRow(const char* points_lives_row[ROWS]);
 	void setBoardBeforeObjectMoves(const Point& p) const;
 	void setBreadcrumbs();

@@ -10,7 +10,7 @@ constexpr int MAX_MOVES = 20;
 
 class Ghost : public Game_Object {
 private:
-	char gameLevel;
+	//char gameLevel;
 	int countSteps;
 	bool levelBIndication;
 public:
@@ -18,7 +18,6 @@ public:
 	Ghost(int _x, int _y);
 	void move(const Point& pac, Fruit* fruitsArr);
 	void setDirection(const Point& pac);
-	void setGameLevel(char level);
 	void findShortestPath(const Point& destination);
 	~Ghost();
 };

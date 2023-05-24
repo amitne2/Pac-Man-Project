@@ -82,7 +82,7 @@ void Ghost::setDirection(const Point& pac)
 {
 	int randRes;
 	srand(time(NULL));
-	switch (gameLevel)
+	switch (theGame->getGameLevel())
 	{
 	case 'a': //BEST level
 		findShortestPath(pac);
@@ -118,12 +118,6 @@ void Ghost::setDirection(const Point& pac)
 		}
 		break;
 	}
-}
-
-//This function setes the game level
-void Ghost::setGameLevel(char level)
-{
-	gameLevel = level;
 }
 
 // Perform BFS to find the shortest path of ghost to pacman, while considering obstacles

@@ -14,7 +14,7 @@ ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), P
 {
 	numOfBreadcrumbs = 0;
 	gameIsOn = true;
-	colored = coloredGame;
+	colored = coloredGame; 
 }
 
 //This function asks the player to choose the game level.
@@ -51,8 +51,7 @@ void ThePacmanGame::checkGameLevel()
 		}
 	}
 	clear_screen();
-	for (int i = 0; i < ghosts.size(); i++)
-		ghosts[i].setGameLevel(game_level);
+	gameLevel = game_level;
 }
 
 //Get colored data - if true - user chose the colored game, if false - user chose no color game.
@@ -69,6 +68,18 @@ int ThePacmanGame::getPacmanLives() const
 int ThePacmanGame::getPacmanPoints() const
 {
 	return pac.getPoints();
+}
+
+//This function returns the game level
+char ThePacmanGame::getGameLevel()
+{
+	return gameLevel;
+}
+
+//This function setes the game level
+void ThePacmanGame::setGameLevel(char level)
+{
+	gameLevel = level;
 }
 
 //This function copy the points and lives row and add it to board
@@ -123,6 +134,7 @@ void ThePacmanGame::drawObjects()
 void ThePacmanGame::initBoardFromFile(const string file_name)
 {
 	char c;
+	string line;
 	ifstream screenFile(file_name, std::ios_base::in);
 	
 	for (int i = 0; i < ROWS; i++)
@@ -175,7 +187,7 @@ void ThePacmanGame::init()
 			cout.flush();
 			setTextColor(WHITE);
 		}
-		//board[i][COLS] = '\0'; ######need to check if we still need it!!!!!!
+		//board[i][COLS] = '\0';// ######need to check if we still need it!!!!!!
 	}
 
 	pac.setGame(this);
