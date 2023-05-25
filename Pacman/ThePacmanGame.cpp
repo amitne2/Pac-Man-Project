@@ -22,6 +22,7 @@ ThePacmanGame::ThePacmanGame(bool coloredGame) : pointsAndLives{ Point(16,24), P
 //Game level set to all game levels (in default mode)
 void ThePacmanGame::checkGameLevel()
 {
+	clear_screen();
 	bool validAnswer = false;
 	char game_level;
 	cout << "Plase choose game level:" << endl;
@@ -165,7 +166,7 @@ void ThePacmanGame::initBoardFromFile(const string file_name)
 		screenFile.get(c); //get \n
 	}
 	screenFile.close();
-	checkGameLevel();
+	//checkGameLevel();
 }
 
 //This function draws the board for the first time, in color or without color (depends on user's choice)

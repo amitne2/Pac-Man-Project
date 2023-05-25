@@ -126,6 +126,8 @@ void Menu::userChoseDefaultMode(bool color)
 	
 	for (const auto& path: files) 
 	{
+		if (countScreens == 0)
+			game.checkGameLevel();
 		game.start(path);
 		if (game.getPacmanLives() == 0)
 			gameIsOn = false;
@@ -176,6 +178,7 @@ void Menu::userChoseScreen(bool color)
 	else
 	{
 		//game.setScreenMode(false);
+		game.checkGameLevel();
 		game.start(new_name); //only one screen in this game
 		gameResult(game.getPacmanLives(), color);
 		screenFile.close();

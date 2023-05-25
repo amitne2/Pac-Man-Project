@@ -48,8 +48,8 @@ void Point::move(int direction, int object)
 			break;
 		case 1: // DOWN
 			++y;
-			if (y > 24 && object) {
-				y = 1;
+			if (y > 23 && object) {
+				y = 0;
 			}
 			break;
 		case 2: // LEFT
