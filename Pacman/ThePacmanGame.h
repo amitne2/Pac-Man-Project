@@ -42,7 +42,7 @@ public:
 	void setGameLevel(char level);
 	void copyPointsAndLivesRow(const char* points_lives_row[ROWS]);
 	void setBoardBeforeObjectMoves(const Point& p) const;
-	void setBreadcrumbs();
+	void subtractBreadcrumbs();
 	void drawObjects();
 	void initBoardFromFile(const std::string file_name);
 	void init();

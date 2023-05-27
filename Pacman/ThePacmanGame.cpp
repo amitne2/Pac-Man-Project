@@ -103,7 +103,7 @@ void ThePacmanGame::setBoardBeforeObjectMoves(const Point& p) const
 	p.draw(DRAW_CHARACTER, board[p.getY()][p.getX()]);
 }
 
-void ThePacmanGame::setBreadcrumbs()
+void ThePacmanGame::subtractBreadcrumbs()
 {
 	numOfBreadcrumbs--;
 }
@@ -121,7 +121,7 @@ void ThePacmanGame::drawObjects()
 	for(int i=0; i<ghosts.size(); i++)
 		ghosts[i].getCurrentPosition().draw(DRAW_CHARACTER, GHOST_SYMBOL);
 	if(colored)
-		setTextColor(LIGHTMAGENTA);
+		setTextColor(LIGHTGREEN);
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
 	{
 		if (fruits[i].getFruitOnBoard())
@@ -129,6 +129,7 @@ void ThePacmanGame::drawObjects()
 	}
 	setTextColor(WHITE);
 }
+
 //This fucntion reads a board from file 
 //Update the num of Breadcrumbs on this board
 //Update objects locations
@@ -166,7 +167,6 @@ void ThePacmanGame::initBoardFromFile(const string file_name)
 		screenFile.get(c); //get \n
 	}
 	screenFile.close();
-	//checkGameLevel();
 }
 
 //This function draws the board for the first time, in color or without color (depends on user's choice)
@@ -198,6 +198,7 @@ void ThePacmanGame::init()
 	{
 		fruits[i].setGame(this);
 		fruits[i].setFruitPosition(pac.getCurrentPosition(), ghosts);
+		fruits[i].setFruitOnBoard(false); ///////////////////////////////// added because fruit was set on true
 	}
 	drawObjects();
 }
@@ -292,7 +293,6 @@ void ThePacmanGame::initAfterPause()
 			cout.flush();
 			setTextColor(WHITE);
 		}
-		//board[i][COLS] = '\0';
 	}
 
 	drawObjects();
@@ -301,6 +301,8 @@ void ThePacmanGame::initAfterPause()
 //Update board after pacman "eats" a breadcrumb, to save the data.
 void ThePacmanGame::updateBoard(const Point& p)
 {
+	if (board[p.getY()][p.getX()] == '.') ////////////////////////// new! see if works
+		subtractBreadcrumbs();
 	board[p.getY()][p.getX()] = ' ';
 }
 
@@ -427,8 +429,8 @@ void ThePacmanGame::pacmanAteFruit(int fruitPoints)
 {
 	pac.setPoints(fruitPoints);
 	pointsAndLives[1].draw(pac.getPoints(), DRAW_NUMBER);
-	if (isBreadCrumbs(pac.getCurrentPosition()))
-		setBreadcrumbs();
+	//if (isBreadCrumbs(pac.getCurrentPosition()))
+		//subtractBreadcrumbs(); //////////////////////////////delete if works
 }
 
 //This function prepares the ThePacmanGame parameters for the next screen.
@@ -438,6 +440,7 @@ void ThePacmanGame::prepareGameForNextScreen()
 	pac.setDirection(STAY);
 	for (int i = 0; i < ghosts.size(); i++)
 		ghosts.pop_back();
+	ghosts.resize(0); ////////////////////check if relevant!!! because there were more ghosts than shold be
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
 		fruits[i].turnOffFruit();
 	numOfBreadcrumbs = 0;

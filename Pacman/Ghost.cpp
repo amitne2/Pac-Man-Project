@@ -44,7 +44,7 @@ void Ghost::move(const Point& pac, Fruit *fruitsArr)
 		Sleep(2000);
 		setTextColor(WHITE); 
 		/*if (theGame->isBreadCrumbs(position[0]))
-			theGame->setBreadcrumbs();*/
+			theGame->subtractBreadcrumbs();*/
 		theGame->ghostAtePacman();
 	}
 
@@ -58,7 +58,7 @@ void Ghost::move(const Point& pac, Fruit *fruitsArr)
 			if (theGame->checkIfTheSamePosition(position[0], fruitsArr[i].getCurrentPosition()) && fruitsArr[i].getFruitOnBoard())
 			{
 				fruitsArr[i].turnOffFruit();
-				theGame->updateBoard(position[0]);
+				//theGame->updateBoard(position[0]);
 			}
 		}
 		
