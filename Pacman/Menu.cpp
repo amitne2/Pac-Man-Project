@@ -119,14 +119,14 @@ void Menu::userChoseDefaultMode(bool color)
 {
 	ThePacmanGame game(color);
 	bool gameIsOn = true;
-	int countScreens = 0;
+	int countScreens = 1;
 	vector<string> files;
 	listdir(".", files, "screen");
 	sort(files.begin(), files.end());
 	
 	for (const auto& path: files) 
 	{
-		if (countScreens == 0)
+		if (countScreens == 1)
 			game.checkGameLevel();
 		game.start(path);
 		if (game.getPacmanLives() == 0)

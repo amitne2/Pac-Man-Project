@@ -91,7 +91,10 @@ void ThePacmanGame::copyPointsAndLivesRow(const char* boardToCopy[ROWS])
 	{
 		for (int j = 0; j < COLS; j++)
 		{
-			board[k+i][j] = boardToCopy[i][j];
+			if (i == 0 && j == 16) //set lives
+				board[k + i][j] = (char)pac.getLives() +'0';
+			else
+				board[k+i][j] = boardToCopy[i][j];
 		}
 		board[i][COLS] = '\0';
 	}
@@ -188,7 +191,6 @@ void ThePacmanGame::init()
 			cout.flush();
 			setTextColor(WHITE);
 		}
-		//board[i][COLS] = '\0';// ######need to check if we still need it!!!!!!
 	}
 
 	pac.setGame(this);
@@ -198,7 +200,7 @@ void ThePacmanGame::init()
 	{
 		fruits[i].setGame(this);
 		fruits[i].setFruitPosition(pac.getCurrentPosition(), ghosts);
-		fruits[i].setFruitOnBoard(false); ///////////////////////////////// added because fruit was set on true
+		fruits[i].setFruitOnBoard(false); 
 	}
 	drawObjects();
 }
@@ -301,7 +303,7 @@ void ThePacmanGame::initAfterPause()
 //Update board after pacman "eats" a breadcrumb, to save the data.
 void ThePacmanGame::updateBoard(const Point& p)
 {
-	if (board[p.getY()][p.getX()] == '.') ////////////////////////// new! see if works
+	if (board[p.getY()][p.getX()] == '.') 
 		subtractBreadcrumbs();
 	board[p.getY()][p.getX()] = ' ';
 }
@@ -335,7 +337,7 @@ bool ThePacmanGame::isBreadCrumbs(const Point& p) const // This point is the nex
 }
 
 //Check if the pacman and the ghost are in the same position at the moment.
-bool ThePacmanGame::isGhost()
+bool ThePacmanGame::isGhost() const
 {
 	for (int i = 0; i < ghosts.size(); i++)
 		if (checkIfTheSamePosition(pac.getCurrentPosition(), ghosts[i].getCurrentPosition()))
@@ -344,7 +346,7 @@ bool ThePacmanGame::isGhost()
 }
 //This function checks if pacman eats fruit and 
 //updates the points and turn off the fruit from the board
-void ThePacmanGame::isFruit()
+void ThePacmanGame::isFruit() 
 {
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
 		if (checkIfTheSamePosition(pac.getCurrentPosition(), fruits[i].getCurrentPosition()))
@@ -429,8 +431,6 @@ void ThePacmanGame::pacmanAteFruit(int fruitPoints)
 {
 	pac.setPoints(fruitPoints);
 	pointsAndLives[1].draw(pac.getPoints(), DRAW_NUMBER);
-	//if (isBreadCrumbs(pac.getCurrentPosition()))
-		//subtractBreadcrumbs(); //////////////////////////////delete if works
 }
 
 //This function prepares the ThePacmanGame parameters for the next screen.
@@ -438,9 +438,7 @@ void ThePacmanGame::pacmanAteFruit(int fruitPoints)
 void ThePacmanGame::prepareGameForNextScreen()
 {
 	pac.setDirection(STAY);
-	for (int i = 0; i < ghosts.size(); i++)
-		ghosts.pop_back();
-	ghosts.resize(0); ////////////////////check if relevant!!! because there were more ghosts than shold be
+	ghosts.clear(); //clear ghosts
 	for (int i = 0; i < NUM_OF_FRUITS; i++)
 		fruits[i].turnOffFruit();
 	numOfBreadcrumbs = 0;

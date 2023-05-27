@@ -52,8 +52,8 @@ public:
 	void updateBoard(const Point& p);
 	bool isWall(const Point& p, int object) const;
 	bool isBreadCrumbs(const Point& p) const;
-	bool isGhost(); //const
-	void isFruit(); //const
+	bool isGhost() const; 
+	void isFruit(); 
 	bool isOnBorder(const Point& p) const;
 	bool checkIfTheSamePosition(const Point& p1, const Point& p2) const;
 	void manageFruits();

@@ -103,7 +103,6 @@ void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 			turnOffFruit();
 			theGame->pacmanAteFruit(fruitSymbol - '0');
 			theGame->updateBoard(position[0]);
-			//theGame->subtractBreadcrumbs(); //////////////
 		}
 
 		else if(fruitOnBoard)
@@ -111,8 +110,7 @@ void Fruit::move(const Point& pac, vector<Ghost>& ghosts)
 			if (displayCounter == 0)
 			{
 				turnOffFruit();
-				//theGame->updateBoard(position[0]);
-				theGame->setBoardBeforeObjectMoves(position[0]); //////////// fixed?
+				theGame->setBoardBeforeObjectMoves(position[0]); 
 			}
 			else
 			{
